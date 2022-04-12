@@ -36,7 +36,7 @@
             android:layout_marginTop="10dp"
             android:textColor="@color/black"
 
-            android:text="Ao clicar em “enviar código”chegará um código em seu email!"
+            android:text="Ao clicar em “enviar código” chegará um código em seu email!"
             android:textSize="14dp" />
 
 

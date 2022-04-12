@@ -14,7 +14,7 @@ public class APIUtil {
 
     }
 
-    public  static final String API_URL = "http://10.107.144.17:8080/royal/";
+    public  static final String API_URL = "http://10.107.144.22:8080/royal/";
 
     public static RouterInterface getCadastroInterface(){
                               //// onde esta API
@@ -26,6 +26,14 @@ public class APIUtil {
     public static RouterInterface getLoginInterface(){
         //// onde esta API
         return RetrofitLogin.getLogin(API_URL)
+                //// AS  ROTAS
+                .create(RouterInterface.class);
+    }
+
+    public static RouterInterface getUInserirEmailInterface(){
+
+        //// onde esta API
+        return RetrofitInserirEmail.getInserirEmail(API_URL)
                 //// AS  ROTAS
                 .create(RouterInterface.class);
     }

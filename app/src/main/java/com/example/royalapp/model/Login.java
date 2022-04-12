@@ -18,9 +18,14 @@ public class Login {
     @Expose
     private String senha;
 
+    @SerializedName("manter")
+    @Expose
+    private boolean checkbox;
 
 
-///08 metodo para se nao tiver dados ainda (sem parametros e atributos)
+
+
+    ///08 metodo para se nao tiver dados ainda (sem parametros e atributos)
 public Login(){
 
 }
@@ -30,7 +35,7 @@ public Login (String email, String senha){
 
     this.email = email;
     this.senha = senha;
-
+    this.checkbox = checkbox;
 }
 
 
@@ -53,9 +58,11 @@ public Login (String email, String senha){
         this.senha = senha;
     }
 
+    public boolean isCheckbox() {
+        return checkbox;
+    }
 
-
-
-
-
+    public void setCheckbox(Boolean checkbox) {
+        this.checkbox = checkbox;
+    }
 }

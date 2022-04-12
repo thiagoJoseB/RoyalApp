@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.royalapp.model.Cadastro;
+import com.example.royalapp.model.Resultado;
+import com.example.royalapp.model.Status;
 import com.example.royalapp.remote.APIUtil;
 import com.example.royalapp.remote.RouterInterface;
 
@@ -101,26 +103,41 @@ public class CadastroUsuario extends AppCompatActivity {
     //23
     public void addCadastro(Cadastro cadastro){
 
-        Call<Cadastro> call = routerInterface.addCadastro(cadastro);
+        Call<Resultado> call = routerInterface.addCadastro(cadastro);
 
-        call.enqueue(new Callback<Cadastro>() {
+        call.enqueue(new Callback<Resultado>() {
 
             ///se deu certo
 
             @Override
-            public void onResponse(Call<Cadastro> call, Response<Cadastro> response) {
+            public void onResponse(Call<Resultado> call, Response<Resultado> response) {
                 if(response.isSuccessful()){
+                    int status = response.body().status;
 
-                    Toast.makeText(CadastroUsuario.this,
-                            "USUARIO INSERIDO",
-                            Toast.LENGTH_LONG).show();
+                    if(status == Status.OK.codigo){
+                        Toast.makeText(CadastroUsuario.this, "BOA CUTRIM",Toast.LENGTH_LONG).show();
+
+
+                    } else if(status == Status.EMAIL_REPETIDO.codigo){
+                        Toast.makeText(CadastroUsuario.this, " EMAIL REPETIDO CUTRIM",Toast.LENGTH_LONG).show();
+
+
+
+                    } else {
+                        Toast.makeText(CadastroUsuario.this, "ERRO DO CUTRIM",Toast.LENGTH_LONG).show();
+
+                    }
+//                    //Log.d("REPOSNSE-", String.valueOf(response.raw()));
+//                    Toast.makeText(CadastroUsuario.this,
+//                            "",
+//                            Toast.LENGTH_LONG).show();
                 }
 
 
             }
             ///se deu erro
             @Override
-            public void onFailure(Call<Cadastro> call, Throwable t) {
+            public void onFailure(Call<Resultado> call, Throwable t) {
 
                 Log.d("API-ERRO",t.getMessage());
 
