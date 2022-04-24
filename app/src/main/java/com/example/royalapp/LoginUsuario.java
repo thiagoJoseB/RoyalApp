@@ -18,6 +18,8 @@ import com.example.royalapp.remote.APIUtil;
 import com.example.royalapp.remote.RouterInterface;
 import com.example.royalapp.model.Login;
 
+import java.util.regex.Pattern;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,10 +32,12 @@ public class LoginUsuario extends AppCompatActivity {
     EditText txtSenha;
     Button btnEntrar_Login;
     CheckBox checkbox;
+    TextView txtEsqueci_Senha;
 
     RouterInterface routerInterface;
 
    TextView criarConta;
+   TextView esqueciSenha;
 
 
     @Override
@@ -46,6 +50,7 @@ public class LoginUsuario extends AppCompatActivity {
         btnEntrar_Login = findViewById(R.id.btnEntrar_Login);
         checkbox = findViewById(R.id.checkbox);
         criarConta = findViewById(R.id.crie_conta);
+        esqueciSenha = findViewById(R.id.txtEsqueci_Senha);
 
         criarConta.setOnClickListener(view -> {
             Intent intent = new Intent(LoginUsuario.this, CadastroUsuario.class);
@@ -55,8 +60,14 @@ public class LoginUsuario extends AppCompatActivity {
 
         });
 
+        esqueciSenha.setOnClickListener(view -> {
+            Intent intent = new Intent(LoginUsuario.this, InsercaoEmail.class);
+            startActivity(intent);
 
-        routerInterface = APIUtil.getLoginInterface();
+        });
+
+
+        routerInterface = APIUtil.getApiInterface();
 
         btnEntrar_Login.setOnClickListener(view -> {
 
@@ -65,6 +76,10 @@ public class LoginUsuario extends AppCompatActivity {
                 Toast.makeText (this, "TODOS OS CAMPOS DEVEM SER PREENCHIDOS!", Toast.LENGTH_LONG).show();
                 return;
 
+            }
+            else if(! Pattern.matches("\\w+@\\w+\\.\\w+", txtEmail.getText().toString())){
+                Toast.makeText (this, "PREENCHA OS CAMPOS CORRETAMENTE", Toast.LENGTH_LONG).show();
+                return;
             } else {
 
                 /// 21 pegar o construtor vazio
@@ -110,11 +125,14 @@ public class LoginUsuario extends AppCompatActivity {
 
                     if(status == Status.OK.codigo) {
 
-                        Toast.makeText(LoginUsuario.this, "BOA CUTRIM", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(LoginUsuario.this, "BOA CUTRIM", Toast.LENGTH_LONG).show();
 
 
                         if(response.body().found) {
                             Toast.makeText(LoginUsuario.this, "FOI PRA DASH", Toast.LENGTH_LONG).show();
+
+                        }else{
+                            Toast.makeText(LoginUsuario.this, "SENHA OU LOGIN INVALIDO", Toast.LENGTH_LONG).show();
 
                         }
 

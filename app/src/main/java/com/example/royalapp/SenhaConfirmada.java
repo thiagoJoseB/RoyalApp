@@ -13,8 +13,13 @@ public class SenhaConfirmada extends AppCompatActivity {
         setContentView(R.layout.activity_senha_confirmada);
 
 
+
+
+
+
         //toolbar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.toolbar_senha_confirmada);
+        getSupportActionBar().setCustomView(R.layout.toolbar_app);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

@@ -3,28 +3,45 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/add_circle_outline_24.xml" value="0.1395" />
+        <entry key="app/src/main/res/drawable/borda_saldo.xml" value="0.192" />
         <entry key="app/src/main/res/drawable/borda_sombreada.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/botoes_codigo.xml" value="0.172" />
         <entry key="app/src/main/res/drawable/cb_selector.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/chart_24.xml" value="0.1395" />
         <entry key="app/src/main/res/drawable/checked.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/circle.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/group_24.xml" value="0.47" />
+        <entry key="app/src/main/res/drawable/home_24.xml" value="0.1395" />
+        <entry key="app/src/main/res/drawable/menu_24.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/receipt_24.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/receipt_long_24.xml" value="0.1395" />
+        <entry key="app/src/main/res/drawable/remove_circle_outline_24.xml" value="0.1395" />
         <entry key="app/src/main/res/drawable/shadow.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/toolbar_redonda.xml" value="0.258" />
         <entry key="app/src/main/res/drawable/unchecked.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_alterar_senha.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_insercao_email.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_inserir_codigo.xml" value="0.35104166666666664" />
+        <entry key="app/src/main/res/layout/activity_inserir_codigo.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5770833333333333" />
+        <entry key="app/src/main/res/layout/activity_menu.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_senha_confirmada.xml" value="0.11" />
         <entry key="app/src/main/res/layout/cadastro_usuario.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/circle_toolbar.xml" value="0.5820512820512821" />
         <entry key="app/src/main/res/layout/style.xml" value="0.1" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/toolbarApp.xml" value="0.4486711829077645" />
         <entry key="app/src/main/res/layout/toolbarCadastro.xml" value="0.15185185185185185" />
         <entry key="app/src/main/res/layout/toolbarLogin.xml" value="0.15185185185185185" />
         <entry key="app/src/main/res/layout/toolbar_alterar_senha.xml" value="0.35104166666666664" />
+        <entry key="app/src/main/res/layout/toolbar_app.xml" value="0.5820512820512821" />
+        <entry key="app/src/main/res/layout/toolbar_circle.xml" value="0.5805658056580566" />
         <entry key="app/src/main/res/layout/toolbar_inserir_email.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/toolbar_login.xml" value="0.29739583333333336" />
         <entry key="app/src/main/res/layout/toolbar_senha_confirmada.xml" value="0.5192708333333333" />
+        <entry key="app/src/main/res/menu/navigation_menu.xml" value="0.1" />
       </map>
     </option>
   </component>

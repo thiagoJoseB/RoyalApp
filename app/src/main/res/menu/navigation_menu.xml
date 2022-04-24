@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+   <item
+
+       android:title="@string/app_name"
+
+       />
+
+
+   <item
+       android:id="@+id/visaoGeral"
+       android:icon="@drawable/icon_home_24"
+       android:title="Visão Geral"
+
+       />
+
+   <item
+       android:id="@+id/extratos"
+       android:icon="@drawable/icon_receipt_long_24"
+       android:title="Extratos"
+
+       />
+   <item
+       android:id="@+id/contas"
+       android:icon="@drawable/icon_receipt_24"
+       android:title="Contas"
+
+
+
+       />
+   <item
+       android:id="@+id/metas"
+       android:icon="@drawable/icon_bar_chart_24"
+       android:title="Metas"
+
+       />
+
+   <item
+       android:id="@+id/graficos"
+       android:icon="@drawable/icon_chart_outlined_24"
+       android:title="Graficos"
+
+       />
+
+   <item
+       android:id="@+id/grupos"
+       android:icon="@drawable/icon_group_24"
+       android:title="Grupos"
+
+       />
+
+
+
+
+</menu>

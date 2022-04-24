@@ -16,6 +16,8 @@ import com.example.royalapp.model.Status;
 import com.example.royalapp.remote.APIUtil;
 import com.example.royalapp.remote.RouterInterface;
 
+import java.util.regex.Pattern;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,7 +57,7 @@ public class CadastroUsuario extends AppCompatActivity {
         btnCadastrar = findViewById(R.id.btnCadastrar);
 
        //// 26
-        routerInterface = APIUtil.getCadastroInterface();
+        routerInterface = APIUtil.getApiInterface();
 
         this.btnCadastrar.setOnClickListener(view -> {
 
@@ -65,7 +67,11 @@ public class CadastroUsuario extends AppCompatActivity {
                 Toast.makeText(this, "Os Campos Devem Ser Preenchidos", Toast.LENGTH_LONG).show();
                 return;
 
-            } else{
+            }
+            else if(! Pattern.matches("\\w+@\\w+\\.\\w+", txtEmail.getText().toString())){
+                Toast.makeText (this, "PREENCHA OS CAMPOS CORRETAMENTE", Toast.LENGTH_LONG).show();
+                return;
+            } else {
 
                 /// 21 pegar o construtor vazio
                 Cadastro cadastro = new Cadastro();
@@ -76,12 +82,12 @@ public class CadastroUsuario extends AppCompatActivity {
                     cadastro.setSenha(txtSenha.getText().toString());
 
 
+                   /// 24 chama o metodo
+                   addCadastro(cadastro);
 
                 }
                 //22
 
-                /// 24 chama o metodo
-                addCadastro(cadastro);
 
 
 
@@ -92,7 +98,7 @@ public class CadastroUsuario extends AppCompatActivity {
 
          //Centralizar texto da toolbar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.toolbar_cadastro);
+        getSupportActionBar().setCustomView(R.layout.toolbar_app);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 

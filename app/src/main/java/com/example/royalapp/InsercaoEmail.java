@@ -3,6 +3,7 @@ package com.example.royalapp;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -16,6 +17,9 @@ import com.example.royalapp.model.Status;
 import com.example.royalapp.remote.APIUtil;
 import com.example.royalapp.remote.RouterInterface;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,42 +30,66 @@ public class InsercaoEmail extends AppCompatActivity {
 
     EditText txtInsercaoEmail;
     Button btnInsercaoEmail;
-    private String tipo = "Pedir";
+    private String tipo = "PEDIR";
 
     RouterInterface routerInterface;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insercao_email);
 
-        ///21
-        InserirEmail inserirEmail = new InserirEmail();
+
 
         txtInsercaoEmail = findViewById(R.id.txtInsercaoEmail);
         btnInsercaoEmail = findViewById(R.id.btnInsercaoEmail);
 
 
-        routerInterface = APIUtil.getUInserirEmailInterface();
+        routerInterface = APIUtil.getApiInterface();
 
         btnInsercaoEmail.setOnClickListener(view -> {
 
-            /// 21 pegar o construtor vazio
+            if (!validate()){
+
+                Toast.makeText (this, "TODOS OS CAMPOS DEVEM SER PREENCHIDOS!", Toast.LENGTH_LONG).show();
+                return;
 
 
-            /// 22
-            inserirEmail.setEmail(txtInsercaoEmail.getText().toString());
-            inserirEmail.setTipo("Pedir");
+            }else if(! Pattern.matches("\\w+@\\w+\\.\\w+", txtInsercaoEmail.getText().toString())){
+                Toast.makeText (this, "PREENCHA OS CAMPOS CORRETAMENTE", Toast.LENGTH_LONG).show();
+                return;
+            } else {
 
-            /// 24 chama o metodo
-         addInserirEmail(inserirEmail);
+
+
+                ///21
+                InserirEmail inserirEmail = new InserirEmail();
+
+
+
+                /// 22
+
+                inserirEmail.setEmail(txtInsercaoEmail.getText().toString());
+
+                inserirEmail.setTipo("PEDIR");
+
+                /// 24 chama o metodo
+                addInserirEmail(inserirEmail);
+
+
+
+            }
 
         });
 
 
+
+
         //Centralizar texto da toolbar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.toolbar_inserir_email);
+        getSupportActionBar().setCustomView(R.layout.toolbar_app);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
     } /// FIM DO METODO onCREATE
@@ -69,7 +97,7 @@ public class InsercaoEmail extends AppCompatActivity {
 
     ///23 metodo addUsuario
     public void addInserirEmail(InserirEmail inserirEmail){
-                                    /// verbo , rota
+        /// verbo , rota
         Call<Resultado> call = routerInterface.addInserirEmail(inserirEmail);
 
         call.enqueue(new Callback<Resultado>() {
@@ -80,13 +108,10 @@ public class InsercaoEmail extends AppCompatActivity {
 
                     if(status == Status.OK.codigo) {
 
-                        Toast.makeText(InsercaoEmail.this,"foi Cutrim",Toast.LENGTH_LONG).show();
-
-
-//                        if(response.body().found) {
-//                            Toast.makeText(InsercaoEmail.this, "Cutrim", Toast.LENGTH_LONG).show();
-//
-//                        }
+                            Intent intent = new Intent(InsercaoEmail.this, InserirCodigo.class);
+                            intent.putExtra("email", txtInsercaoEmail.getText().toString());
+                            startActivity(intent);
+                            finish();
 
                     }else{
                         Toast.makeText(InsercaoEmail.this, "ERRO DO CUTRIM",Toast.LENGTH_LONG).show();
@@ -106,6 +131,15 @@ public class InsercaoEmail extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    /** FUNÇÃO DE VALIDAÇÃO **/
+    public boolean validate(){
+
+        return (
+                !txtInsercaoEmail.getText().toString().isEmpty()
+        );
 
     }
 
