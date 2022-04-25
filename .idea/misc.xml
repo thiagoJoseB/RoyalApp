@@ -14,6 +14,7 @@
         <entry key="..\:/Users/Teste/Desktop/projeto/RoyalApp/app/src/main/res/layout/toolbar_login.xml" value="0.1743659420289855" />
         <entry key="..\:/Users/Teste/Desktop/projeto/RoyalApp/app/src/main/res/menu/navigation_menu.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/add_circle_outline_24.xml" value="0.1395" />
+        <entry key="app/src/main/res/drawable/borda_graficos.xml" value="0.222" />
         <entry key="app/src/main/res/drawable/borda_saldo.xml" value="0.192" />
         <entry key="app/src/main/res/drawable/borda_sombreada.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/botoes_codigo.xml" value="0.172" />
@@ -31,7 +32,7 @@
         <entry key="app/src/main/res/drawable/toolbar_redonda.xml" value="0.258" />
         <entry key="app/src/main/res/drawable/unchecked.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_alterar_senha.xml" value="0.375" />
-        <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_insercao_email.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_inserir_codigo.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
