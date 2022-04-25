@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
+
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
@@ -37,81 +38,157 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="300dp"
-            android:layout_height="110dp"
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="-50dp"
-            android:elevation="4dp"
+            android:layout_marginEnd="8dp"
             android:background="@drawable/borda_saldo"
             android:backgroundTint="@color/white"
+            android:elevation="4dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             tools:ignore="MissingConstraints">
 
             <TextView
+                android:id="@+id/textView6"
+                style="@style/TextAppearance.MaterialComponents.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Despesa"
+                android:textColor="#ff777777"
+                app:layout_constraintBottom_toTopOf="@+id/textView5"
+                app:layout_constraintEnd_toEndOf="@+id/textView5"
+                app:layout_constraintStart_toStartOf="@+id/textView5"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/textView5"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:text="R$:1.000,00"
+                android:textColor="#E70000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.9"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
                 android:text="Saldo"
-                android:layout_marginTop="5dp"
-                android:textSize="13dp"
-                android:layout_gravity="center"/>
+                android:textColor="#ff777777"
+                app:layout_constraintEnd_toEndOf="@+id/textView"
+                app:layout_constraintStart_toStartOf="@+id/textView"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/textView"
+                style="@style/TextAppearance.MaterialComponents.Headline5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="R$:3.000,00"
-                android:textStyle="bold"
-                android:textSize="21dp"
-                android:layout_gravity="center"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-
-
-            <!--redondo azul do   verde -->
             <TextView
-                android:layout_width="65dp"
-                android:layout_height="35dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/despeca_receita_circulo"
-                android:layout_marginLeft="60dp"/>
+                android:id="@+id/textView3"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Receita"
+                android:textColor="#ff777777"
+                app:layout_constraintBottom_toTopOf="@+id/textView4"
+                app:layout_constraintEnd_toEndOf="@+id/textView4"
+                app:layout_constraintStart_toStartOf="@+id/textView4"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                app:layout_constraintVertical_bias="1.0" />
 
-
-            <!--redondo verde -->
             <TextView
-                 android:layout_width="40dp"
-                 android:layout_height="40dp"
-                  android:scaleType="centerCrop"
-                 android:layout_marginLeft="40dp"
-                android:layout_marginTop="-37dp"
-                  android:background="@drawable/circulo_positivo" />
-
-            <!--redondo azul do   vermelho -->
-            <TextView
-                android:layout_width="65dp"
-                android:layout_height="35dp"
-                android:layout_marginTop="-38dp"
-                android:background="@drawable/despeca_receita_circulo"
-                android:layout_marginLeft="200dp"/>
+                android:id="@+id/textView4"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:text="R$:1.000,00"
+                android:textColor="#32A40A"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toStartOf="parent" />
 
 
-<!--redondo vermelho -->
-            <TextView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:scaleType="centerCrop"
-                android:layout_marginLeft="180dp"
-                android:layout_marginTop="-38dp"
-                android:background="@drawable/circulo_negativo"
-
-                />
+            <!--            &lt;!&ndash;redondo azul do   verde &ndash;&gt;-->
+            <!--            <TextView-->
+            <!--                android:layout_width="65dp"-->
+            <!--                android:layout_height="35dp"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:background="@drawable/despeca_receita_circulo"-->
+            <!--                android:layout_marginLeft="60dp"/>-->
 
 
+            <!--            &lt;!&ndash;redondo verde &ndash;&gt;-->
+            <!--            <TextView-->
+            <!--                 android:layout_width="40dp"-->
+            <!--                 android:layout_height="40dp"-->
+            <!--                  android:scaleType="centerCrop"-->
+            <!--                 android:layout_marginLeft="40dp"-->
+            <!--                android:layout_marginTop="-37dp"-->
+            <!--                  android:background="@drawable/circulo_positivo" />-->
 
-        </LinearLayout>
+            <!--            &lt;!&ndash;redondo azul do   vermelho &ndash;&gt;-->
+            <!--            <TextView-->
+            <!--                android:layout_width="65dp"-->
+            <!--                android:layout_height="35dp"-->
+            <!--                android:layout_marginTop="-38dp"-->
+            <!--                android:background="@drawable/despeca_receita_circulo"-->
+            <!--                android:layout_marginLeft="200dp"/>-->
+
+
+            <!--&lt;!&ndash;redondo vermelho &ndash;&gt;-->
+            <!--            <TextView-->
+            <!--                android:layout_width="40dp"-->
+            <!--                android:layout_height="40dp"-->
+            <!--                android:scaleType="centerCrop"-->
+            <!--                android:layout_marginLeft="180dp"-->
+            <!--                android:layout_marginTop="-38dp"-->
+            <!--                android:background="@drawable/circulo_negativo"-->
+
+            <!--                />-->
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/option"
