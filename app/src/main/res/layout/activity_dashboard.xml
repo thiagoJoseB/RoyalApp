@@ -30,7 +30,8 @@
                 android:layout_height="30dp"
                 android:paddingTop="10dp"
                 android:src="@drawable/menu_24"
-                android:tint="@color/black"
+                android:tint="@color/white"
+                android:layout_marginLeft="10dp"
                 tools:ignore="UseAppTint" />
 
 
@@ -49,6 +50,64 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             tools:ignore="MissingConstraints">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Saldo"
+                android:layout_marginTop="5dp"
+                android:textSize="13dp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="R$:3.000,00"
+                android:textStyle="bold"
+                android:textSize="21dp"
+                android:layout_gravity="center"/>
+
+
+
+            <!--redondo azul do   verde -->
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/despeca_receita_circulo"
+                android:layout_marginLeft="60dp"/>
+
+
+            <!--redondo verde -->
+            <TextView
+                 android:layout_width="40dp"
+                 android:layout_height="40dp"
+                  android:scaleType="centerCrop"
+                 android:layout_marginLeft="40dp"
+                android:layout_marginTop="-37dp"
+                  android:background="@drawable/circulo_positivo" />
+
+            <!--redondo azul do   vermelho -->
+            <TextView
+                android:layout_width="65dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="-38dp"
+                android:background="@drawable/despeca_receita_circulo"
+                android:layout_marginLeft="200dp"/>
+
+
+<!--redondo vermelho -->
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerCrop"
+                android:layout_marginLeft="180dp"
+                android:layout_marginTop="-38dp"
+                android:background="@drawable/circulo_negativo"
+
+                />
+
+
+
         </LinearLayout>
 
 
@@ -59,7 +118,11 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@color/corPrincipalEscura"
+        app:headerLayout="@layout/layout_perfil_menu"
+        app:itemIconSize="30dp"
+
         app:menu="@menu/navigation_menu"
+
         app:itemTextColor="@color/white"
 
         android:layout_gravity="start"/>
