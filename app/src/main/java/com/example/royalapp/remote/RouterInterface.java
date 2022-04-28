@@ -11,20 +11,24 @@ import com.example.royalapp.model.Login;
 import com.example.royalapp.model.Resultado;
 import com.example.royalapp.model.SenhaNova;
 
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Body;
-
+import retrofit2.http.Path;
 
 
 public interface RouterInterface {
 
     //14
     @POST("/royal/cadastro") Call<Resultado> addCadastro(@Body Cadastro cadastro);
-    @POST("/royal/contas") Call<Resultado> addLogin(@Body Login login);
+    @POST("/royal/contas") Call<ResponseBody> login(@Body Login login);
     @POST("/royal/resetar") Call<Resultado> addInserirEmail(@Body InserirEmail inserirEmail);
     @POST("/royal/resetar") Call<Resultado> addCodigo(@Body Codigo codigo);
     @POST("/royal/resetar") Call<Resultado> addSenhaNova(@Body SenhaNova senhaNova);
+    @GET("/royal/dashboard?k={token}") Call<RequestBody> getDashboardInfo(@Path("token") String token);
 
 
 

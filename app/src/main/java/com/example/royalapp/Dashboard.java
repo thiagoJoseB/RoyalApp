@@ -58,7 +58,7 @@ public class Dashboard extends AppCompatActivity {
 
         //inicia o codigo do piechard
 
-        PieChart chart = findViewById(R.id.chart1);
+        PieChart chart = findViewById(R.id.dashboard_grafico_mes);
         chart.setUsePercentValues(false);
         chart.getDescription().setEnabled(false);
         chart.setExtraOffsets(5, 10, 5, 5);

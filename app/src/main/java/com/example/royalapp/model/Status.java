@@ -10,11 +10,6 @@ import java.util.stream.Stream;
 public enum Status {
     OK(0),
     EMAIL_REPETIDO(1062),
-    CAMPO_VAZIO_OU_GRANDE(1),
-    CAMPO_INVALIDO(2),
-    CAMPO_TIPO_INCORRETO(24),
-    JSON_INVALIDO(43),
-    SENHA_IDIOTA(3),
     REQUISICAO_INVALIDA(69)
     ;
     

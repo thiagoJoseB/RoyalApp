@@ -30,7 +30,7 @@ public class InsercaoEmail extends AppCompatActivity {
 
     EditText txtInsercaoEmail;
     Button btnInsercaoEmail;
-    private String tipo = "PEDIR";
+    private final String tipo = "PEDIR";
 
     RouterInterface routerInterface;
 
