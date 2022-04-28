@@ -1,6 +1,5 @@
-package com.example.royalapp.model;
+package com.example.royalapp.remote;
 
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 /**

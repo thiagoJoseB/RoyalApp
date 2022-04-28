@@ -8,16 +8,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.royalapp.model.InserirEmail;
-import com.example.royalapp.model.Resultado;
-import com.example.royalapp.model.Status;
+import com.example.royalapp.remote.request.InserirEmail;
+import com.example.royalapp.remote.response.Resultado;
+import com.example.royalapp.remote.Status;
 import com.example.royalapp.remote.APIUtil;
 import com.example.royalapp.remote.RouterInterface;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import retrofit2.Call;

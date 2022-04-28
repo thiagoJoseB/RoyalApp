@@ -1,35 +1,40 @@
-package com.example.royalapp.model;
+package com.example.royalapp.remote.request;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class InserirEmail {
+public class SenhaNova {
 
-    ///07 iniciar variaveis
     @SerializedName("email")
     @Expose
     private String email;
 
+    @SerializedName("senha")
+    @Expose
+    private String senha;
+
+
     @SerializedName("tipo")
     @Expose
-    private String tipo = "PEDIR";
+    private String tipo = "MUDAR";
 
 
 
-    ///08 metodo para se nao tiver dados ainda (sem parametros e atributos)
-    public InserirEmail(){
+
+    public SenhaNova() {
 
     }
 
-    ///09 metodos para receber os dados que ja existem
-    public InserirEmail(String email, String tipo){
+
+
+
+    public SenhaNova(String email, String senha,String tipo){
 
         this.email = email;
+        this.senha = senha;
         this.tipo = tipo;
 
     }
-
-    ///10 metodos set e gets
 
 
     public String getEmail() {
@@ -38,6 +43,14 @@ public class InserirEmail {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public String getTipo() {

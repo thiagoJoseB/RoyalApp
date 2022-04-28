@@ -12,16 +12,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.royalapp.model.Codigo;
-import com.example.royalapp.model.Resultado;
-import com.example.royalapp.model.Status;
+import com.example.royalapp.remote.request.Codigo;
+import com.example.royalapp.remote.response.Resultado;
+import com.example.royalapp.remote.Status;
 import com.example.royalapp.remote.APIUtil;
 import com.example.royalapp.remote.RouterInterface;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-//import com.example.royalapp.model.InserirEmail;
+//import com.example.royalapp.remote.model.InserirEmail;
 public class InserirCodigo extends AppCompatActivity {
 
 

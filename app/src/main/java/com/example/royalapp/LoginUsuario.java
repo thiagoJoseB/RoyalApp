@@ -1,5 +1,6 @@
 package com.example.royalapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,21 +13,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.royalapp.model.Resultado;
-import com.example.royalapp.model.Status;
+import com.example.royalapp.remote.Status;
 import com.example.royalapp.remote.APIUtil;
 import com.example.royalapp.remote.RouterInterface;
-import com.example.royalapp.model.Login;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
+import com.example.royalapp.remote.request.Login;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.IOException;
-import java.util.regex.Pattern;
-
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -118,17 +111,15 @@ public class LoginUsuario extends AppCompatActivity {
     public void addLogin(Login login){
 
 
-            routerInterface.login(login).enqueue(new Callback<ResponseBody>() {
+            routerInterface.login(login).enqueue(new Callback<String>() {
                 @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                public void onResponse(Call<String> call, Response<String> response) {
+                    Log.d("teste", "cacildes");
+
                     if(response.isSuccessful()){
                         JsonObject json;
 
-                        try {
-                            json = JsonParser.parseString(response.body().string()).getAsJsonObject();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                        json = JsonParser.parseString(response.body()).getAsJsonObject();
 
                         Log.d("teste", json.toString());
 
@@ -159,7 +150,7 @@ public class LoginUsuario extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
                     Log.e("login", t.getClass().getSimpleName(), t);
                     Toast.makeText(LoginUsuario.this, "erro" + t.toString(), Toast.LENGTH_LONG).show();
                 }
