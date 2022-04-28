@@ -1,5 +1,6 @@
 package com.example.royalapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,13 +13,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.royalapp.model.Resultado;
-import com.example.royalapp.model.Status;
+import com.example.royalapp.remote.Status;
 import com.example.royalapp.remote.APIUtil;
 import com.example.royalapp.remote.RouterInterface;
-import com.example.royalapp.model.Login;
-
-import java.util.regex.Pattern;
+import com.example.royalapp.remote.request.Login;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -76,10 +76,6 @@ public class LoginUsuario extends AppCompatActivity {
                 Toast.makeText (this, "TODOS OS CAMPOS DEVEM SER PREENCHIDOS!", Toast.LENGTH_LONG).show();
                 return;
 
-            }
-            else if(! Pattern.matches("\\w+@\\w+\\.\\w+", txtEmail.getText().toString())){
-                Toast.makeText (this, "PREENCHA OS CAMPOS CORRETAMENTE", Toast.LENGTH_LONG).show();
-                return;
             } else {
 
                 /// 21 pegar o construtor vazio
@@ -114,49 +110,51 @@ public class LoginUsuario extends AppCompatActivity {
 
     public void addLogin(Login login){
 
-        Call<Resultado> call = routerInterface.addLogin(login);
 
-        call.enqueue(new Callback<Resultado>() {
+            routerInterface.login(login).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    Log.d("teste", "cacildes");
 
-            @Override
-            public void onResponse(Call<Resultado> call, Response<Resultado> response) {
-                if(response.isSuccessful()){
-                    int status = response.body().status;
+                    if(response.isSuccessful()){
+                        JsonObject json;
 
-                    if(status == Status.OK.codigo) {
+                        json = JsonParser.parseString(response.body()).getAsJsonObject();
 
-//                        Toast.makeText(LoginUsuario.this, "BOA CUTRIM", Toast.LENGTH_LONG).show();
+                        Log.d("teste", json.toString());
+
+                        if(json.get("status").getAsInt() == Status.OK.codigo) {
+                            if(json.get("found").getAsBoolean()) {
+
+                                Toast.makeText(LoginUsuario.this, "FOI PRA DASH", Toast.LENGTH_LONG).show();
 
 
-                        if(response.body().found) {
-                            Toast.makeText(LoginUsuario.this, "FOI PRA DASH", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(LoginUsuario.this, Dashboard.class);
+                                intent.putExtra("token", json.get("token").getAsString());
+
+                                LoginUsuario.this.startActivity(intent);
+
+                                LoginUsuario.this.finish();
+                            }else{
+                                Toast.makeText(LoginUsuario.this, "SENHA OU LOGIN INVALIDO", Toast.LENGTH_LONG).show();
+
+                            }
 
                         }else{
-                            Toast.makeText(LoginUsuario.this, "SENHA OU LOGIN INVALIDO", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginUsuario.this, "ERRO DO CUTRIM",Toast.LENGTH_LONG).show();
 
                         }
-
-                     }else{
-                        Toast.makeText(LoginUsuario.this, "ERRO DO CUTRIM",Toast.LENGTH_LONG).show();
-
+                    } else {
+                        Toast.makeText(LoginUsuario.this, "erro" + response.code(), Toast.LENGTH_LONG).show();
                     }
-//                    //Log.d("REPOSNSE-", String.valueOf(response.raw()));
-//                    Toast.makeText(CadastroUsuario.this,
-//                            "",
-//                            Toast.LENGTH_LONG).show();
                 }
 
-
-            }
-            ///se deu erro
-            @Override
-            public void onFailure(Call<Resultado> call, Throwable t) {
-
-                Log.e("API-ERRO",t.getMessage(), t);
-
-            }
-        });
-
+                @Override
+                public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                    Log.e("login", t.getClass().getSimpleName(), t);
+                    Toast.makeText(LoginUsuario.this, "erro" + t.toString(), Toast.LENGTH_LONG).show();
+                }
+            });
     }
 
 

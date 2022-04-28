@@ -1,4 +1,4 @@
-package com.example.royalapp.model;
+package com.example.royalapp.remote.request;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

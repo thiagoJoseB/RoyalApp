@@ -8,348 +8,345 @@
     tools:context=".Dashboard">
 
 
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/whitesmoke">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@drawable/toolbar_redonda"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:titleTextColor="@android:color/white"
-            tools:ignore="MissingConstraints">
-
-            <ImageView
-                android:id="@+id/imgMenu"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:paddingTop="10dp"
-                android:src="@drawable/menu_24"
-                android:tint="@color/white"
-                android:layout_marginLeft="10dp"
-                tools:ignore="UseAppTint" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
 
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/toolbar_redonda"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:titleTextColor="@android:color/white"
+                tools:ignore="MissingConstraints">
+
+                <ImageView
+                    android:id="@+id/imgMenu"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:src="@drawable/menu_24"
+                    android:tint="@color/white"
+                    tools:ignore="UseAppTint" />
 
 
-        <!--        <TextView-->
-<!--            android:layout_width="300dp"-->
-<!--            android:layout_height="300dp"-->
-<!--            android:background="@color/black"-->
-<!--            android:elevation="4dp"-->
+            </LinearLayout>
 
-<!--            tools:ignore="MissingConstraints" />-->
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="-50dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/borda_saldo"
-                android:backgroundTint="@color/white"
-                android:elevation="4dp"
+                android:layout_marginTop="32dp"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-                tools:ignore="MissingConstraints">
-
-                <TextView
-                    android:id="@+id/textView6"
-                    style="@style/TextAppearance.MaterialComponents.Body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Despesa"
-                    android:textColor="#ff777777"
-                    app:layout_constraintBottom_toTopOf="@+id/textView5"
-                    app:layout_constraintEnd_toEndOf="@+id/textView5"
-                    app:layout_constraintStart_toStartOf="@+id/textView5"
-                    app:layout_constraintTop_toBottomOf="@+id/textView"
-                    app:layout_constraintVertical_bias="1.0" />
-
-                <TextView
-                    android:id="@+id/textView5"
-                    style="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="10dp"
-                    android:text="R$:1.000,00"
-                    android:textColor="#E70000"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.9"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    style="@style/TextAppearance.MaterialComponents.Body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="8dp"
-                    android:text="Saldo"
-                    android:textColor="#ff777777"
-                    app:layout_constraintEnd_toEndOf="@+id/textView"
-                    app:layout_constraintStart_toStartOf="@+id/textView"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView"
-                    style="@style/TextAppearance.MaterialComponents.Headline5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="R$:3.000,00"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-                <TextView
-                    android:id="@+id/textView3"
-                    style="@style/TextAppearance.MaterialComponents.Body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Receita"
-                    android:textColor="#ff777777"
-                    app:layout_constraintBottom_toTopOf="@+id/textView4"
-                    app:layout_constraintEnd_toEndOf="@+id/textView4"
-                    app:layout_constraintStart_toStartOf="@+id/textView4"
-                    app:layout_constraintTop_toBottomOf="@+id/textView"
-                    app:layout_constraintVertical_bias="1.0" />
-
-                <TextView
-                    android:id="@+id/textView4"
-                    style="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="10dp"
-                    android:text="R$:1.000,00"
-                    android:textColor="#32A40A"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.1"
-                    app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
 
-                <!--            &lt;!&ndash;redondo azul do   verde &ndash;&gt;-->
-                <!--            <TextView-->
-                <!--                android:layout_width="65dp"-->
-                <!--                android:layout_height="35dp"-->
-                <!--                android:layout_marginTop="10dp"-->
-                <!--                android:background="@drawable/despeca_receita_circulo"-->
-                <!--                android:layout_marginLeft="60dp"/>-->
-
-
-                <!--            &lt;!&ndash;redondo verde &ndash;&gt;-->
-                <!--            <TextView-->
-                <!--                 android:layout_width="40dp"-->
-                <!--                 android:layout_height="40dp"-->
-                <!--                  android:scaleType="centerCrop"-->
-                <!--                 android:layout_marginLeft="40dp"-->
-                <!--                android:layout_marginTop="-37dp"-->
-                <!--                  android:background="@drawable/circulo_positivo" />-->
-
-                <!--            &lt;!&ndash;redondo azul do   vermelho &ndash;&gt;-->
-                <!--            <TextView-->
-                <!--                android:layout_width="65dp"-->
-                <!--                android:layout_height="35dp"-->
-                <!--                android:layout_marginTop="-38dp"-->
-                <!--                android:background="@drawable/despeca_receita_circulo"-->
-                <!--                android:layout_marginLeft="200dp"/>-->
-
-
-                <!--&lt;!&ndash;redondo vermelho &ndash;&gt;-->
-                <!--            <TextView-->
-                <!--                android:layout_width="40dp"-->
-                <!--                android:layout_height="40dp"-->
-                <!--                android:scaleType="centerCrop"-->
-                <!--                android:layout_marginLeft="180dp"-->
-                <!--                android:layout_marginTop="-38dp"-->
-                <!--                android:background="@drawable/circulo_negativo"-->
-
-                <!--                />-->
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout2"
-                android:layout_width="0dp"
-                android:layout_height="300dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/borda_graficos"
-                android:backgroundTint="@color/white"
-                android:elevation="4dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-                tools:ignore="MissingConstraints">
-
-
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/chart"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/constraintLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/borda_saldo"
+                    android:backgroundTint="@color/white"
+                    android:elevation="4dp"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/textView6"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Despesa"
+                            android:textColor="#ff777777"
+                            app:layout_constraintEnd_toEndOf="@+id/dashboard_despesa_principal_texto"
+                            app:layout_constraintStart_toStartOf="@+id/dashboard_despesa_principal_texto"
+                            app:layout_constraintTop_toBottomOf="@+id/dashboard_saldo_principal_texto" />
+
+                        <TextView
+                            android:id="@+id/dashboard_despesa_principal_texto"
+                            style="@style/TextAppearance.MaterialComponents.Headline6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+
+                            android:minWidth="100dp"
+
+                            android:gravity="center"
+                            android:textColor="#E70000"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.9"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+                        <com.facebook.shimmer.ShimmerFrameLayout
+                            android:id="@+id/dashboard_despesa_principal_efeito"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:background="@color/graywait"
+
+
+                            android:orientation="vertical"
+
+
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/dashboard_despesa_principal_texto"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="@+id/dashboard_despesa_principal_texto"
+                            app:layout_constraintTop_toBottomOf="@+id/textView6"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                        <TextView
+                            android:id="@+id/textView2"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Saldo"
+                            android:textColor="#ff777777"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/dashboard_saldo_principal_texto"
+                            style="@style/TextAppearance.MaterialComponents.Headline5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+
+                            android:minWidth="150dp"
+                            android:text=""
+
+                            android:gravity="center"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+                        <com.facebook.shimmer.ShimmerFrameLayout
+
+                            android:background="@color/graywait"
+                            android:id="@+id/dashboard_saldo_principal_efeito"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="@+id/dashboard_saldo_principal_texto"
+                            app:layout_constraintEnd_toEndOf="@+id/dashboard_saldo_principal_texto"
+                            app:layout_constraintStart_toStartOf="@+id/dashboard_saldo_principal_texto"
+                            app:layout_constraintTop_toTopOf="@+id/dashboard_saldo_principal_texto">
+
+                        </com.facebook.shimmer.ShimmerFrameLayout>
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Receita"
+                            android:textColor="#ff777777"
+                            app:layout_constraintEnd_toEndOf="@+id/dashboard_receita_principal_texto"
+                            app:layout_constraintStart_toStartOf="@+id/dashboard_receita_principal_texto"
+                            app:layout_constraintTop_toBottomOf="@+id/dashboard_saldo_principal_texto" />
+
+
+                        <TextView
+                            android:id="@+id/dashboard_receita_principal_texto"
+                            style="@style/TextAppearance.MaterialComponents.Headline6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:minWidth="100dp"
+                            android:text=""
+
+                            android:gravity="center"
+                            android:textColor="#32A40A"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+                        <com.facebook.shimmer.ShimmerFrameLayout
+
+                            android:background="@color/graywait"
+                            android:id="@+id/dashboard_receita_principa_efeito"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:orientation="vertical"
+
+                            app:layout_constraintBottom_toBottomOf="@+id/dashboard_receita_principal_texto"
+                            app:layout_constraintEnd_toEndOf="@+id/dashboard_receita_principal_texto"
+                            app:layout_constraintStart_toStartOf="@+id/dashboard_receita_principal_texto"
+                            app:layout_constraintTop_toBottomOf="@+id/textView3"
+                            app:shimmer_duration="800">
+
+                        </com.facebook.shimmer.ShimmerFrameLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/constraintLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/borda_graficos"
+                    android:backgroundTint="@color/white"
+                    android:elevation="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:layout_editor_absoluteY="44dp">
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
 
                     <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/chart1"
+                        android:id="@+id/dashboard_grafico_mes"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/constraintLayout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/borda_graficos"
+                    android:backgroundTint="@color/white"
+                    android:elevation="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.506"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+                    tools:ignore="MissingConstraints">
 
 
-                    </com.github.mikephil.charting.charts.PieChart>
-                </com.github.mikephil.charting.charts.PieChart>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="15dp"
+                        android:paddingTop="5dp"
+                        android:text="Despeças Pendentes"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="15dp"
+                        android:paddingTop="25dp"
+                        android:text="Produtos"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="15dp"
+
+                        android:paddingTop="38dp"
+                        android:text="R$: 60,00"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="15dp"
+                        android:paddingTop="55dp"
+                        android:text="Produtos"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="15dp"
+
+                        android:paddingTop="68dp"
+                        android:text="R$: 60,00"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+
+                        />
+
+                </androidx.cardview.widget.CardView>
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout3"
-                android:layout_width="0dp"
-                android:layout_height="90dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/borda_graficos"
-                android:backgroundTint="@color/white"
-                android:elevation="4dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.506"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
-                tools:ignore="MissingConstraints">
+                <androidx.cardview.widget.CardView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_marginStart="8dp"
+
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/borda_graficos"
+                    android:backgroundTint="@color/white"
+                    android:elevation="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
+                    tools:ignore="MissingConstraints">
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="5dp"
-                    android:text="Despeças Pendentes"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
+                </androidx.cardview.widget.CardView>
 
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="25dp"
-                    android:text="Produtos"
-                    android:textColor="@color/black"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="15dp"
-
-                    android:paddingTop="38dp"
-                    android:text="R$: 60,00"
-                    android:textColor="@color/black"
-                    android:textSize="12sp"
-
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="55dp"
-                    android:text="Produtos"
-                    android:textColor="@color/black"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="15dp"
-
-                    android:paddingTop="68dp"
-                    android:text="R$: 60,00"
-                    android:textColor="@color/black"
-                    android:textSize="12sp"
-
-                    />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="140dp"
-                android:layout_marginStart="8dp"
-
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/borda_graficos"
-                android:backgroundTint="@color/white"
-                android:elevation="4dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
-                tools:ignore="MissingConstraints">
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-
-
-
 
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/option"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_gravity="start"
         android:background="@color/corPrincipalEscura"
         app:headerLayout="@layout/layout_perfil_menu"
-        app:itemIconSize="30dp"
 
-        app:menu="@menu/navigation_menu"
+        app:itemIconSize="30dp"
 
         app:itemTextColor="@color/white"
 
-        android:layout_gravity="start"/>
-
-
+        app:menu="@menu/navigation_menu" />
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

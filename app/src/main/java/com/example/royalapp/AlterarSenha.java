@@ -10,10 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.royalapp.model.Cadastro;
-import com.example.royalapp.model.Resultado;
-import com.example.royalapp.model.SenhaNova;
-import com.example.royalapp.model.Status;
+import com.example.royalapp.remote.response.Resultado;
+import com.example.royalapp.remote.request.SenhaNova;
 import com.example.royalapp.remote.APIUtil;
 import com.example.royalapp.remote.RouterInterface;
 

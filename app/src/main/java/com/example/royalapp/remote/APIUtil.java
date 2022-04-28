@@ -14,7 +14,7 @@ public class APIUtil {
 
     }
 
-    public  static final String API_URL = "http://10.107.144.11:8080/royal/";
+    public  static final String API_URL = "http://10.107.144.16:8080/";
 
     public static RouterInterface getApiInterface(){
                               //// onde esta API
