@@ -45,11 +45,9 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     private Spinner spinnerCategorias;
     private Button buttonGravar;
 
-    private static final SimpleDateFormat formatadorBR = new SimpleDateFormat("dd/MM/yyyy");
-
     public void mostrarData(View v){
         DialogFragment newFragment = new DatePickerFragment(calendario, () -> {
-            textData.setText(formatadorBR.format(calendario.getTime()));
+            textData.setText(Dashboard.FORMATADOR_DIA.format(calendario.getTime()));
         });
 
         newFragment.show(getSupportFragmentManager(), "datePicker");
@@ -73,7 +71,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         textTitulo.setText("Nova " + modo);
 
         textData = findViewById(R.id.nova_transferencia_data);
-        textData.setText(formatadorBR.format(calendario.getTime()));
+        textData.setText(Dashboard.FORMATADOR_DIA.format(calendario.getTime()));
 
         spinnerCategorias = findViewById(R.id.nova_transferencia_spinner_categorias);
 
@@ -84,7 +82,6 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         buttonGravar.setOnClickListener(view -> {
             Map<String, Object> json = new HashMap<>();
             String valorSpinner = spinnerCategorias.getSelectedItem().toString();
-
 
             json.put("metodo", modo);
             json.put("arg", "inserir");
@@ -98,13 +95,15 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
             Log.d("teste", new Gson().toJson(json));
 
             Dashboard.webSocket.send(new Gson().toJson(json));
+
+            this.finish();
         });
     }
 
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
-        private Calendar calendario;
-        private Runnable rodavel;
+        private final Calendar calendario;
+        private final Runnable rodavel;
 
         public DatePickerFragment(Calendar calendario, Runnable callback) {
             this.calendario = calendario;

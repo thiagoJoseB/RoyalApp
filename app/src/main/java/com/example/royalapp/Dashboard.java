@@ -32,10 +32,16 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -48,6 +54,9 @@ import retrofit2.Response;
 public class Dashboard extends AppCompatActivity {
 
 
+    public static final Locale BRASIL = new Locale("pt", "BR");
+    public static final DateFormat FORMATADOR_DIA = DateFormat.getDateInstance(DateFormat.SHORT, BRASIL);
+    public static final NumberFormat FORMATADOR_MOEDA = NumberFormat.getCurrencyInstance(BRASIL);
     public static WebSocket webSocket;
 
 
@@ -58,7 +67,17 @@ public class Dashboard extends AppCompatActivity {
     private Button buttonNovaDespesa;
     private Button buttonNovaReceita;
 
+    private BigDecimal despesa;
+    private BigDecimal receita;
+    private BigDecimal saldo;
 
+
+    public void atualizarValoresPrincipais(){
+
+        viewTextReceitaGeral.setText(FORMATADOR_MOEDA.format(receita.longValue()));
+        viewTextDespesaGeral.setText(FORMATADOR_MOEDA.format(despesa.longValue()));
+        viewTextSaldoGeral.setText(FORMATADOR_MOEDA.format(saldo.longValue()));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +86,8 @@ public class Dashboard extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
 //        getSupportActionBar().setCustomView(R.layout.toolbar_circle);
+
+
 
         getSupportActionBar().hide();
         viewTextSaldoGeral = this.findViewById(R.id.dashboard_saldo_principal_texto);
@@ -84,21 +105,24 @@ public class Dashboard extends AppCompatActivity {
             public void onResponse(Call<DashboardData> call, Response<DashboardData> response) {
                 DashboardData data = response.body();
 
-                viewTextSaldoGeral.setText(NumberFormat.getCurrencyInstance().format(data.saldo.longValue()));
+
+
+                saldo = data.saldo;
                 ShimmerFrameLayout viewEfeitoSaldoGeral = findViewById(R.id.dashboard_saldo_principal_efeito);
                 viewEfeitoSaldoGeral.stopShimmer();
                 viewEfeitoSaldoGeral.setVisibility(View.GONE);
 
-                viewTextReceitaGeral.setText(NumberFormat.getCurrencyInstance().format(data.receita.longValue()));
+                receita = data.receita;
                 ShimmerFrameLayout viewEfeitoReceitaGeral = findViewById(R.id.dashboard_receita_principa_efeito);
                 viewEfeitoReceitaGeral.stopShimmer();
                 viewEfeitoReceitaGeral.setVisibility(View.GONE);
 
-                viewTextDespesaGeral.setText(NumberFormat.getCurrencyInstance().format(data.despesa.longValue()));
+                despesa = data.despesa;
                 ShimmerFrameLayout viewEfeitoDespesaGeral = findViewById(R.id.dashboard_despesa_principal_efeito);
                 viewEfeitoDespesaGeral.stopShimmer();
                 viewEfeitoDespesaGeral.setVisibility(View.GONE);
 
+                Dashboard.this.atualizarValoresPrincipais();
 
                 Log.d("teste", viewTextSaldoGeral.getParent().getClass().getName());
 
@@ -232,7 +256,7 @@ public class Dashboard extends AppCompatActivity {
 
     }
 
-    private static class DashboardWebSocket extends WebSocketListener {
+    private class DashboardWebSocket extends WebSocketListener {
         @Override
         public void onOpen(@NonNull WebSocket webSocket, @NonNull okhttp3.Response response) {
             Log.d("teste", "abriu");
@@ -240,6 +264,47 @@ public class Dashboard extends AppCompatActivity {
 
         @Override
         public void onMessage(@NonNull WebSocket webSocket, @NonNull String text) {
+
+            runOnUiThread(() -> {
+                JsonObject json = JsonParser.parseString(text).getAsJsonObject();
+
+                Log.d("teste", json.toString());
+
+                switch (json.get("metodo").getAsString()){
+                    case "despesa": {
+                        switch (json.get("arg").getAsString()){
+                            case "remover": {
+                                final BigDecimal valor = json.get("valor").getAsBigDecimal();
+
+                                despesa = despesa.add(valor);
+                                saldo = saldo.subtract(valor);
+
+                                Dashboard.this.atualizarValoresPrincipais();
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    case "receita": {
+                        switch (json.get("arg").getAsString()){
+                            case "adicionar": {
+                                final BigDecimal valor = json.get("valor").getAsBigDecimal();
+
+                                receita = receita.add(valor);
+                                saldo = saldo.add(valor);
+
+                                Dashboard.this.atualizarValoresPrincipais();
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+
+
+                Log.d("teste", "despesa=" + despesa + "receita=" + receita);
+            });
+
 
         }
 

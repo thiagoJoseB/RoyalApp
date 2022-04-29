@@ -117,9 +117,7 @@ public class LoginUsuario extends AppCompatActivity {
                     Log.d("teste", "cacildes");
 
                     if(response.isSuccessful()){
-                        JsonObject json;
-
-                        json = JsonParser.parseString(response.body()).getAsJsonObject();
+                        JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
 
                         Log.d("teste", json.toString());
 
