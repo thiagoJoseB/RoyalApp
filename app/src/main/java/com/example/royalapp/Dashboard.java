@@ -1,15 +1,24 @@
 package com.example.royalapp;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.DialogFragment;
 
 import com.example.royalapp.remote.APIUtil;
 import com.example.royalapp.remote.response.DashboardData;
@@ -23,23 +32,52 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.google.android.material.navigation.NavigationView;
-import com.neovisionaries.ws.client.WebSocketFactory;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Dashboard extends AppCompatActivity {
 
+
+    public static final Locale BRASIL = new Locale("pt", "BR");
+    public static final DateFormat FORMATADOR_DIA = DateFormat.getDateInstance(DateFormat.SHORT, BRASIL);
+    public static final NumberFormat FORMATADOR_MOEDA = NumberFormat.getCurrencyInstance(BRASIL);
+    public static WebSocket webSocket;
+
+
     private String token;
     private TextView viewTextSaldoGeral;
     private TextView viewTextDespesaGeral;
     private TextView viewTextReceitaGeral;
+    private Button buttonNovaDespesa;
+    private Button buttonNovaReceita;
 
+    private BigDecimal despesa;
+    private BigDecimal receita;
+    private BigDecimal saldo;
+
+
+    public void atualizarValoresPrincipais(){
+
+        viewTextReceitaGeral.setText(FORMATADOR_MOEDA.format(receita.longValue()));
+        viewTextDespesaGeral.setText(FORMATADOR_MOEDA.format(despesa.longValue()));
+        viewTextSaldoGeral.setText(FORMATADOR_MOEDA.format(saldo.longValue()));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +87,15 @@ public class Dashboard extends AppCompatActivity {
 
 //        getSupportActionBar().setCustomView(R.layout.toolbar_circle);
 
+
+
         getSupportActionBar().hide();
         viewTextSaldoGeral = this.findViewById(R.id.dashboard_saldo_principal_texto);
         viewTextReceitaGeral = this.findViewById(R.id.dashboard_receita_principal_texto);
         viewTextDespesaGeral = this.findViewById(R.id.dashboard_despesa_principal_texto);
+
+        buttonNovaDespesa = this.findViewById(R.id.dashboard_nova_despesa);
+        buttonNovaReceita = this.findViewById(R.id.dashboard_nova_receita);
 
         //pega o token da tela de login
         token = this.getIntent().getStringExtra("token");
@@ -62,35 +105,69 @@ public class Dashboard extends AppCompatActivity {
             public void onResponse(Call<DashboardData> call, Response<DashboardData> response) {
                 DashboardData data = response.body();
 
-                viewTextSaldoGeral.setText(NumberFormat.getCurrencyInstance().format(data.saldo.longValue()));
+
+
+                saldo = data.saldo;
                 ShimmerFrameLayout viewEfeitoSaldoGeral = findViewById(R.id.dashboard_saldo_principal_efeito);
                 viewEfeitoSaldoGeral.stopShimmer();
                 viewEfeitoSaldoGeral.setVisibility(View.GONE);
 
-                viewTextReceitaGeral.setText(NumberFormat.getCurrencyInstance().format(data.receita.longValue()));
+                receita = data.receita;
                 ShimmerFrameLayout viewEfeitoReceitaGeral = findViewById(R.id.dashboard_receita_principa_efeito);
                 viewEfeitoReceitaGeral.stopShimmer();
                 viewEfeitoReceitaGeral.setVisibility(View.GONE);
 
-                viewTextDespesaGeral.setText(NumberFormat.getCurrencyInstance().format(data.despesa.longValue()));
+                despesa = data.despesa;
                 ShimmerFrameLayout viewEfeitoDespesaGeral = findViewById(R.id.dashboard_despesa_principal_efeito);
                 viewEfeitoDespesaGeral.stopShimmer();
                 viewEfeitoDespesaGeral.setVisibility(View.GONE);
 
+                Dashboard.this.atualizarValoresPrincipais();
 
                 Log.d("teste", viewTextSaldoGeral.getParent().getClass().getName());
 
                 Toast.makeText(Dashboard.this, "carregou", Toast.LENGTH_SHORT).show();
+
+                OkHttpClient client = new OkHttpClient();
+
+                webSocket = client.newWebSocket(
+                        new Request.Builder().url("ws://10.107.144.16:8080/royal/dashboard/" + token).build(),
+                        new DashboardWebSocket()
+                );
+
+                buttonNovaDespesa.setOnClickListener(view -> {
+                    Intent intent = new Intent(Dashboard.this, NovaTransferenciaActivity.class);
+
+                    intent.putExtra("modo", "despesa");
+
+                    intent.putParcelableArrayListExtra("categorias", new ArrayList<>(data.categorias.despesas));
+
+                    startActivity(intent);
+
+                });
+
+                buttonNovaReceita.setOnClickListener(view -> {
+                    Intent intent = new Intent(Dashboard.this, NovaTransferenciaActivity.class);
+
+                    intent.putExtra("modo", "receita");
+                    intent.putParcelableArrayListExtra("categorias", new ArrayList<>(data.categorias.receitas));
+
+                    startActivity(intent);
+
+                });
+
+                client.dispatcher().executorService().shutdown();
             }
 
             @Override
             public void onFailure(Call<DashboardData> call, Throwable t) {
                 Log.e("teste", t.getClass().getName(), t);
-            }
-        });
+                throw new RuntimeException(t);
 
-        //sabe oq fazer? ce vai colocar todas as categorias naquele select, tipo: viagem e lazer pra despesa na hora
-        //de selecionar, ai aquele numero 1 vira o arruma isso primeiro
+            }
+
+
+        });
 
         final DrawerLayout drawerLayout = findViewById(R.id.tela);
 
@@ -178,6 +255,65 @@ public class Dashboard extends AppCompatActivity {
         chart.setData(data);
 
     }
+
+    private class DashboardWebSocket extends WebSocketListener {
+        @Override
+        public void onOpen(@NonNull WebSocket webSocket, @NonNull okhttp3.Response response) {
+            Log.d("teste", "abriu");
+        }
+
+        @Override
+        public void onMessage(@NonNull WebSocket webSocket, @NonNull String text) {
+
+            runOnUiThread(() -> {
+                JsonObject json = JsonParser.parseString(text).getAsJsonObject();
+
+                Log.d("teste", json.toString());
+
+                switch (json.get("metodo").getAsString()){
+                    case "despesa": {
+                        switch (json.get("arg").getAsString()){
+                            case "remover": {
+                                final BigDecimal valor = json.get("valor").getAsBigDecimal();
+
+                                despesa = despesa.add(valor);
+                                saldo = saldo.subtract(valor);
+
+                                Dashboard.this.atualizarValoresPrincipais();
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    case "receita": {
+                        switch (json.get("arg").getAsString()){
+                            case "adicionar": {
+                                final BigDecimal valor = json.get("valor").getAsBigDecimal();
+
+                                receita = receita.add(valor);
+                                saldo = saldo.add(valor);
+
+                                Dashboard.this.atualizarValoresPrincipais();
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+
+
+                Log.d("teste", "despesa=" + despesa + "receita=" + receita);
+            });
+
+
+        }
+
+        @Override
+        public void onFailure(@NonNull WebSocket webSocket, @NonNull Throwable t, @Nullable okhttp3.Response response) {
+            Log.e("teste", t.getClass().getName(), t);
+        }
+    }
+
 
 
 }

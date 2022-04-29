@@ -3,6 +3,7 @@ package com.example.royalapp.remote.response;
 import com.example.royalapp.model.Categoria;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DashboardData {
