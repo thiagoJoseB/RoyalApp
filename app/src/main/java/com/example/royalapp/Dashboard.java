@@ -1,15 +1,24 @@
 package com.example.royalapp;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.DialogFragment;
 
 import com.example.royalapp.remote.APIUtil;
 import com.example.royalapp.remote.response.DashboardData;
@@ -23,22 +32,32 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.google.android.material.navigation.NavigationView;
-import com.neovisionaries.ws.client.WebSocketFactory;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Dashboard extends AppCompatActivity {
 
+
+    public static WebSocket webSocket;
+
+
     private String token;
     private TextView viewTextSaldoGeral;
     private TextView viewTextDespesaGeral;
     private TextView viewTextReceitaGeral;
+    private Button buttonNovaDespesa;
+    private Button buttonNovaReceita;
+
 
 
     @Override
@@ -53,6 +72,9 @@ public class Dashboard extends AppCompatActivity {
         viewTextSaldoGeral = this.findViewById(R.id.dashboard_saldo_principal_texto);
         viewTextReceitaGeral = this.findViewById(R.id.dashboard_receita_principal_texto);
         viewTextDespesaGeral = this.findViewById(R.id.dashboard_despesa_principal_texto);
+
+        buttonNovaDespesa = this.findViewById(R.id.dashboard_nova_despesa);
+        buttonNovaReceita = this.findViewById(R.id.dashboard_nova_receita);
 
         //pega o token da tela de login
         token = this.getIntent().getStringExtra("token");
@@ -81,16 +103,47 @@ public class Dashboard extends AppCompatActivity {
                 Log.d("teste", viewTextSaldoGeral.getParent().getClass().getName());
 
                 Toast.makeText(Dashboard.this, "carregou", Toast.LENGTH_SHORT).show();
+
+                OkHttpClient client = new OkHttpClient();
+
+                webSocket = client.newWebSocket(
+                        new Request.Builder().url("ws://6.6.6.103:8080/royal/dashboard/" + token).build(),
+                        new DashboardWebSocket()
+                );
+
+                buttonNovaDespesa.setOnClickListener(view -> {
+                    Intent intent = new Intent(Dashboard.this, NovaTransferenciaActivity.class);
+
+                    intent.putExtra("modo", "despesa");
+
+                    intent.putParcelableArrayListExtra("categorias", new ArrayList<>(data.categorias.despesas));
+
+                    startActivity(intent);
+
+                });
+
+                buttonNovaReceita.setOnClickListener(view -> {
+                    Intent intent = new Intent(Dashboard.this, NovaTransferenciaActivity.class);
+
+                    intent.putExtra("modo", "receita");
+                    intent.putParcelableArrayListExtra("categorias", new ArrayList<>(data.categorias.receitas));
+
+                    startActivity(intent);
+
+                });
+
+                client.dispatcher().executorService().shutdown();
             }
 
             @Override
             public void onFailure(Call<DashboardData> call, Throwable t) {
                 Log.e("teste", t.getClass().getName(), t);
-            }
-        });
+                throw new RuntimeException(t);
 
-        //sabe oq fazer? ce vai colocar todas as categorias naquele select, tipo: viagem e lazer pra despesa na hora
-        //de selecionar, ai aquele numero 1 vira o arruma isso primeiro
+            }
+
+
+        });
 
         final DrawerLayout drawerLayout = findViewById(R.id.tela);
 
@@ -178,6 +231,24 @@ public class Dashboard extends AppCompatActivity {
         chart.setData(data);
 
     }
+
+    private static class DashboardWebSocket extends WebSocketListener {
+        @Override
+        public void onOpen(@NonNull WebSocket webSocket, @NonNull okhttp3.Response response) {
+            Log.d("teste", "abriu");
+        }
+
+        @Override
+        public void onMessage(@NonNull WebSocket webSocket, @NonNull String text) {
+
+        }
+
+        @Override
+        public void onFailure(@NonNull WebSocket webSocket, @NonNull Throwable t, @Nullable okhttp3.Response response) {
+            Log.e("teste", t.getClass().getName(), t);
+        }
+    }
+
 
 
 }
