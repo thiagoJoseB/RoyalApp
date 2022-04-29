@@ -131,7 +131,7 @@ public class Dashboard extends AppCompatActivity {
                 OkHttpClient client = new OkHttpClient();
 
                 webSocket = client.newWebSocket(
-                        new Request.Builder().url("ws://6.6.6.103:8080/royal/dashboard/" + token).build(),
+                        new Request.Builder().url("ws://10.107.144.16:8080/royal/dashboard/" + token).build(),
                         new DashboardWebSocket()
                 );
 
