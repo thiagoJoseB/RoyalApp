@@ -17,7 +17,8 @@
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="xxx"
+            android:layout_marginLeft="8dp"
+            android:text="Nova  Receita"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,58 +36,66 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="17dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Descricao" />
+                    android:text="Descricao"
+                    android:textColor="#888787" />
 
                 <EditText
+                    android:id="@+id/nova_transferencia_descricao"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="8dp"
-                    android:id="@+id/nova_transferencia_descricao"/>
+                    android:layout_height="30dp"
+                    android:background="@drawable/borda_input_transferencia"
+                    android:drawablePadding="8dp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="17dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Valor" />
+                    android:text="Valor"
+                    android:textColor="#888787" />
 
                 <EditText
+                    android:id="@+id/nova_transferencia_valor"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
+                    android:background="@drawable/borda_input_transferencia"
                     android:drawablePadding="8dp"
+
                     android:hint="R$ 0.00"
                     android:inputType="numberDecimal"
-                    android:id="@+id/nova_transferencia_valor"/>
+                    android:paddingLeft="10dp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="17dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Data" />
+                    android:text="Data"
+                    android:textColor="#888787" />
 
                 <TextView
                     android:id="@+id/nova_transferencia_data"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
+                    android:background="@drawable/borda_input_transferencia"
                     android:gravity="center"
                     android:onClick="mostrarData"
                     android:text="48/32/1232" />
@@ -107,23 +116,85 @@
                 <Spinner
                     android:id="@+id/nova_transferencia_spinner_categorias"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="30dp"
+                    android:background="@drawable/borda_input_transferencia" />
 
             </LinearLayout>
 
+
         </LinearLayout>
 
-        <Button
+
+        <TextView
             android:id="@+id/nova_transferencia_gravar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Gravar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/botoes_tranferencia_verificado"
+
+            android:gravity="center"
+            android:textSize="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteY="398dp" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/vector"
             app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="@+id/nova_transferencia_gravar"
+            app:layout_constraintStart_toStartOf="@+id/nova_transferencia_gravar"
+            app:layout_constraintTop_toTopOf="@+id/nova_transferencia_gravar"
+            tools:ignore="MissingConstraints" />
+
+        <LinearLayout
+            android:layout_width="284dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/nova_transferencia_gravar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-            app:layout_constraintVertical_bias="0.0" />
+            tools:ignore="MissingConstraints">
+
+
+            <TextView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/botoes_transferencia"
+                android:paddingLeft="15dp" />
+
+            <TextView
+
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/botoes_transferencia"
+                android:paddingLeft="15dp" />
+
+            <TextView
+
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/botoes_transferencia"
+                android:paddingLeft="15dp" />
+
+
+            <TextView
+
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/botoes_transferencia"
+                android:paddingLeft="15dp" />
+
+
+        </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -1,6 +1,7 @@
 package com.example.royalapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
@@ -57,6 +58,10 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nova_transferencia);
+
+        //Centralizar texto da toolbar
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.toolbar_transferencia);
 
         categorias = this.getIntent().getParcelableArrayListExtra("categorias");
         modo = this.getIntent().getStringExtra("modo");
