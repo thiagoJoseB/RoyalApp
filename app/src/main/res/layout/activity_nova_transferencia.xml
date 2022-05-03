@@ -163,6 +163,7 @@
 
 
             <TextView
+                android:id="@+id/btnRepeticao"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_marginLeft="20dp"
@@ -219,8 +220,14 @@
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="456dp" />
 
+
+
+
+
+
+
         <LinearLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/Repeticao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -418,87 +425,92 @@
 
             </LinearLayout>
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="17dp"
-                android:orientation="vertical"
-                tools:ignore="MissingConstraints">
-
-                <TextView
-                    style="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Observação"
-
-                    tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="491dp" />
-
-
-                <EditText
-
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="17dp"
-                    android:background="@drawable/borda_input_transferencia"
-                    android:drawablePadding="8dp"
-                    android:hint="Inserira uma Observação "
-
-
-                    android:inputType="numberDecimal"
-                    android:paddingLeft="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteY="510dp" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    style="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Anexo"
-
-                    tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="491dp" />
-
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/anexo" />
-
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="TESTE TESTE TESTE" />
-
-            </LinearLayout>
-
-
         </LinearLayout>
+
+
+
+
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="25dp"-->
+<!--                android:layout_marginBottom="17dp"-->
+<!--                android:orientation="vertical"-->
+<!--                tools:ignore="MissingConstraints">-->
+
+<!--                <TextView-->
+<!--                    style="@style/TextAppearance.MaterialComponents.Headline6"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Observação"-->
+
+<!--                    tools:ignore="MissingConstraints"-->
+<!--                    tools:layout_editor_absoluteX="8dp"-->
+<!--                    tools:layout_editor_absoluteY="491dp" />-->
+
+
+<!--                <EditText-->
+
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:layout_marginTop="17dp"-->
+<!--                    android:background="@drawable/borda_input_transferencia"-->
+<!--                    android:drawablePadding="8dp"-->
+<!--                    android:hint="Inserira uma Observação "-->
+
+
+<!--                    android:inputType="numberDecimal"-->
+<!--                    android:paddingLeft="10dp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="1.0"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    tools:ignore="MissingConstraints"-->
+<!--                    tools:layout_editor_absoluteY="510dp" />-->
+
+<!--            </LinearLayout>-->
+
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content">-->
+
+<!--                <TextView-->
+<!--                    style="@style/TextAppearance.MaterialComponents.Headline6"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Anexo"-->
+
+<!--                    tools:ignore="MissingConstraints"-->
+<!--                    tools:layout_editor_absoluteX="8dp"-->
+<!--                    tools:layout_editor_absoluteY="491dp" />-->
+
+
+<!--            </LinearLayout>-->
+
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="20dp">-->
+
+<!--                <ImageView-->
+<!--                    android:layout_width="20dp"-->
+<!--                    android:layout_height="20dp"-->
+<!--                    android:background="@drawable/anexo" />-->
+
+<!--                <TextView-->
+
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="5dp"-->
+<!--                    android:text="TESTE TESTE TESTE" />-->
+
+<!--            </LinearLayout>-->
+
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,13 +7,17 @@ import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,12 +43,25 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     private List<Categoria> categorias;
     private String modo;
 
+
     private EditText inputValor;
     private EditText inputDescricao;
     private TextView textTitulo;
     private TextView textData;
     private Spinner spinnerCategorias;
     private Button buttonGravar;
+
+    ViewGroup repeticao;
+    TextView repeticao1;
+    Button  btnRepeticao;
+
+
+
+    ///01 para deixar Android setVisibility View.Gone
+
+
+
+
 
     public void mostrarData(View v){
         DialogFragment newFragment = new DatePickerFragment(calendario, () -> {
@@ -58,6 +75,27 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nova_transferencia);
+
+        this.findViewById(R.id.btnRepeticao);
+        this.findViewById(R.id.Repeticao);
+
+
+        btnRepeticao.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                TransitionManager.beginDelayedTransition(repeticao1.findViewById(R.id.Repeticao));
+
+                repeticao1.setVisibility(View.GONE);
+                startActivity(new Intent(NovaTransferenciaActivity.this, NovaTransferenciaActivity.class));
+            }
+        });
+
+
+
+
+
+
 
         //Centralizar texto da toolbar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);

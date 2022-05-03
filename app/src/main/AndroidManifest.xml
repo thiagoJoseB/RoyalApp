@@ -60,4 +60,5 @@
             android:parentActivityName=".LoginUsuario" />
     </application>
 
+
 </manifest>
