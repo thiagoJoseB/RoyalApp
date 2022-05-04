@@ -76,19 +76,15 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nova_transferencia);
 
-        this.findViewById(R.id.btnRepeticao);
+//                 btnRepeticao = (TextView) findViewById(R.id.btnRepeticao);
+
+        btnRepeticao = this.findViewById(R.id.btnRepeticao);
         this.findViewById(R.id.Repeticao);
 
 
-        btnRepeticao.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                TransitionManager.beginDelayedTransition(repeticao1.findViewById(R.id.Repeticao));
-
-                repeticao1.setVisibility(View.GONE);
-                startActivity(new Intent(NovaTransferenciaActivity.this, NovaTransferenciaActivity.class));
-            }
+        btnRepeticao.setOnClickListener(view -> {
+            TransitionManager.beginDelayedTransition(NovaTransferenciaActivity.this.findViewById(R.id.Repeticao));
+            NovaTransferenciaActivity.this.findViewById(R.id.Repeticao).setVisibility(View.GONE);
         });
 
 

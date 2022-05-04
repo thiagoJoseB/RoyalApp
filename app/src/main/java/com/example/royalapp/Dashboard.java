@@ -140,6 +140,8 @@ public class Dashboard extends AppCompatActivity {
 
                     intent.putExtra("modo", "despesa");
 
+                    Log.d("teste", data.categorias.despesas.toString());
+
                     intent.putParcelableArrayListExtra("categorias", new ArrayList<>(data.categorias.despesas));
 
                     startActivity(intent);
