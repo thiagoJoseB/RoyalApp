@@ -42,7 +42,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     private final Calendar calendario = Calendar.getInstance();
     private List<Categoria> categorias;
     private String modo;
-
+    int numero = 0;
 
     private EditText inputValor;
     private EditText inputDescricao;
@@ -58,6 +58,17 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
 
     ///01 para deixar Android setVisibility View.Gone
+    public void btnVisivel(View v){
+        repeticao.setVisibility(View.VISIBLE);
+
+
+    }
+
+    public void btnInvisivel(View v){
+        repeticao.setVisibility(View.INVISIBLE);
+
+
+    }
 
 
 
@@ -71,6 +82,23 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
+
+    private void alteraBotao(int numero) {
+//        System.out.println("yegdkszbfsdkfbsdlfnas;ldkfnga;klasnf");
+        if(numero % 2 == 0) {
+            NovaTransferenciaActivity.this.findViewById(R.id.Repeticao).setVisibility(View.VISIBLE);
+        } else {
+            NovaTransferenciaActivity.this.findViewById(R.id.Repeticao).setVisibility(View.INVISIBLE);
+        }
+//        int num = numero % 2;
+//        switch (num) {
+//            case 1:
+//
+//            case 0:
+//
+//        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,10 +110,40 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         this.findViewById(R.id.Repeticao);
 
 
+
+//        btnRepeticao.setOnClickListener(view -> {
+//             if (btnRepeticao.isContextClickable()){
+//                 //repeticao.setVisibility(View.INVISIBLE);
+//
+//
+//
+////               TransitionManager.beginDelayedTransition(NovaTransferenciaActivity.this.findViewById(R.id.Repeticao));
+////                NovaTransferenciaActivity.this.findViewById(R.id.Repeticao).setVisibility(View.INVISIBLE);
+//             } else {
+//
+////                 TransitionManager.beginDelayedTransition(NovaTransferenciaActivity.this.findViewById(R.id.Repeticao));
+////                 NovaTransferenciaActivity.this.findViewById(R.id.Repeticao).setVisibility(View.VISIBLE);
+//                   repeticao.setVisibility(View.VISIBLE);
+//
+//             }
+//
+//        });
+
+
         btnRepeticao.setOnClickListener(view -> {
-            TransitionManager.beginDelayedTransition(NovaTransferenciaActivity.this.findViewById(R.id.Repeticao));
-            NovaTransferenciaActivity.this.findViewById(R.id.Repeticao).setVisibility(View.GONE);
+//                System.out.println("dsfsdfdsffdsfds");
+                TransitionManager.beginDelayedTransition(NovaTransferenciaActivity.this.findViewById(R.id.Repeticao));
+                alteraBotao(numero);
+                numero += 1;
+
+
         });
+
+
+
+
+
+
 
 
 

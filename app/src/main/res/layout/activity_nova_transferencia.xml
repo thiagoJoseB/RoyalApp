@@ -140,6 +140,7 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
         <ImageView
+
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:background="@drawable/vector"
@@ -212,18 +213,7 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/titulo_titulo_repeticao"
-            style="@style/TextAppearance.MaterialComponents.Headline6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Repetição"
 
-
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nova_transferencia_gravar"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="8dp"/>
 
 
         <LinearLayout
@@ -234,8 +224,25 @@
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titulo_titulo_repeticao"
+            app:layout_constraintTop_toBottomOf="@+id/nova_transferencia_gravar"
             android:layout_marginTop="17dp">
+
+            <TextView
+                android:id="@+id/titulo_titulo_repeticao"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Repetição"
+
+
+                app:layout_constraintStart_toStartOf="parent"
+
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="17dp"
+                />
+
+
+
 
 
             <LinearLayout
@@ -422,6 +429,47 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Observacao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Repeticao"
+            android:layout_marginTop="17dp">
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="138dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="270dp"
+
+                android:text="Observação"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="491dp" />
+
+
+
+
+
+
+
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
 
 
 
