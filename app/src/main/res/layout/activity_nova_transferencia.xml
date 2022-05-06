@@ -125,33 +125,6 @@
         </LinearLayout>
 
 
-        <Button
-            android:id="@+id/nova_transferencia_gravar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/botoes_tranferencia_verificado"
-
-            android:gravity="center"
-            android:textSize="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
-
-        <ImageView
-
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/vector"
-
-            app:layout_constraintBottom_toBottomOf="@+id/nova_transferencia_gravar"
-            app:layout_constraintEnd_toEndOf="@+id/nova_transferencia_gravar"
-            app:layout_constraintStart_toStartOf="@+id/nova_transferencia_gravar"
-            app:layout_constraintTop_toTopOf="@+id/nova_transferencia_gravar"
-             />
-
-
         <LinearLayout
             android:id="@+id/linearLayout4"
             android:layout_width="284dp"
@@ -166,83 +139,105 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
 
-            <Button
+            <LinearLayout
                 android:id="@+id/btnRepeticao"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:background="@drawable/botoes_transferencia"
-                android:paddingLeft="15dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:padding="7dp">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/loop"
 
 
-            <!--                        <ImageView-->
-            <!--                            android:layout_width="wrap_content"-->
-            <!--                            android:layout_height="wrap_content"-->
-            <!--                            android:src="@drawable/loop"-->
-            <!--                            app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                            app:layout_constraintStart_toStartOf="parent"-->
-            <!--                            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"-->
-            <!--                            tools:layout_editor_absoluteX="45dp"-->
-            <!--                            tools:layout_editor_absoluteY="408dp" />-->
+                    />
+            </LinearLayout>
 
-            <Button
-
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+            <LinearLayout
+                android:id="@+id/btnRepeticao2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:background="@drawable/botoes_transferencia"
-                android:paddingLeft="15dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:padding="7dp">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/comentario"
 
 
-            <Button
+                    />
+            </LinearLayout>
 
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+
+            <LinearLayout
+                android:id="@+id/btnRepeticao3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:background="@drawable/botoes_transferencia"
-                android:paddingLeft="15dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:padding="7dp">
 
-            <Button
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/fixo"
 
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnRepeticao4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:background="@drawable/botoes_transferencia"
-                android:paddingLeft="15dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:padding="7dp">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/star"
+
+
+                    />
+            </LinearLayout>
+
 
 
         </LinearLayout>
-
-
 
 
         <LinearLayout
             android:id="@+id/Repeticao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
             android:orientation="vertical"
             android:padding="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nova_transferencia_gravar"
-            android:layout_marginTop="17dp">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
             <TextView
                 android:id="@+id/titulo_titulo_repeticao"
                 style="@style/TextAppearance.MaterialComponents.Headline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Repetição"
-
-
-                app:layout_constraintStart_toStartOf="parent"
-
                 android:layout_marginTop="10dp"
+
+
                 android:layout_marginBottom="17dp"
-                />
 
-
-
+                android:text="Repetição"
+                app:layout_constraintStart_toStartOf="parent" />
 
 
             <LinearLayout
@@ -434,12 +429,12 @@
             android:id="@+id/Observacao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
             android:orientation="vertical"
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Repeticao"
-            android:layout_marginTop="17dp">
+            app:layout_constraintTop_toBottomOf="@+id/Repeticao">
 
             <TextView
                 style="@style/TextAppearance.MaterialComponents.Headline6"
@@ -451,110 +446,112 @@
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="491dp" />
 
+            <EditText
+
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="17dp"
+                android:background="@drawable/borda_input_transferencia"
+                android:drawablePadding="8dp"
+                android:hint="Inserira uma Observação "
 
 
+                android:inputType="numberDecimal"
+                android:paddingLeft="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
 
-
-
-
+                tools:layout_editor_absoluteY="510dp" />
 
         </LinearLayout>
 
 
+        <LinearLayout
+            android:id="@+id/Anexo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+
+            app:layout_constraintTop_toBottomOf="@+id/Observacao">
 
 
+            <LinearLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Anexo"
 
 
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="491dp" />
 
 
+            </LinearLayout>
 
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/anexo" />
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="TESTE TESTE TESTE" />
+
+            </LinearLayout>
 
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Anexo">
 
 
+            <View
+                android:id="@+id/nova_transferencia_gravar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+
+                android:background="@drawable/botoes_tranferencia_verificado"
+                android:gravity="center"
+                android:textSize="12dp"
+
+                />
 
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="25dp"-->
-<!--                android:layout_marginBottom="17dp"-->
-<!--                android:orientation="vertical"-->
-<!--                >-->
+        </LinearLayout>
 
-<!--                <TextView-->
-<!--                    style="@style/TextAppearance.MaterialComponents.Headline6"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="Observação"-->
-
-<!--                    -->
-<!--                    tools:layout_editor_absoluteX="8dp"-->
-<!--                    tools:layout_editor_absoluteY="491dp" />-->
-
-
-<!--                <EditText-->
-
-<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="30dp"-->
-<!--                    android:layout_marginTop="17dp"-->
-<!--                    android:background="@drawable/borda_input_transferencia"-->
-<!--                    android:drawablePadding="8dp"-->
-<!--                    android:hint="Inserira uma Observação "-->
-
-
-<!--                    android:inputType="numberDecimal"-->
-<!--                    android:paddingLeft="10dp"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintHorizontal_bias="1.0"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    -->
-<!--                    tools:layout_editor_absoluteY="510dp" />-->
-
-<!--            </LinearLayout>-->
-
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content">-->
-
-<!--                <TextView-->
-<!--                    style="@style/TextAppearance.MaterialComponents.Headline6"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="Anexo"-->
-
-<!--                    -->
-<!--                    tools:layout_editor_absoluteX="8dp"-->
-<!--                    tools:layout_editor_absoluteY="491dp" />-->
-
-
-<!--            </LinearLayout>-->
-
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="20dp">-->
-
-<!--                <ImageView-->
-<!--                    android:layout_width="20dp"-->
-<!--                    android:layout_height="20dp"-->
-<!--                    android:background="@drawable/anexo" />-->
-
-<!--                <TextView-->
-
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginLeft="5dp"-->
-<!--                    android:text="TESTE TESTE TESTE" />-->
-
-<!--            </LinearLayout>-->
-
-
-
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/vector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout3"
+            app:layout_constraintStart_toStartOf="@+id/linearLayout3"
+            app:layout_constraintTop_toTopOf="@+id/linearLayout3" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -49,26 +49,17 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     private TextView textTitulo;
     private TextView textData;
     private Spinner spinnerCategorias;
-    private Button buttonGravar;
+    private View buttonGravar;
 
     ViewGroup repeticao;
     TextView repeticao1;
-    Button  btnRepeticao;
+    LinearLayout  btnRepeticao;
+    LinearLayout  btnRepeticao2;
+    LinearLayout  btnRepeticao3;
+    LinearLayout  btnRepeticao4;
 
 
 
-    ///01 para deixar Android setVisibility View.Gone
-    public void btnVisivel(View v){
-        repeticao.setVisibility(View.VISIBLE);
-
-
-    }
-
-    public void btnInvisivel(View v){
-        repeticao.setVisibility(View.INVISIBLE);
-
-
-    }
 
 
 
@@ -84,20 +75,51 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
 
     private void alteraBotao(int numero) {
-//        System.out.println("yegdkszbfsdkfbsdlfnas;ldkfnga;klasnf");
         if(numero % 2 == 0) {
-            NovaTransferenciaActivity.this.findViewById(R.id.Repeticao).setVisibility(View.VISIBLE);
+            NovaTransferenciaActivity.this.findViewById(R.id.Repeticao).setVisibility(View.GONE);
+
         } else {
-            NovaTransferenciaActivity.this.findViewById(R.id.Repeticao).setVisibility(View.INVISIBLE);
+            NovaTransferenciaActivity.this.findViewById(R.id.Repeticao).setVisibility(View.VISIBLE);
         }
-//        int num = numero % 2;
-//        switch (num) {
-//            case 1:
-//
-//            case 0:
-//
-//        }
+
     }
+
+    private void alteraBotao2(int numero) {
+        if(numero % 2 == 0) {
+            NovaTransferenciaActivity.this.findViewById(R.id.Observacao).setVisibility(View.GONE);
+
+        } else {
+            NovaTransferenciaActivity.this.findViewById(R.id.Observacao).setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    private void alteraBotao3(int numero) {
+        if(numero % 2 == 0) {
+            NovaTransferenciaActivity.this.findViewById(R.id.Anexo).setVisibility(View.GONE);
+
+        } else {
+            NovaTransferenciaActivity.this.findViewById(R.id.Anexo).setVisibility(View.VISIBLE);
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,28 +128,15 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
 //                 btnRepeticao = (TextView) findViewById(R.id.btnRepeticao);
 
-        btnRepeticao = this.findViewById(R.id.btnRepeticao);
+
         this.findViewById(R.id.Repeticao);
+        this.findViewById(R.id.Observacao);
+        this.findViewById(R.id.Anexo);
 
-
-
-//        btnRepeticao.setOnClickListener(view -> {
-//             if (btnRepeticao.isContextClickable()){
-//                 //repeticao.setVisibility(View.INVISIBLE);
-//
-//
-//
-////               TransitionManager.beginDelayedTransition(NovaTransferenciaActivity.this.findViewById(R.id.Repeticao));
-////                NovaTransferenciaActivity.this.findViewById(R.id.Repeticao).setVisibility(View.INVISIBLE);
-//             } else {
-//
-////                 TransitionManager.beginDelayedTransition(NovaTransferenciaActivity.this.findViewById(R.id.Repeticao));
-////                 NovaTransferenciaActivity.this.findViewById(R.id.Repeticao).setVisibility(View.VISIBLE);
-//                   repeticao.setVisibility(View.VISIBLE);
-//
-//             }
-//
-//        });
+        btnRepeticao = this.findViewById(R.id.btnRepeticao);
+        btnRepeticao2 = this.findViewById(R.id.btnRepeticao2);
+        btnRepeticao3 = this.findViewById(R.id.btnRepeticao3);
+        btnRepeticao4 = this.findViewById(R.id.btnRepeticao4);
 
 
         btnRepeticao.setOnClickListener(view -> {
@@ -137,7 +146,25 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
                 numero += 1;
 
 
+
         });
+
+        btnRepeticao2.setOnClickListener(view -> {
+            TransitionManager.beginDelayedTransition(NovaTransferenciaActivity.this.findViewById(R.id.Observacao));
+            alteraBotao2(numero);
+            numero += 1;
+
+
+        });
+        btnRepeticao3.setOnClickListener(view -> {
+            TransitionManager.beginDelayedTransition(NovaTransferenciaActivity.this.findViewById(R.id.Observacao));
+            alteraBotao3(numero);
+            numero += 1;
+
+
+        });
+
+//ri
 
 
 
