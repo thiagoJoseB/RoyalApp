@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.transition.TransitionManager;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -54,16 +56,21 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     ViewGroup repeticao;
     TextView repeticao1;
     LinearLayout  btnRepeticao;
-    LinearLayout  btnRepeticao2;
-    LinearLayout  btnRepeticao3;
+    LinearLayout  btnObservacao;
+    LinearLayout  btnAnexo;
     LinearLayout  btnRepeticao4;
 
+    View viewRepeticao;
+    View viewObservacao;
+    View viewAnexo;
 
+    ImageView imageBotaoRepeticao;
+    ImageView imageBotaoObservacao;
+    ImageView imageBotaoAnexo;
+    ImageView imageBotaoFavorito;
 
-
-
-
-
+    Drawable drawableBotaoPrivilegiado;
+    Drawable drawableBotaoNegao;
 
     public void mostrarData(View v){
         DialogFragment newFragment = new DatePickerFragment(calendario, () -> {
@@ -71,35 +78,54 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         });
 
         newFragment.show(getSupportFragmentManager(), "datePicker");
+
+
+
     }
+
+
+
 
 
     private void alteraBotao(int numero) {
         if(numero % 2 == 0) {
-            NovaTransferenciaActivity.this.findViewById(R.id.Repeticao).setVisibility(View.GONE);
-
+            viewRepeticao.setVisibility(View.GONE);
+            btnRepeticao.setBackground(drawableBotaoPrivilegiado);
+            imageBotaoRepeticao.setColorFilter(this.getColor(R.color.black));
         } else {
-            NovaTransferenciaActivity.this.findViewById(R.id.Repeticao).setVisibility(View.VISIBLE);
+            viewRepeticao.setVisibility(View.VISIBLE);
+            btnRepeticao.setBackground(drawableBotaoNegao);
+            imageBotaoRepeticao.setColorFilter(this.getColor(R.color.white));
         }
 
     }
 
     private void alteraBotao2(int numero) {
         if(numero % 2 == 0) {
-            NovaTransferenciaActivity.this.findViewById(R.id.Observacao).setVisibility(View.GONE);
+            viewObservacao.setVisibility(View.GONE);
+            btnObservacao.setBackground(drawableBotaoPrivilegiado);
+            imageBotaoObservacao.setColorFilter(this.getColor(R.color.black));
+
 
         } else {
-            NovaTransferenciaActivity.this.findViewById(R.id.Observacao).setVisibility(View.VISIBLE);
+            viewObservacao.setVisibility(View.VISIBLE);
+            btnObservacao.setBackground(drawableBotaoNegao);
+            imageBotaoObservacao.setColorFilter(this.getColor(R.color.white));
         }
 
     }
 
     private void alteraBotao3(int numero) {
         if(numero % 2 == 0) {
-            NovaTransferenciaActivity.this.findViewById(R.id.Anexo).setVisibility(View.GONE);
+            viewAnexo.setVisibility(View.GONE);
+            btnAnexo.setBackground(drawableBotaoPrivilegiado);
+            imageBotaoAnexo.setColorFilter(this.getColor(R.color.black));
 
         } else {
-            NovaTransferenciaActivity.this.findViewById(R.id.Anexo).setVisibility(View.VISIBLE);
+            viewAnexo.setVisibility(View.VISIBLE);
+            btnAnexo.setBackground(drawableBotaoNegao);
+            imageBotaoAnexo.setColorFilter(this.getColor(R.color.white));
+
         }
 
     }
@@ -134,13 +160,31 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         this.findViewById(R.id.Anexo);
 
         btnRepeticao = this.findViewById(R.id.btnRepeticao);
-        btnRepeticao2 = this.findViewById(R.id.btnRepeticao2);
-        btnRepeticao3 = this.findViewById(R.id.btnRepeticao3);
+        btnObservacao = this.findViewById(R.id.btnObservacao);
+        btnAnexo = this.findViewById(R.id.btnAnexo);
         btnRepeticao4 = this.findViewById(R.id.btnRepeticao4);
+
+        viewRepeticao =NovaTransferenciaActivity.this.findViewById(R.id.Repeticao);
+        viewObservacao = NovaTransferenciaActivity.this.findViewById(R.id.Observacao);
+        viewAnexo = NovaTransferenciaActivity.this.findViewById(R.id.Anexo);
+
+        imageBotaoRepeticao = this.findViewById(R.id.nova_transferencia_image_repeticao);
+        imageBotaoObservacao = this.findViewById(R.id.nova_transferencia_image_observacao);
+        imageBotaoAnexo = this.findViewById(R.id.nova_transferencia_image_anexo);
+        imageBotaoFavorito = this.findViewById(R.id.nova_transferencia_image_favorito);
+
+        drawableBotaoPrivilegiado = this.getDrawable(R.drawable.botoes_transferencia2);
+        drawableBotaoNegao = this.getDrawable(R.drawable.botoes_transferencia);
+
+
+
+
+
 
 
         btnRepeticao.setOnClickListener(view -> {
 //                System.out.println("dsfsdfdsffdsfds");
+//            System.out.println("dsfsdfdsffdsfds");
                 TransitionManager.beginDelayedTransition(NovaTransferenciaActivity.this.findViewById(R.id.Repeticao));
                 alteraBotao(numero);
                 numero += 1;
@@ -149,22 +193,60 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
         });
 
-        btnRepeticao2.setOnClickListener(view -> {
+        btnObservacao.setOnClickListener(view -> {
             TransitionManager.beginDelayedTransition(NovaTransferenciaActivity.this.findViewById(R.id.Observacao));
             alteraBotao2(numero);
             numero += 1;
 
 
         });
-        btnRepeticao3.setOnClickListener(view -> {
+        btnAnexo.setOnClickListener(view -> {
             TransitionManager.beginDelayedTransition(NovaTransferenciaActivity.this.findViewById(R.id.Observacao));
             alteraBotao3(numero);
             numero += 1;
 
 
+
         });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        btnRepeticao.setOnClickListener(view -> {
+////                System.out.println("dsfsdfdsffdsfds");
+//            TransitionManager.beginDelayedTransition(NovaTransferenciaActivity.this.findViewById(R.id.Repeticao));
+//            alteraBotao(numero);
+//            numero += 1;
+//
+//
+//
+//        });
+
+
+
+
+
 //ri
+
 
 
 

@@ -151,14 +151,14 @@
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:src="@drawable/loop"
+                    android:src="@drawable/repeat_24"
+                    android:id="@+id/nova_transferencia_image_repeticao"
 
-
-                    />
+                    app:tint="@color/white" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/btnRepeticao2"
+                android:id="@+id/btnObservacao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -169,15 +169,16 @@
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:src="@drawable/comentario"
-
+                    android:src="@drawable/comment_24"
+                    android:id="@+id/nova_transferencia_image_observacao"
+                    app:tint="@color/white"
 
                     />
             </LinearLayout>
 
 
             <LinearLayout
-                android:id="@+id/btnRepeticao3"
+                android:id="@+id/btnAnexo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -188,7 +189,9 @@
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:src="@drawable/fixo"
+                    android:src="@drawable/attachment_24"
+                    app:tint="@color/white"
+                    android:id="@+id/nova_transferencia_image_anexo"
 
 
                     />
@@ -206,7 +209,9 @@
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:src="@drawable/star"
+                    android:src="@drawable/star_24"
+                    app:tint="@color/white"
+                    android:id="@+id/nova_transferencia_image_favorito"
 
 
                     />
