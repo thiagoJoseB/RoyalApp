@@ -29,6 +29,7 @@ public interface RouterInterface {
     @POST("/royal/resetar") Call<Resultado> addCodigo(@Body Codigo codigo);
     @POST("/royal/resetar") Call<Resultado> addSenhaNova(@Body SenhaNova senhaNova);
     @GET("/royal/data/{token}") Call<DashboardData> getDashboardInfo(@Path("token") String token);
+    @GET("/royal/data/{token}/extrato-mes") Call<?> getExtratos(@Path("token") String token, @Query("ano") int ano, @Query("mes") int mes);
 
 
 

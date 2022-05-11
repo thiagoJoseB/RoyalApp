@@ -2,6 +2,7 @@ package com.example.royalapp;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -66,6 +67,8 @@ public class Dashboard extends AppCompatActivity {
     private TextView viewTextReceitaGeral;
     private Button buttonNovaDespesa;
     private Button buttonNovaReceita;
+   private  TextView btnExtrato;
+
 
     private BigDecimal despesa;
     private BigDecimal receita;
@@ -85,6 +88,7 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+
 //        getSupportActionBar().setCustomView(R.layout.toolbar_circle);
 
 
@@ -96,6 +100,16 @@ public class Dashboard extends AppCompatActivity {
 
         buttonNovaDespesa = this.findViewById(R.id.dashboard_nova_despesa);
         buttonNovaReceita = this.findViewById(R.id.dashboard_nova_receita);
+        btnExtrato = this.findViewById(R.id.btnExtrato);
+
+
+        btnExtrato.setOnClickListener(view -> {
+            Intent intent = new Intent(Dashboard.this, ExtratoUsuario.class);
+            startActivity(intent);
+        });
+
+
+
 
         //pega o token da tela de login
         token = this.getIntent().getStringExtra("token");

@@ -358,6 +358,7 @@
 
 
                     <TextView
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="15dp"
@@ -367,6 +368,20 @@
                         android:textStyle="bold"
 
                         />
+
+                    <TextView
+                        android:id="@+id/btnExtrato"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="15dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="30dp"
+                        android:text="Extrato"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+
+                        />
+
 
 
                 </androidx.cardview.widget.CardView>
