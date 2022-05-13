@@ -14,6 +14,9 @@
     <color name="corPrincipalClara">#4D64B1</color>
     <color name="corPrincipalEscura">#2A356A</color>
     <color name="corButaoTransferencia" >#C4C4C4</color>
+   <color name="verdePositivo" >#32A40A</color>
+    <color name="vermelhoNegativo">#FF0000</color>
+    <color name="cinzaExtrato">#CCCCCC</color>
 
 
 

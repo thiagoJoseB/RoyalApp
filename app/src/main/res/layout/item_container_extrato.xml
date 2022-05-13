@@ -15,39 +15,93 @@
         android:padding="10dp">
 
 
-        <TextView
-            android:id="@+id/txtCardCategoria"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textAlignment="center"/>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="60dp">
+
+                <TextView
+                    android:id="@+id/txtCardCategoria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:text="Casa" />
+
+            <TextView
+                android:id="@+id/txtCardPreco"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="R$ -22,17"
+                android:textColor="@color/vermelhoNegativo"
+
+                />
 
 
             <TextView
                 android:id="@+id/txtCardDescricao"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
 
-            <TextView
-                android:id="@+id/txtCardPreco"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"/>
+                android:text="Design Móveis "/>
+
+
+            </LinearLayout>
+
+
+
             <TextView
                 android:id="@+id/txtCardImagem"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"/>
+                android:textSize="40sp"
+                android:layout_marginTop="-60dp"
+                android:layout_marginLeft="10dp"
+
+                android:fontFamily="@font/material_icons"
+                android:text="house"
+                />
+            
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="330dp"
+                android:layout_marginTop="-33dp">
+
+                <TextView
+                    android:id="@+id/txtCardData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="JAN 2022"
+                    android:textColor="@color/cinzaExtrato"/>
 
 
+
+
+            </LinearLayout>
 
        </LinearLayout>
 
 
-
 </androidx.cardview.widget.CardView>
+
+
+
+
+
+
+
+
+
+
 
 
 
