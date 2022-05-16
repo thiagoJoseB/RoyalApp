@@ -2,6 +2,7 @@ package com.example.royalapp;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -75,6 +76,7 @@ public class Dashboard extends AppCompatActivity {
     private Button buttonNovaDespesa;
     private Button buttonNovaReceita;
 
+
     private List<Categoria> despesas;
     private List<Categoria> receitas;
 
@@ -104,6 +106,7 @@ public class Dashboard extends AppCompatActivity {
         viewTextSaldoGeral = this.findViewById(R.id.dashboard_saldo_principal_texto);
         viewTextReceitaGeral = this.findViewById(R.id.dashboard_receita_principal_texto);
         viewTextDespesaGeral = this.findViewById(R.id.dashboard_despesa_principal_texto);
+
 
         buttonNovaDespesa = this.findViewById(R.id.dashboard_nova_despesa);
         buttonNovaReceita = this.findViewById(R.id.dashboard_nova_receita);
