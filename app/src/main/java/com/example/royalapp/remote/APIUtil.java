@@ -14,9 +14,10 @@ public class APIUtil {
 
     }
 
-    public  static final String API_URL = "http://10.107.144.11:8080/";
+    public  static final String API_URL = "http://10.107.144.22:8080/royal/";
+    public  static final String WS_API_URL = "ws" + API_URL.substring(4);
 
-    public static RouterInterface getApiInterface(){   ////10.107.144.7
+    public static RouterInterface getApiInterface(){
                               //// onde esta API
         return RetrofitRoyal.getApi(API_URL)
                 //// AS  ROTAS

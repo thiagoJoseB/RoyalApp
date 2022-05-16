@@ -2,7 +2,6 @@ package com.example.royalapp;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,7 +20,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.royalapp.model.Categoria;
 import com.example.royalapp.remote.APIUtil;
+import com.example.royalapp.remote.RouterInterface;
 import com.example.royalapp.remote.response.DashboardData;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.github.mikephil.charting.charts.PieChart;
@@ -33,15 +34,21 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.TypeAdapter;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import okhttp3.OkHttpClient;
@@ -67,8 +74,9 @@ public class Dashboard extends AppCompatActivity {
     private TextView viewTextReceitaGeral;
     private Button buttonNovaDespesa;
     private Button buttonNovaReceita;
-   private  TextView btnExtrato;
 
+    private List<Categoria> despesas;
+    private List<Categoria> receitas;
 
     private BigDecimal despesa;
     private BigDecimal receita;
@@ -88,7 +96,6 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-
 //        getSupportActionBar().setCustomView(R.layout.toolbar_circle);
 
 
@@ -100,38 +107,35 @@ public class Dashboard extends AppCompatActivity {
 
         buttonNovaDespesa = this.findViewById(R.id.dashboard_nova_despesa);
         buttonNovaReceita = this.findViewById(R.id.dashboard_nova_receita);
-        btnExtrato = this.findViewById(R.id.btnExtrato);
-
-
-        btnExtrato.setOnClickListener(view -> {
-            Intent intent = new Intent(Dashboard.this, ExtratoUsuario.class);
-            startActivity(intent);
-        });
-
-
-
 
         //pega o token da tela de login
         token = this.getIntent().getStringExtra("token");
+        Calendar calendar = Calendar.getInstance();
+        Gson gson = new Gson();
+        Type tipoArrayCategorias = new TypeToken<List<Categoria>>(){}.getType();
 
-        APIUtil.getApiInterface().getDashboardInfo(token).enqueue(new Callback<DashboardData>() {
+        APIUtil.getApiInterface().getDashboardInfo(token, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1).enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<DashboardData> call, Response<DashboardData> response) {
-                DashboardData data = response.body();
+            public void onResponse(Call<String> call, Response<String> response) {
+                JsonArray json = JsonParser.parseString(response.body()).getAsJsonArray();
+                JsonObject valores = json.get(0).getAsJsonObject();
+                JsonObject categorias = json.get(1).getAsJsonObject();
+
+                despesas = gson.fromJson(categorias.get("despesas"), tipoArrayCategorias);
+                receitas = gson.fromJson(categorias.get("receitas"), tipoArrayCategorias);
 
 
-
-                saldo = data.saldo;
+                saldo = valores.get("saldo").getAsBigDecimal();
                 ShimmerFrameLayout viewEfeitoSaldoGeral = findViewById(R.id.dashboard_saldo_principal_efeito);
                 viewEfeitoSaldoGeral.stopShimmer();
                 viewEfeitoSaldoGeral.setVisibility(View.GONE);
 
-                receita = data.receita;
+                receita = valores.get("receita").getAsBigDecimal();
                 ShimmerFrameLayout viewEfeitoReceitaGeral = findViewById(R.id.dashboard_receita_principa_efeito);
                 viewEfeitoReceitaGeral.stopShimmer();
                 viewEfeitoReceitaGeral.setVisibility(View.GONE);
 
-                despesa = data.despesa;
+                despesa = valores.get("despesa").getAsBigDecimal();
                 ShimmerFrameLayout viewEfeitoDespesaGeral = findViewById(R.id.dashboard_despesa_principal_efeito);
                 viewEfeitoDespesaGeral.stopShimmer();
                 viewEfeitoDespesaGeral.setVisibility(View.GONE);
@@ -145,7 +149,7 @@ public class Dashboard extends AppCompatActivity {
                 OkHttpClient client = new OkHttpClient();
 
                 webSocket = client.newWebSocket(
-                        new Request.Builder().url("ws://10.107.144.16:8080/royal/dashboard/" + token).build(),
+                        new Request.Builder().url(APIUtil.WS_API_URL + "dashboard/" + token).build(),
                         new DashboardWebSocket()
                 );
 
@@ -154,9 +158,7 @@ public class Dashboard extends AppCompatActivity {
 
                     intent.putExtra("modo", "despesa");
 
-                    Log.d("teste", data.categorias.despesas.toString());
-
-                    intent.putParcelableArrayListExtra("categorias", new ArrayList<>(data.categorias.despesas));
+                    intent.putParcelableArrayListExtra("categorias", new ArrayList<>(despesas));
 
                     startActivity(intent);
 
@@ -166,7 +168,7 @@ public class Dashboard extends AppCompatActivity {
                     Intent intent = new Intent(Dashboard.this, NovaTransferenciaActivity.class);
 
                     intent.putExtra("modo", "receita");
-                    intent.putParcelableArrayListExtra("categorias", new ArrayList<>(data.categorias.receitas));
+                    intent.putParcelableArrayListExtra("categorias", new ArrayList<>(receitas));
 
                     startActivity(intent);
 
@@ -176,7 +178,7 @@ public class Dashboard extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<DashboardData> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Log.e("teste", t.getClass().getName(), t);
                 throw new RuntimeException(t);
 

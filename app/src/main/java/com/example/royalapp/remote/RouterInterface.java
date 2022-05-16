@@ -26,26 +26,13 @@ import retrofit2.http.Query;
 public interface RouterInterface {
 
     //14
-    @POST("/royal/cadastro")
-    Call<Resultado> addCadastro(@Body Cadastro cadastro);
-
-    @POST("/royal/contas")
-    Call<String> login(@Body Login login);
-
-    @POST("/royal/resetar")
-    Call<Resultado> addInserirEmail(@Body InserirEmail inserirEmail);
-
-    @POST("/royal/resetar")
-    Call<Resultado> addCodigo(@Body Codigo codigo);
-
-    @POST("/royal/resetar")
-    Call<Resultado> addSenhaNova(@Body SenhaNova senhaNova);
-
-    @GET("/royal/data/{token}")
-    Call<DashboardData> getDashboardInfo(@Path("token") String token);
-
-    @GET("/royal/data/{token}/extrato-mes")
-    Call<List<Extrato>> getExtratos(@Path("token") String token, @Query("ano") int ano, @Query("mes") int mes);
+    @POST("cadastro") Call<Resultado> addCadastro(@Body Cadastro cadastro);
+    @POST("contas") Call<String> login(@Body Login login);
+    @POST("resetar") Call<Resultado> addInserirEmail(@Body InserirEmail inserirEmail);
+    @POST("resetar") Call<Resultado> addCodigo(@Body Codigo codigo);
+    @POST("resetar") Call<Resultado> addSenhaNova(@Body SenhaNova senhaNova);
+    @GET("data/saldo/categorias") Call<String> getDashboardInfo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
 
 
+    @GET("data/extrato-mes") Call<List<Extrato>> getExtratos(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
 }

@@ -7,37 +7,28 @@ import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.royalapp.model.Categoria;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import okhttp3.WebSocket;
 
 public class NovaTransferenciaActivity extends AppCompatActivity {
 
@@ -72,6 +63,11 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     Drawable drawableBotaoPrivilegiado;
     Drawable drawableBotaoNegao;
 
+    boolean repetida = true;
+    boolean observacao = true;
+    boolean anexo = true;
+    boolean favorita = true;
+
     public void mostrarData(View v){
         DialogFragment newFragment = new DatePickerFragment(calendario, () -> {
             textData.setText(Dashboard.FORMATADOR_DIA.format(calendario.getTime()));
@@ -87,12 +83,15 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
 
 
-    private void alteraBotao(int numero) {
-        if(numero % 2 == 0) {
+    private void alteraRepeticao() {
+        if(repetida) {
+            repetida = false;
             viewRepeticao.setVisibility(View.GONE);
             btnRepeticao.setBackground(drawableBotaoPrivilegiado);
             imageBotaoRepeticao.setColorFilter(this.getColor(R.color.black));
         } else {
+
+            repetida = true;
             viewRepeticao.setVisibility(View.VISIBLE);
             btnRepeticao.setBackground(drawableBotaoNegao);
             imageBotaoRepeticao.setColorFilter(this.getColor(R.color.white));
@@ -100,14 +99,16 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
     }
 
-    private void alteraBotao2(int numero) {
-        if(numero % 2 == 0) {
+    private void alteraObservacao() {
+        if(observacao) {
+            observacao = false;
             viewObservacao.setVisibility(View.GONE);
             btnObservacao.setBackground(drawableBotaoPrivilegiado);
             imageBotaoObservacao.setColorFilter(this.getColor(R.color.black));
 
 
         } else {
+            observacao = true;
             viewObservacao.setVisibility(View.VISIBLE);
             btnObservacao.setBackground(drawableBotaoNegao);
             imageBotaoObservacao.setColorFilter(this.getColor(R.color.white));
@@ -115,13 +116,14 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
     }
 
-    private void alteraBotao3(int numero) {
-        if(numero % 2 == 0) {
+    private void alteraAnexo() {
+        if(anexo) {
             viewAnexo.setVisibility(View.GONE);
             btnAnexo.setBackground(drawableBotaoPrivilegiado);
             imageBotaoAnexo.setColorFilter(this.getColor(R.color.black));
-
+            anexo = false;
         } else {
+            anexo = true;
             viewAnexo.setVisibility(View.VISIBLE);
             btnAnexo.setBackground(drawableBotaoNegao);
             imageBotaoAnexo.setColorFilter(this.getColor(R.color.white));
@@ -182,32 +184,10 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
 
 
-        btnRepeticao.setOnClickListener(view -> {
-//                System.out.println("dsfsdfdsffdsfds");
-//            System.out.println("dsfsdfdsffdsfds");
-                TransitionManager.beginDelayedTransition(NovaTransferenciaActivity.this.findViewById(R.id.Repeticao));
-                alteraBotao(numero);
-                numero += 1;
+        btnRepeticao.setOnClickListener(view -> alteraRepeticao());
 
-
-
-        });
-
-        btnObservacao.setOnClickListener(view -> {
-            TransitionManager.beginDelayedTransition(NovaTransferenciaActivity.this.findViewById(R.id.Observacao));
-            alteraBotao2(numero);
-            numero += 1;
-
-
-        });
-        btnAnexo.setOnClickListener(view -> {
-            TransitionManager.beginDelayedTransition(NovaTransferenciaActivity.this.findViewById(R.id.Observacao));
-            alteraBotao3(numero);
-            numero += 1;
-
-
-
-        });
+        btnObservacao.setOnClickListener(view -> alteraObservacao());
+        btnAnexo.setOnClickListener(view -> alteraAnexo());
 
 
 
@@ -289,18 +269,26 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
             Map<String, Object> json = new HashMap<>();
             String valorSpinner = spinnerCategorias.getSelectedItem().toString();
 
+//            metodo: transferencia, arg: 'inserir', valor: valor, data: data, descricao: descricao, favorito: favoritado, fixa: parcelaFixa,
+//                    inicioRepeticao: dataInicio.value !== '' ? dataInicio.value : null, totalParcelas: (repetido && duracao.value ? parseInt(duracao.value) : null),
+//                    frequencia: dataFR.value !== '' ? dataFR.value : null, observacao: observacao, idCategoria: idCategoria, parcelada: repetido
+
+
             json.put("metodo", modo);
             json.put("arg", "inserir");
-            json.put("pendente", null);
+            json.put("valor", Double.parseDouble(inputValor.getText().toString()));
             json.put("data", new java.sql.Date(calendario.getTime().getTime()).toString());
             json.put("descricao", inputDescricao.getText().toString());
-            json.put("valor", Double.parseDouble(inputValor.getText().toString()));
             json.put("favorito", false);
+            json.put("fixa", false);
+            json.put("inicioRepeticao", null);
+            json.put("totalParcelas", null);
+            json.put("frequencia", null);
+            json.put("observacao", null);
+            json.put("parcelada", false);
             json.put("idCategoria", categorias.stream().filter(categoria -> valorSpinner.equals(categoria.nome)).findAny().get().idCategoria);
 
-            Log.d("teste", new Gson().toJson(json));
-
-            Dashboard.webSocket.send(new Gson().toJson(json));
+            Dashboard.webSocket.send(new GsonBuilder().serializeNulls().create().toJson(json));
 
             this.finish();
         });
