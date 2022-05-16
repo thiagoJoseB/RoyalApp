@@ -120,6 +120,7 @@ public class ExtratoUsuario extends AppCompatActivity {
             }
 
             return null;
+
         }
 
         @Override
