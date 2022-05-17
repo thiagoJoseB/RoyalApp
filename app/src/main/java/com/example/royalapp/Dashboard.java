@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.TestLooperManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -75,6 +76,10 @@ public class Dashboard extends AppCompatActivity {
     private TextView viewTextReceitaGeral;
     private Button buttonNovaDespesa;
     private Button buttonNovaReceita;
+    private TextView btnExtrato;
+
+
+
 
 
     private List<Categoria> despesas;
@@ -108,11 +113,14 @@ public class Dashboard extends AppCompatActivity {
         viewTextDespesaGeral = this.findViewById(R.id.dashboard_despesa_principal_texto);
 
 
+
         buttonNovaDespesa = this.findViewById(R.id.dashboard_nova_despesa);
         buttonNovaReceita = this.findViewById(R.id.dashboard_nova_receita);
-
+        btnExtrato = this.findViewById(R.id.btnExtrato);
         //pega o token da tela de login
         token = this.getIntent().getStringExtra("token");
+
+
         Calendar calendar = Calendar.getInstance();
         Gson gson = new Gson();
         Type tipoArrayCategorias = new TypeToken<List<Categoria>>(){}.getType();
@@ -161,7 +169,11 @@ public class Dashboard extends AppCompatActivity {
 
                     intent.putExtra("modo", "despesa");
 
+
+
                     intent.putParcelableArrayListExtra("categorias", new ArrayList<>(despesas));
+
+
 
                     startActivity(intent);
 
@@ -190,12 +202,27 @@ public class Dashboard extends AppCompatActivity {
 
         });
 
-        final DrawerLayout drawerLayout = findViewById(R.id.tela);
+        btnExtrato.setOnClickListener(view -> {
+            Intent intent = new Intent(Dashboard.this, ExtratoUsuario.class);
+            intent.putExtra("k", token);
 
-        findViewById(R.id.imgMenu).setOnClickListener(view -> drawerLayout.openDrawer(GravityCompat.START));
+            startActivity(intent);
 
-        NavigationView navigationView = findViewById(R.id.option);
-        navigationView.setItemIconTintList(null);
+//            Toast.makeText(LoginUsuario.this,"Criar Conta",Toast.LENGTH_LONG).show();
+
+        });
+
+
+
+
+
+
+////        final DrawerLayout drawerLayout = findViewById(R.id.tela);
+//
+//        findViewById(R.id.imgMenu).setOnClickListener(view -> drawerLayout.openDrawer(GravityCompat.START));
+//
+//        NavigationView navigationView = findViewById(R.id.option);
+//        navigationView.setItemIconTintList(null);
 
 
         //inicia o codigo do piechard

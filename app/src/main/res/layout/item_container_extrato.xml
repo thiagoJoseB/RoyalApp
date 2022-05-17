@@ -10,18 +10,28 @@
 
         <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+            android:padding="8dp"
+            android:gravity="center_vertical">
 
 
 
+            <TextView
+                android:id="@+id/txtCardImagem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="40sp"
+
+                android:fontFamily="@font/material_icons"
+                android:text="house"
+                />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginLeft="60dp">
+                android:layout_marginStart="8dp">
 
                 <TextView
                     android:id="@+id/txtCardCategoria"
@@ -56,37 +66,20 @@
 
 
 
-            <TextView
-                android:id="@+id/txtCardImagem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="40sp"
-                android:layout_marginTop="-60dp"
-                android:layout_marginLeft="10dp"
-
-                android:fontFamily="@font/material_icons"
-                android:text="house"
-                />
             
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="330dp"
-                android:layout_marginTop="-33dp">
 
                 <TextView
                     android:id="@+id/txtCardData"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="JAN 2022"
-                    android:textColor="@color/cinzaExtrato"/>
+                    android:textColor="@color/cinzaExtrato"
+                    android:layout_marginLeft="100dp"/>
 
 
 
 
-            </LinearLayout>
 
        </LinearLayout>
 

@@ -7,14 +7,7 @@
     android:orientation="vertical"
     tools:context=".ExtratoUsuario">
 
-   <androidx.recyclerview.widget.RecyclerView
-       android:id="@+id/recyclerview"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:padding="8dp"
-       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 
-       />
 
 
 

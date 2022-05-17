@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,7 +52,11 @@ public class ExtratoUsuario extends AppCompatActivity {
 
         ///21
         ///***RECEBE OS DADOS DE EXTRATO **///
-        Call<List<Extrato>> call = routerInterface.getExtratos(null, 2022, 5);
+        Call<List<Extrato>> call = routerInterface.getExtratos( getIntent().getStringExtra("k"), 2022, 5);
+        Intent intent = new Intent(ExtratoUsuario.this, RouterInterface.class);
+
+
+
 
 
 
@@ -62,8 +67,11 @@ public class ExtratoUsuario extends AppCompatActivity {
                 List<ItemExtrato> itemExtratos = new ArrayList<>();
                 list = response.body();
 
+
+
                 ///22
                 for (int i = 0; i< list.size(); i++){
+
 
                     itemExtratos.add(new ItemExtrato(0 ,list.get(i)));
                 }
@@ -128,6 +136,7 @@ public class ExtratoUsuario extends AppCompatActivity {
             ///17 passo aula de recyclerView
             ////**RECUPERA OS DADOS DE EXTRATO**/////
             if (getItemViewType(position) ==0){
+
                 Extrato extrato = (Extrato) itemExtratos.get(position).getObject();
                 ((ExtratoAdapter.ExtratoViewHolder) holder).setExtratoData(extrato);
             }
@@ -136,12 +145,14 @@ public class ExtratoUsuario extends AppCompatActivity {
 
 
         @Override
-        public int getItemCount() { return itemExtratos.size(); }
+        public int getItemCount(){
+            return itemExtratos.size();
+        }
 
         ///16 ///***RECUPERA O TIPO DE OBJETO DE ITEM***////
-        public int getItemViewCount(int positon){
+        public int getItemViewCount(int position ){
 
-               return itemExtratos.get(positon).getType();
+               return itemExtratos.get(position).getType();
             }
 
 
@@ -170,13 +181,13 @@ public class ExtratoUsuario extends AppCompatActivity {
         ///13
         public void setExtratoData(Extrato extrato){
 
-            txtCategoria.setText(extrato.getCategoria());
+            txtCategoria.setText(String.valueOf(extrato.getCategoria()));
             txtDescricao.setText(extrato.getDescricao());
 //            txtPreco.setText(extrato.getValor());
             txtData.setText(extrato.getData());
 
 
-            txtCategoria.setText(extrato.getCategoria());
+            txtCategoria.setText(String.valueOf(extrato.getCategoria()));
         }
     }
     }
