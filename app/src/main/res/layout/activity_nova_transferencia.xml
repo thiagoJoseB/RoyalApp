@@ -144,7 +144,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:background="@drawable/botoes_transferencia"
+                android:background="@drawable/botoes_transferencia2"
                 app:layout_constraintStart_toStartOf="parent"
                 android:padding="7dp">
 
@@ -154,7 +154,7 @@
                     android:src="@drawable/repeat_24"
                     android:id="@+id/nova_transferencia_image_repeticao"
 
-                    app:tint="@color/white" />
+                    app:tint="@color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -162,7 +162,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:background="@drawable/botoes_transferencia"
+                android:background="@drawable/botoes_transferencia2"
                 app:layout_constraintStart_toStartOf="parent"
                 android:padding="7dp">
 
@@ -171,7 +171,7 @@
                     android:layout_height="32dp"
                     android:src="@drawable/comment_24"
                     android:id="@+id/nova_transferencia_image_observacao"
-                    app:tint="@color/white"
+                    app:tint="@color/black"
 
                     />
             </LinearLayout>
@@ -182,7 +182,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:background="@drawable/botoes_transferencia"
+                android:background="@drawable/botoes_transferencia2"
                 app:layout_constraintStart_toStartOf="parent"
                 android:padding="7dp">
 
@@ -190,7 +190,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:src="@drawable/attachment_24"
-                    app:tint="@color/white"
+                    app:tint="@color/black"
                     android:id="@+id/nova_transferencia_image_anexo"
 
 
@@ -198,11 +198,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/btnRepeticao4"
+                android:id="@+id/btnFavorito"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:background="@drawable/botoes_transferencia"
+                android:background="@drawable/botoes_transferencia2"
                 app:layout_constraintStart_toStartOf="parent"
                 android:padding="7dp">
 
@@ -210,11 +210,14 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:src="@drawable/star_24"
-                    app:tint="@color/white"
+                    app:tint="@color/black"
                     android:id="@+id/nova_transferencia_image_favorito"
 
 
+
                     />
+
+
             </LinearLayout>
 
 
@@ -223,6 +226,7 @@
 
 
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/Repeticao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -249,40 +253,40 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="17dp"
-                android:orientation="vertical">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginBottom="17dp"-->
+<!--                android:orientation="vertical">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Data de Inicio"
-                    android:textColor="#888787"
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Data de Inicio"-->
+<!--                    android:textColor="#888787"-->
 
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="491dp" />
-
-
-                <EditText
-
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:background="@drawable/borda_input_transferencia"
-                    android:drawablePadding="8dp"
+<!--                    tools:layout_editor_absoluteX="8dp"-->
+<!--                    tools:layout_editor_absoluteY="491dp" />-->
 
 
-                    android:inputType="numberDecimal"
-                    android:paddingLeft="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
+<!--                <EditText-->
 
-                    tools:layout_editor_absoluteY="510dp" />
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:background="@drawable/borda_input_transferencia"-->
+<!--                    android:drawablePadding="8dp"-->
 
-            </LinearLayout>
+
+<!--                    android:inputType="numberDecimal"-->
+<!--                    android:paddingLeft="10dp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="1.0"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+
+<!--&lt;!&ndash;                    tools:layout_editor_absoluteY="510dp" />&ndash;&gt;-->
+
+<!--            </LinearLayout>-->
 
 
             <LinearLayout
@@ -435,6 +439,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/Observacao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -478,6 +483,7 @@
 
 
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/Anexo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

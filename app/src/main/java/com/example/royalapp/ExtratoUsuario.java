@@ -1,6 +1,7 @@
 package com.example.royalapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,11 +15,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.royalapp.model.Categoria;
 import com.example.royalapp.model.Extrato;
 import com.example.royalapp.model.ItemExtrato;
 import com.example.royalapp.remote.APIUtil;
 import com.example.royalapp.remote.RouterInterface;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +48,11 @@ public class ExtratoUsuario extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_extrato_usuario);
+
+        //Centralizar texto da toolbar
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ///20
         routerInterface = APIUtil.getApiInterface();
@@ -120,14 +128,12 @@ public class ExtratoUsuario extends AppCompatActivity {
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             ///18
             ///*INFLA A ESTRUTURA XML E OS DADOS REFERENTES A EXTRATO*/////
-            if(viewType ==0){
+
                 return new ExtratoAdapter.ExtratoViewHolder(
                         LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_container_extrato, parent, false)
                 );
-            }
 
-            return null;
 
         }
 
@@ -180,14 +186,34 @@ public class ExtratoUsuario extends AppCompatActivity {
 
         ///13
         public void setExtratoData(Extrato extrato){
-
-            txtCategoria.setText(String.valueOf(extrato.getCategoria()));
             txtDescricao.setText(extrato.getDescricao());
-//            txtPreco.setText(extrato.getValor());
+            txtPreco.setText(extrato.getValor().toString());
             txtData.setText(extrato.getData());
 
+            Categoria categoria = null;
 
-            txtCategoria.setText(String.valueOf(extrato.getCategoria()));
+            if (extrato.getValor().compareTo(BigDecimal.ZERO) > 0) { //receita
+                txtPreco.setTextColor(ExtratoUsuario.this.getResources().getColor(R.color.verdePositivo));
+
+
+
+                for(Categoria cat : Dashboard.receitas){
+                    if(cat.idCategoria == extrato.getCategoria()){
+                        categoria = cat;
+                    }
+                }
+
+
+            } else { //despesa
+                for(Categoria cat : Dashboard.despesas){
+                    if(cat.idCategoria == extrato.getCategoria()){
+                        categoria = cat;
+                    }
+                }
+            }
+
+            txtCategoria.setText(categoria.nome);
+            txtImagem.setText(categoria.icone);
         }
     }
     }

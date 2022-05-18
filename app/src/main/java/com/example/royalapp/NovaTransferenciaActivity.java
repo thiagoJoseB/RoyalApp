@@ -44,12 +44,15 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     private Spinner spinnerCategorias;
     private View buttonGravar;
 
+
+
+
     ViewGroup repeticao;
     TextView repeticao1;
     LinearLayout  btnRepeticao;
     LinearLayout  btnObservacao;
     LinearLayout  btnAnexo;
-    LinearLayout  btnRepeticao4;
+    LinearLayout  btnFavorito;
 
     View viewRepeticao;
     View viewObservacao;
@@ -63,10 +66,12 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     Drawable drawableBotaoPrivilegiado;
     Drawable drawableBotaoNegao;
 
-    boolean repetida = true;
-    boolean observacao = true;
-    boolean anexo = true;
-    boolean favorita = true;
+    boolean repetida = false;
+    boolean observacao = false;
+    boolean anexo = false;
+    boolean favorita = false;
+
+    boolean checked = true;
 
     public void mostrarData(View v){
         DialogFragment newFragment = new DatePickerFragment(calendario, () -> {
@@ -79,6 +84,11 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
     }
 
+
+    public void onCheckboxClicked(View view) {
+
+
+    }
 
 
 
@@ -133,6 +143,23 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     }
 
 
+    private void alteraFavorito() {
+        if(favorita) {
+            btnFavorito.setBackground(drawableBotaoPrivilegiado);
+            imageBotaoFavorito.setColorFilter(this.getColor(R.color.black));
+            favorita = false;
+
+        } else {
+            favorita = true;
+            btnFavorito.setBackground(drawableBotaoNegao);
+            imageBotaoFavorito.setColorFilter(this.getColor(R.color.white));
+
+        }
+
+    }
+
+
+
 
 
 
@@ -164,11 +191,12 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         btnRepeticao = this.findViewById(R.id.btnRepeticao);
         btnObservacao = this.findViewById(R.id.btnObservacao);
         btnAnexo = this.findViewById(R.id.btnAnexo);
-        btnRepeticao4 = this.findViewById(R.id.btnRepeticao4);
+        btnFavorito = this.findViewById(R.id.btnFavorito);
 
         viewRepeticao =NovaTransferenciaActivity.this.findViewById(R.id.Repeticao);
         viewObservacao = NovaTransferenciaActivity.this.findViewById(R.id.Observacao);
         viewAnexo = NovaTransferenciaActivity.this.findViewById(R.id.Anexo);
+//        viewFavorito = NovaTransferenciaActivity.this.findViewById(R.id.Fa);
 
         imageBotaoRepeticao = this.findViewById(R.id.nova_transferencia_image_repeticao);
         imageBotaoObservacao = this.findViewById(R.id.nova_transferencia_image_observacao);
@@ -188,6 +216,15 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
         btnObservacao.setOnClickListener(view -> alteraObservacao());
         btnAnexo.setOnClickListener(view -> alteraAnexo());
+        btnFavorito.setOnClickListener(view -> alteraFavorito());
+
+
+
+
+
+
+
+
 
 
 
@@ -280,7 +317,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
             json.put("valor", Double.parseDouble(inputValor.getText().toString()));
             json.put("data", new java.sql.Date(calendario.getTime().getTime()).toString());
             json.put("descricao", inputDescricao.getText().toString());
-            json.put("favorito", false);
+            json.put("favorito", favorita);
             json.put("fixa", false);
             json.put("inicioRepeticao", null);
             json.put("totalParcelas", null);

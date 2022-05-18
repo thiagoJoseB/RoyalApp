@@ -15,7 +15,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ExtratoUsuario"
-            android:exported="false" />
+            android:exported="true"
+            android:parentActivityName=".Dashboard"/>
         <activity
             android:name=".Transferencia"
             android:exported="false" />

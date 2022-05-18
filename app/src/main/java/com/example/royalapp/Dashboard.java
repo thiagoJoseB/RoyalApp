@@ -82,8 +82,8 @@ public class Dashboard extends AppCompatActivity {
 
 
 
-    private List<Categoria> despesas;
-    private List<Categoria> receitas;
+    public static List<Categoria> despesas = new ArrayList<>();
+    public static List<Categoria> receitas = new ArrayList<>();
 
     private BigDecimal despesa;
     private BigDecimal receita;
@@ -132,8 +132,8 @@ public class Dashboard extends AppCompatActivity {
                 JsonObject valores = json.get(0).getAsJsonObject();
                 JsonObject categorias = json.get(1).getAsJsonObject();
 
-                despesas = gson.fromJson(categorias.get("despesas"), tipoArrayCategorias);
-                receitas = gson.fromJson(categorias.get("receitas"), tipoArrayCategorias);
+                despesas.addAll(gson.fromJson(categorias.get("despesas"), tipoArrayCategorias));
+                receitas.addAll(gson.fromJson(categorias.get("receitas"), tipoArrayCategorias));
 
 
                 saldo = valores.get("saldo").getAsBigDecimal();
