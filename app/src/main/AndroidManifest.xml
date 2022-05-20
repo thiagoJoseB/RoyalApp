@@ -16,7 +16,8 @@
         <activity
             android:name=".ExtratoUsuarioActivity"
             android:exported="true"
-            android:parentActivityName=".DashboardActivity"/>
+            android:parentActivityName=".DashboardActivity"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".NovaTransferenciaActivity"
             android:exported="true"

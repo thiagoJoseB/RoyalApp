@@ -16,7 +16,7 @@
        />
 
    <item
-       android:id="@+id/extratos"
+       android:id="@+id/menu_baixo_extratos"
        android:icon="@drawable/icon_receipt_long_24"
        android:title="Extratos"
 

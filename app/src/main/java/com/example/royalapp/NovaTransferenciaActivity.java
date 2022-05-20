@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.royalapp.model.Categoria;
+import com.example.royalapp.remote.response.DashboardData;
 import com.google.gson.GsonBuilder;
 
 import java.math.BigDecimal;
@@ -275,37 +276,55 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         inputValor = findViewById(R.id.nova_transferencia_valor);
 
 
+//        private String current = "";
+//        @Override
+//        public void onTextChanged(CharSequence s, int start, int before, int count) {
+//            if(!s.toString().equals(current)){
+//       [your_edittext].removeTextChangedListener(this);
+//
+//                String cleanString = s.toString().replaceAll("[$,.]", "");
+//
+//                double parsed = Double.parseDouble(cleanString);
+//                String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
+//
+//                current = formatted;
+//       [your_edittext].setText(formatted);
+//       [your_edittext].setSelection(formatted.length());
+//
+//       [your_edittext].addTextChangedListener(this);
+//            }
+//        }
+
+
         inputValor.addTextChangedListener(new TextWatcher() {
-            boolean usuarioDigitou = true;
+            String ultimo = null;
             int cursor = -1;
 
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                Toast.makeText(NovaTransferenciaActivity.this, String.valueOf(usuarioDigitou), Toast.LENGTH_SHORT).show();
                 cursor = inputValor.getSelectionEnd();
-                Toast.makeText(NovaTransferenciaActivity.this, String.valueOf(cursor), Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    Log.d("teste",charSequence.toString() );
-                    if(usuarioDigitou) {
-                        usuarioDigitou = false;
+            public void onTextChanged(CharSequence charSequence, int start, int i1, int i2) {
+                Log.d("teste", Integer.toString(start));
 
-                        try {
-                        inputValor.setText(
-                                FORMATADOR_INPUT_VALOR.format(
-                                        FORMATADOR_INPUT_VALOR.parse(charSequence.toString())
-                                )
-                        );
-                    } catch (ParseException e) {
-//                        inputValor.setText("R$ 0,00");
-                    throw new RuntimeException(e);
-                    }
-                    } else {
-                        usuarioDigitou = true;
-                        inputValor.setSelection(Math.min(cursor, charSequence.length()));
-                    }
+                if(!charSequence.toString().equals(ultimo)){
+                    inputValor.removeTextChangedListener(this);
+
+
+
+
+                String cleanString = charSequence.toString().replaceAll("[R$,.\\s]", "");
+
+                BigDecimal parsed = new BigDecimal(cleanString);
+                String formatted = DashboardActivity.FORMATADOR_MOEDA.format(parsed.divide(new BigDecimal(100)));
+
+                ultimo = formatted;
+                    inputValor.setText(formatted);
+                    inputValor.setSelection(Math.min(cursor, formatted.length()));
+                    inputValor.addTextChangedListener(this);
+                }
             }
 
             @Override
@@ -343,9 +362,9 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
             json.put("descricao", inputDescricao.getText().toString());
             json.put("favorito", favorita);
             json.put("fixa", false);
-            json.put("totalParcelas", null);
+            json.put("totalParcelas", repetida ? Integer.parseInt(inputParcelas.getText().toString()) : null);
             json.put("frequencia", repetida ? TIPO_TRANSFERENCIAS[spinnerFrequenciaRepeticao.getSelectedItemPosition()] : null);
-            json.put("observacao", null);
+            json.put("observacao", observacao ? inputObservacao.getText().toString() : null);
             json.put("parcelada", repetida);
             json.put("idCategoria", categorias.stream().filter(categoria -> valorSpinner.equals(categoria.nome)).findAny().get().idCategoria);
 

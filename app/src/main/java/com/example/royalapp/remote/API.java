@@ -22,11 +22,12 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Body;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 
 public interface API {
-    public  static final String API_URL = "http://tomcat.studiotr.io:9090/royal/";
+    public  static final String API_URL = "http://10.107.144.22:8080/royal/";
     public  static final String WS_API_URL = "ws" + API_URL.substring(4);
     static final Retrofit INTERNAL_RETROFIT = new Retrofit.Builder()
             .baseUrl(API_URL)
@@ -47,7 +48,6 @@ public interface API {
     @POST("resetar") Call<Resultado> addCodigo(@Body Codigo codigo);
     @POST("resetar") Call<Resultado> addSenhaNova(@Body SenhaNova senhaNova);
     @GET("data/saldo/categorias") Call<String> getDashboardInfo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
-
-
     @GET("data/extrato-mes") Call<List<TransferenciaExtrato>> getExtratos(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
+    @GET("grafico/{tipo}") Call<String> graficoMensal(@Path("tipo") String tipo, @Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
 }

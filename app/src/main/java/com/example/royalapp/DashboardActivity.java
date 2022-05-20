@@ -33,6 +33,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -54,10 +55,17 @@ public class DashboardActivity extends AppCompatActivity {
     public static final Locale BRASIL = new Locale("pt", "BR");
     public static final DateFormat FORMATADOR_DIA = DateFormat.getDateInstance(DateFormat.SHORT, BRASIL);
     public static final NumberFormat FORMATADOR_MOEDA = NumberFormat.getCurrencyInstance(BRASIL);
+
+
     public static WebSocket webSocket;
+    public static List<Categoria> despesas = new ArrayList<>();
+    public static List<Categoria> receitas = new ArrayList<>();
+    static String token = null;
 
+    static {
+        FORMATADOR_MOEDA.setRoundingMode(RoundingMode.DOWN);
+    }
 
-    private String token;
     private TextView viewTextSaldoGeral;
     private TextView viewTextDespesaGeral;
     private TextView viewTextReceitaGeral;
@@ -65,20 +73,12 @@ public class DashboardActivity extends AppCompatActivity {
     private Button buttonNovaReceita;
     private TextView btnExtrato;
     private BottomNavigationView menuBaixo;
-
-
-
-
-
-    public static List<Categoria> despesas = new ArrayList<>();
-    public static List<Categoria> receitas = new ArrayList<>();
-
     private BigDecimal despesa;
     private BigDecimal receita;
     private BigDecimal saldo;
 
 
-    public void atualizarValoresPrincipais(){
+    public void atualizarValoresPrincipais() {
 
         viewTextReceitaGeral.setText(FORMATADOR_MOEDA.format(receita.longValue()));
         viewTextDespesaGeral.setText(FORMATADOR_MOEDA.format(despesa.longValue()));
@@ -93,7 +93,6 @@ public class DashboardActivity extends AppCompatActivity {
 
 //        getSupportActionBar().setCustomView(R.layout.toolbar_circle);
 
-        
 
         getSupportActionBar().hide();
         viewTextSaldoGeral = this.findViewById(R.id.dashboard_saldo_principal_texto);
@@ -105,6 +104,17 @@ public class DashboardActivity extends AppCompatActivity {
 
         menuBaixo.setOnItemSelectedListener(item -> {
 
+            switch (item.getItemId()) {
+                case R.id.menu_baixo_geral:
+                    break;
+                case R.id.menu_baixo_extratos: {
+                    Intent intent = new Intent(DashboardActivity.this, ExtratoUsuarioActivity.class);
+                    startActivity(intent);
+                    this.finish();
+                    break;
+                }
+            }
+
             return false;
         });
 
@@ -112,12 +122,14 @@ public class DashboardActivity extends AppCompatActivity {
         buttonNovaReceita = this.findViewById(R.id.dashboard_nova_receita);
         btnExtrato = this.findViewById(R.id.btnExtrato);
         //pega o token da tela de login
-        token = this.getIntent().getStringExtra("token");
-
+        if (token == null) {
+            token = this.getIntent().getStringExtra("token");
+        }
 
         Calendar calendar = Calendar.getInstance();
         Gson gson = new Gson();
-        Type tipoArrayCategorias = new TypeToken<List<Categoria>>(){}.getType();
+        Type tipoArrayCategorias = new TypeToken<List<Categoria>>() {
+        }.getType();
 
         API.get().getDashboardInfo(token, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1).enqueue(new Callback<String>() {
             @Override
@@ -164,9 +176,7 @@ public class DashboardActivity extends AppCompatActivity {
                     intent.putExtra("modo", "despesa");
 
 
-
                     intent.putParcelableArrayListExtra("categorias", new ArrayList<>(despesas));
-
 
 
                     startActivity(intent);
@@ -188,25 +198,12 @@ public class DashboardActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Log.e("teste", t.getClass().getName(), t);
-                throw new RuntimeException(t);
 
+                throw new RuntimeException(t);
             }
 
 
         });
-
-        btnExtrato.setOnClickListener(view -> {
-            Intent intent = new Intent(DashboardActivity.this, ExtratoUsuarioActivity.class);
-            intent.putExtra("k", token);
-
-            startActivity(intent);
-
-//            Toast.makeText(LoginUsuario.this,"Criar Conta",Toast.LENGTH_LONG).show();
-
-        });
-
-
 
 
 
@@ -225,9 +222,6 @@ public class DashboardActivity extends AppCompatActivity {
         chart.setUsePercentValues(false);
         chart.getDescription().setEnabled(false);
         chart.setExtraOffsets(5, 10, 5, 5);
-
-        chart.setDragDecelerationFrictionCoef(0.95f);
-
 
         chart.setDrawHoleEnabled(false);
 
@@ -265,16 +259,12 @@ public class DashboardActivity extends AppCompatActivity {
 
 
         //RICHARD - o valor será ejetado nessa arrayList
-        ArrayList<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(1f, "teste"));
-        entries.add(new PieEntry(1f, "teste"));
-        entries.add(new PieEntry(1f, "teste"));
 
 
-        PieDataSet dataSet = new PieDataSet(entries, "valor pra ser mudado");
+
+        PieDataSet dataSet = new PieDataSet(new ArrayList<>(), "valor pra ser mudado");
 
         dataSet.setDrawIcons(false);
-        dataSet.setSliceSpace(3f);
         dataSet.setIconsOffset(new MPPointF(0, 40));
         dataSet.setSelectionShift(5f);
 
@@ -296,6 +286,23 @@ public class DashboardActivity extends AppCompatActivity {
         data.setValueTextColor(Color.WHITE);
         chart.setData(data);
 
+        API.get().graficoMensal("despesa", token, 2022, 5).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
+
+                json.entrySet().forEach(entry -> {
+                    dataSet.addEntry(new PieEntry(entry.getValue().getAsFloat(), entry.getKey()));
+                });
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+                throw new RuntimeException(t);
+            }
+        });
+
     }
 
     private class DashboardWebSocket extends WebSocketListener {
@@ -312,9 +319,9 @@ public class DashboardActivity extends AppCompatActivity {
 
                 Log.d("teste", json.toString());
 
-                switch (json.get("metodo").getAsString()){
+                switch (json.get("metodo").getAsString()) {
                     case "despesa": {
-                        switch (json.get("arg").getAsString()){
+                        switch (json.get("arg").getAsString()) {
                             case "remover": {
                                 final BigDecimal valor = json.get("valor").getAsBigDecimal();
 
@@ -328,7 +335,7 @@ public class DashboardActivity extends AppCompatActivity {
                         break;
                     }
                     case "receita": {
-                        switch (json.get("arg").getAsString()){
+                        switch (json.get("arg").getAsString()) {
                             case "adicionar": {
                                 final BigDecimal valor = json.get("valor").getAsBigDecimal();
 
@@ -355,7 +362,6 @@ public class DashboardActivity extends AppCompatActivity {
             Log.e("teste", t.getClass().getName(), t);
         }
     }
-
 
 
 }

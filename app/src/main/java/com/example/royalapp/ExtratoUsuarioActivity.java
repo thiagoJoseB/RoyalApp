@@ -7,6 +7,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.example.royalapp.model.Categoria;
 import com.example.royalapp.model.TransferenciaExtrato;
 import com.example.royalapp.remote.API;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
 
     private Spinner menu;
     private Spinner menu2;
+    private BottomNavigationView menuBaixo;
 
     String[] opcoes = {"janeiro", "fevereiro", "marco", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"};
     String[] ano = {"2022"};
@@ -45,11 +48,28 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        menuBaixo = this.findViewById(R.id.extratos_menu_baixo);
+        menuBaixo.setSelectedItemId(R.id.menu_baixo_extratos);
+
+        menuBaixo.setOnItemSelectedListener(item -> {
+
+            switch (item.getItemId()){
+                case R.id.menu_baixo_extratos:
+                    break;
+                case R.id.menu_baixo_geral: {
+                    Intent intent = new Intent(ExtratoUsuarioActivity.this, DashboardActivity.class);
+                    startActivity(intent);
+                    finish();
+                    break;
+                }
+            }
+
+            return false;
+        });
 
         recyclerView = findViewById(R.id.recyclerview);
 
-        Call<List<TransferenciaExtrato>> call = API.get().getExtratos( getIntent().getStringExtra("k"), 2022, 5);
+        Call<List<TransferenciaExtrato>> call = API.get().getExtratos(DashboardActivity.token, 2022, 5);
 
         call.enqueue(new Callback<List<TransferenciaExtrato>>() {
             @Override
