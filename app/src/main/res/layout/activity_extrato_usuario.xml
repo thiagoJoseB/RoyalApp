@@ -21,25 +21,25 @@
             android:paddingEnd="32dp">
 
 
-        <TextView
+            <TextView
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="34dp"
-            android:text="Extratos"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-            android:textColor="@color/black"
-            android:textSize="24dp"
-            android:textStyle="bold" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="34dp"
+                android:text="Extratos"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+                android:textColor="@color/black"
+                android:textSize="24dp"
+                android:textStyle="bold" />
 
 
             <LinearLayout
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:layout_marginBottom="8dp"
-                android:orientation="vertical"
-                android:layout_marginTop="30dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -58,10 +58,10 @@
             <LinearLayout
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:orientation="vertical"
+                android:layout_marginLeft="197dp"
                 android:layout_marginTop="-58dp"
-                android:layout_marginLeft="197dp">
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -77,13 +77,12 @@
             </LinearLayout>
 
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:layout_marginBottom="8dp"
-                android:orientation="vertical"
-                android:layout_marginTop="15dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -108,23 +107,13 @@
                 />
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            <!--linear->-->
+            <!--            scroolview-->
+            <!--                linearlayout ->-->
+            <!--                    textview,-->
+            <!--                    recyclerview-->
+            <!--            linear-->
+            <!--                button-->
 
 
         </LinearLayout>

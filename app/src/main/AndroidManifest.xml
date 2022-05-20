@@ -14,9 +14,15 @@
         android:theme="@style/Theme.RoyalApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".PerfilUsuario"
+            android:exported="false" />
+        <activity
+            android:name=".TransacoesFavoritas"
+            android:exported="false" />
+        <activity
             android:name=".ExtratoUsuarioActivity"
             android:exported="true"
-            android:parentActivityName=".DashboardActivity"/>
+            android:parentActivityName=".DashboardActivity" />
         <activity
             android:name=".NovaTransferenciaActivity"
             android:exported="true"

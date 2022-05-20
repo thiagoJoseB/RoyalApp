@@ -38,8 +38,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:textColor="@color/black"
                 android:text="Entre para ter acesso ao controle de suas finanças"
+                android:textColor="@color/black"
                 android:textSize="14dp" />
 
 
@@ -144,12 +144,12 @@
 
 
             <androidx.cardview.widget.CardView
-       android:layout_width="wrap_content"
-       android:layout_height="match_parent"
-       android:layout_gravity="center"
-       android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
 
-       app:cardCornerRadius="30dp"/>
+                app:cardCornerRadius="30dp" />
 
 
             <TextView
@@ -158,17 +158,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
-                android:textColor="@color/black"
                 android:text="Não é cadastrado? Crie uma conta "
+                android:textColor="@color/black"
                 android:textSize="14dp" />
 
 
         </LinearLayout>
-
-
-
-
-
 
 
     </ScrollView>
