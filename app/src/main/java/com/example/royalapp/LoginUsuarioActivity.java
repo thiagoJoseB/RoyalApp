@@ -13,9 +13,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.royalapp.remote.API;
 import com.example.royalapp.remote.Status;
-import com.example.royalapp.remote.APIUtil;
-import com.example.royalapp.remote.RouterInterface;
 import com.example.royalapp.remote.request.Login;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -25,7 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class LoginUsuario extends AppCompatActivity {
+public class LoginUsuarioActivity extends AppCompatActivity {
     /// 20 Recuperar os viwes
 
     EditText txtEmail;
@@ -34,7 +33,6 @@ public class LoginUsuario extends AppCompatActivity {
     CheckBox checkbox;
     TextView txtEsqueci_Senha;
 
-    RouterInterface routerInterface;
 
    TextView criarConta;
    TextView esqueciSenha;
@@ -53,7 +51,7 @@ public class LoginUsuario extends AppCompatActivity {
         esqueciSenha = findViewById(R.id.txtEsqueci_Senha);
 
         criarConta.setOnClickListener(view -> {
-            Intent intent = new Intent(LoginUsuario.this, CadastroUsuario.class);
+            Intent intent = new Intent(LoginUsuarioActivity.this, CadastroUsuarioActivity.class);
             startActivity(intent);
 
 //            Toast.makeText(LoginUsuario.this,"Criar Conta",Toast.LENGTH_LONG).show();
@@ -61,13 +59,12 @@ public class LoginUsuario extends AppCompatActivity {
         });
 
         esqueciSenha.setOnClickListener(view -> {
-            Intent intent = new Intent(LoginUsuario.this, InsercaoEmail.class);
+            Intent intent = new Intent(LoginUsuarioActivity.this, InsercaoEmailActivity.class);
             startActivity(intent);
 
         });
 
 
-        routerInterface = APIUtil.getApiInterface();
 
         btnEntrar_Login.setOnClickListener(view -> {
 
@@ -111,7 +108,7 @@ public class LoginUsuario extends AppCompatActivity {
     public void addLogin(Login login){
 
 
-            routerInterface.login(login).enqueue(new Callback<String>() {
+        API.get().login(login).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     Log.d("teste", "cacildes");
@@ -124,33 +121,33 @@ public class LoginUsuario extends AppCompatActivity {
                         if(json.get("status").getAsInt() == Status.OK.codigo) {
                             if(json.get("found").getAsBoolean()) {
 
-                                Toast.makeText(LoginUsuario.this, "FOI PRA DASH", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoginUsuarioActivity.this, "FOI PRA DASH", Toast.LENGTH_LONG).show();
 
 
-                                Intent intent = new Intent(LoginUsuario.this, Dashboard.class);
+                                Intent intent = new Intent(LoginUsuarioActivity.this, DashboardActivity.class);
                                 intent.putExtra("token", json.get("token").getAsString());
 
-                                LoginUsuario.this.startActivity(intent);
+                                LoginUsuarioActivity.this.startActivity(intent);
 
-                                LoginUsuario.this.finish();
+                                LoginUsuarioActivity.this.finish();
                             }else{
-                                Toast.makeText(LoginUsuario.this, "SENHA OU LOGIN INVALIDO", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoginUsuarioActivity.this, "SENHA OU LOGIN INVALIDO", Toast.LENGTH_LONG).show();
 
                             }
 
                         }else{
-                            Toast.makeText(LoginUsuario.this, "ERRO DO CUTRIM",Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginUsuarioActivity.this, "ERRO DO CUTRIM",Toast.LENGTH_LONG).show();
 
                         }
                     } else {
-                        Toast.makeText(LoginUsuario.this, "erro" + response.code(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginUsuarioActivity.this, "erro" + response.code(), Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
                     Log.e("login", t.getClass().getSimpleName(), t);
-                    Toast.makeText(LoginUsuario.this, "erro" + t.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginUsuarioActivity.this, "erro" + t.toString(), Toast.LENGTH_LONG).show();
                 }
             });
     }

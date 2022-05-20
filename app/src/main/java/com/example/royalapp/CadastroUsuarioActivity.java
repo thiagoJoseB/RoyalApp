@@ -10,11 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.royalapp.remote.API;
 import com.example.royalapp.remote.request.Cadastro;
 import com.example.royalapp.remote.response.Resultado;
 import com.example.royalapp.remote.Status;
-import com.example.royalapp.remote.APIUtil;
-import com.example.royalapp.remote.RouterInterface;
 
 import java.util.regex.Pattern;
 
@@ -23,7 +22,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class CadastroUsuario extends AppCompatActivity {
+public class CadastroUsuarioActivity extends AppCompatActivity {
 
 
 
@@ -36,7 +35,6 @@ public class CadastroUsuario extends AppCompatActivity {
 
 
     ///25
-   RouterInterface routerInterface;
 
 
     @Override
@@ -56,8 +54,6 @@ public class CadastroUsuario extends AppCompatActivity {
         txtConfirmarSenha = findViewById(R.id.txtConfirmarSenha);
         btnCadastrar = findViewById(R.id.btnCadastrar);
 
-       //// 26
-        routerInterface = APIUtil.getApiInterface();
 
         this.btnCadastrar.setOnClickListener(view -> {
 
@@ -109,7 +105,7 @@ public class CadastroUsuario extends AppCompatActivity {
     //23
     public void addCadastro(Cadastro cadastro){
 
-        Call<Resultado> call = routerInterface.addCadastro(cadastro);
+        Call<Resultado> call = API.get().addCadastro(cadastro);
 
         call.enqueue(new Callback<Resultado>() {
 
@@ -121,16 +117,16 @@ public class CadastroUsuario extends AppCompatActivity {
                     int status = response.body().status;
 
                     if(status == Status.OK.codigo){
-                        Toast.makeText(CadastroUsuario.this, "BOA CUTRIM",Toast.LENGTH_LONG).show();
+                        Toast.makeText(CadastroUsuarioActivity.this, "BOA CUTRIM",Toast.LENGTH_LONG).show();
 
 
                     } else if(status == Status.EMAIL_REPETIDO.codigo){
-                        Toast.makeText(CadastroUsuario.this, " EMAIL REPETIDO CUTRIM",Toast.LENGTH_LONG).show();
+                        Toast.makeText(CadastroUsuarioActivity.this, " EMAIL REPETIDO CUTRIM",Toast.LENGTH_LONG).show();
 
 
 
                     } else {
-                        Toast.makeText(CadastroUsuario.this, "ERRO DO CUTRIM",Toast.LENGTH_LONG).show();
+                        Toast.makeText(CadastroUsuarioActivity.this, "ERRO DO CUTRIM",Toast.LENGTH_LONG).show();
 
                     }
 //                    //Log.d("REPOSNSE-", String.valueOf(response.raw()));

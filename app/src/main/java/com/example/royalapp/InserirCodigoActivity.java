@@ -12,17 +12,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.royalapp.remote.API;
 import com.example.royalapp.remote.request.Codigo;
 import com.example.royalapp.remote.response.Resultado;
 import com.example.royalapp.remote.Status;
-import com.example.royalapp.remote.APIUtil;
-import com.example.royalapp.remote.RouterInterface;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 //import com.example.royalapp.remote.model.InserirEmail;
-public class InserirCodigo extends AppCompatActivity {
+public class InserirCodigoActivity extends AppCompatActivity {
 
 
     /// 20 Recuperar os viwes
@@ -36,8 +35,6 @@ public class InserirCodigo extends AppCompatActivity {
 //    EditText txtEmail;
 
     Button btnInserirCodigo;
-
-    RouterInterface routerInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +57,6 @@ public class InserirCodigo extends AppCompatActivity {
         txtCod5.addTextChangedListener(eventoIrProximo(txtCod6));
 
 
-        routerInterface = APIUtil.getApiInterface();
 
 //        btnInserirCodigo.setOnClickListener(view -> {
 //
@@ -126,7 +122,7 @@ public class InserirCodigo extends AppCompatActivity {
 
     public void addCodigo(Codigo codigo){
 
-        Call<Resultado> call = routerInterface.addCodigo(codigo);
+        Call<Resultado> call = API.get().addCodigo(codigo);
 
         call.enqueue(new Callback<Resultado>() {
 
@@ -138,26 +134,26 @@ public class InserirCodigo extends AppCompatActivity {
                     if(status == Status.OK.codigo) {
 
                         if(response.body().reset) {
-                            Toast.makeText(InserirCodigo.this, "BOA CUTRIM", Toast.LENGTH_LONG).show();
+                            Toast.makeText(InserirCodigoActivity.this, "BOA CUTRIM", Toast.LENGTH_LONG).show();
 
-                            Intent intent = new Intent(InserirCodigo.this, AlterarSenha.class);
+                            Intent intent = new Intent(InserirCodigoActivity.this, AlterarSenhaActivity.class);
                             intent.putExtra("email", email);
                             startActivity(intent);
                             finish();
                         } else {
 
-                            Toast.makeText(InserirCodigo.this, "n existe esse email pra resetar", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(InserirCodigoActivity.this, "n existe esse email pra resetar", Toast.LENGTH_SHORT).show();
                         }
 
 
                     }
                     else{
-                        Toast.makeText(InserirCodigo.this, "ERRO DO CUTRIM",Toast.LENGTH_LONG).show();
+                        Toast.makeText(InserirCodigoActivity.this, "ERRO DO CUTRIM",Toast.LENGTH_LONG).show();
 
                     }
 
                 } else {
-                    Toast.makeText(InserirCodigo.this, "foi mas , nao foi", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(InserirCodigoActivity.this, "foi mas , nao foi", Toast.LENGTH_SHORT).show();
                 }
 
 

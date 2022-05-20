@@ -18,10 +18,10 @@
    <color name="verdePositivo" >#32A40A</color>
     <color name="vermelhoNegativo">#FF0000</color>
     <color name="cinzaExtrato">#CCCCCC</color>
+    <color name="transparent">#0000</color>
 
 
-
-<!--    888787-->
+    <!--    888787-->
 
 
 </resources>

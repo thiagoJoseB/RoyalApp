@@ -4,26 +4,41 @@ package com.example.royalapp.remote;
 
 ///13  requisicao , como vai ser feita , onde os dados vao estar
 
-import com.example.royalapp.model.Extrato;
+import com.example.royalapp.model.TransferenciaExtrato;
 import com.example.royalapp.remote.request.Cadastro;
 import com.example.royalapp.remote.request.Codigo;
 import com.example.royalapp.remote.request.InserirEmail;
 import com.example.royalapp.remote.request.Login;
-import com.example.royalapp.remote.response.DashboardData;
 import com.example.royalapp.remote.response.Resultado;
 import com.example.royalapp.remote.request.SenhaNova;
+import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Body;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 
-public interface RouterInterface {
+public interface API {
+    public  static final String API_URL = "http://tomcat.studiotr.io:9090/royal/";
+    public  static final String WS_API_URL = "ws" + API_URL.substring(4);
+    static final Retrofit INTERNAL_RETROFIT = new Retrofit.Builder()
+            .baseUrl(API_URL)
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
+                    .setLenient()
+                    .create()))
+            .build();
+
+    public static API get(){
+        return INTERNAL_RETROFIT.create(API.class);
+    }
 
     //14
     @POST("cadastro") Call<Resultado> addCadastro(@Body Cadastro cadastro);
@@ -34,5 +49,5 @@ public interface RouterInterface {
     @GET("data/saldo/categorias") Call<String> getDashboardInfo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
 
 
-    @GET("data/extrato-mes") Call<List<Extrato>> getExtratos(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
+    @GET("data/extrato-mes") Call<List<TransferenciaExtrato>> getExtratos(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
 }

@@ -14,41 +14,38 @@
         android:theme="@style/Theme.RoyalApp"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ExtratoUsuario"
+            android:name=".ExtratoUsuarioActivity"
             android:exported="true"
-            android:parentActivityName=".Dashboard"/>
-        <activity
-            android:name=".Transferencia"
-            android:exported="false" />
+            android:parentActivityName=".DashboardActivity"/>
         <activity
             android:name=".NovaTransferenciaActivity"
             android:exported="true"
-            android:parentActivityName=".Dashboard" />
+            android:parentActivityName=".DashboardActivity" />
         <activity
-            android:name=".Dashboard"
+            android:name=".DashboardActivity"
             android:exported="true"
             android:launchMode="singleInstance" />
         <activity
-            android:name=".SenhaConfirmada"
+            android:name=".SenhaConfirmadaActivity"
             android:exported="true"
             android:launchMode="singleTop" />
         <activity
-            android:name=".AlterarSenha"
+            android:name=".AlterarSenhaActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:parentActivityName=".InserirCodigo" />
+            android:parentActivityName=".InserirCodigoActivity" />
         <activity
-            android:name=".InserirCodigo"
+            android:name=".InserirCodigoActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:parentActivityName=".LoginUsuario" />
+            android:parentActivityName=".LoginUsuarioActivity" />
         <activity
-            android:name=".InsercaoEmail"
+            android:name=".InsercaoEmailActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:parentActivityName=".LoginUsuario" />
+            android:parentActivityName=".LoginUsuarioActivity" />
         <activity
-            android:name=".LoginUsuario"
+            android:name=".LoginUsuarioActivity"
             android:exported="true"
             android:launchMode="singleTop">
             <intent-filter>
@@ -58,10 +55,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CadastroUsuario"
+            android:name=".CadastroUsuarioActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:parentActivityName=".LoginUsuario" />
+            android:parentActivityName=".LoginUsuarioActivity" />
     </application>
 
 </manifest>

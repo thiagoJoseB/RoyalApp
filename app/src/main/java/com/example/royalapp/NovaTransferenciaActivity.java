@@ -1,5 +1,7 @@
 package com.example.royalapp;
 
+import static com.example.royalapp.DashboardActivity.BRASIL;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,9 +11,12 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -19,11 +24,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.royalapp.model.Categoria;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -31,11 +41,16 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class NovaTransferenciaActivity extends AppCompatActivity {
+    private static final String[] TIPO_TRANSFERENCIAS = new String[]{ "DIAS", "SEMANAS", "QUINZENAS", "MESES", "BIMESTRES", "TRIMESTRES", "SEMESTRES", "ANOS"};
+    public static final DecimalFormat FORMATADOR_INPUT_VALOR = new DecimalFormat("#,##0.00", DecimalFormatSymbols.getInstance(BRASIL));
+
+    static {
+        FORMATADOR_INPUT_VALOR.setRoundingMode(RoundingMode.DOWN);
+    }
 
     private final Calendar calendario = Calendar.getInstance();
     private List<Categoria> categorias;
     private String modo;
-    int numero = 0;
 
     private EditText inputValor;
     private EditText inputDescricao;
@@ -45,14 +60,18 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     private View buttonGravar;
 
 
+    private EditText inputObservacao;
+    private EditText inputParcelas;
+    private Spinner spinnerFrequenciaRepeticao;
 
+    private TextView textInfoParcelas;
 
     ViewGroup repeticao;
     TextView repeticao1;
-    LinearLayout  btnRepeticao;
-    LinearLayout  btnObservacao;
-    LinearLayout  btnAnexo;
-    LinearLayout  btnFavorito;
+    LinearLayout btnRepeticao;
+    LinearLayout btnObservacao;
+    LinearLayout btnAnexo;
+    LinearLayout btnFavorito;
 
     View viewRepeticao;
     View viewObservacao;
@@ -71,30 +90,19 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     boolean anexo = false;
     boolean favorita = false;
 
-    boolean checked = true;
+    public void mostrarData(View v) {
 
-    public void mostrarData(View v){
         DialogFragment newFragment = new DatePickerFragment(calendario, () -> {
-            textData.setText(Dashboard.FORMATADOR_DIA.format(calendario.getTime()));
+            textData.setText(DashboardActivity.FORMATADOR_DIA.format(calendario.getTime()));
         });
 
         newFragment.show(getSupportFragmentManager(), "datePicker");
 
 
-
     }
-
-
-    public void onCheckboxClicked(View view) {
-
-
-    }
-
-
-
 
     private void alteraRepeticao() {
-        if(repetida) {
+        if (repetida) {
             repetida = false;
             viewRepeticao.setVisibility(View.GONE);
             btnRepeticao.setBackground(drawableBotaoPrivilegiado);
@@ -110,7 +118,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     }
 
     private void alteraObservacao() {
-        if(observacao) {
+        if (observacao) {
             observacao = false;
             viewObservacao.setVisibility(View.GONE);
             btnObservacao.setBackground(drawableBotaoPrivilegiado);
@@ -127,7 +135,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     }
 
     private void alteraAnexo() {
-        if(anexo) {
+        if (anexo) {
             viewAnexo.setVisibility(View.GONE);
             btnAnexo.setBackground(drawableBotaoPrivilegiado);
             imageBotaoAnexo.setColorFilter(this.getColor(R.color.black));
@@ -144,7 +152,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
 
     private void alteraFavorito() {
-        if(favorita) {
+        if (favorita) {
             btnFavorito.setBackground(drawableBotaoPrivilegiado);
             imageBotaoFavorito.setColorFilter(this.getColor(R.color.black));
             favorita = false;
@@ -157,23 +165,6 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Override
@@ -193,7 +184,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         btnAnexo = this.findViewById(R.id.btnAnexo);
         btnFavorito = this.findViewById(R.id.btnFavorito);
 
-        viewRepeticao =NovaTransferenciaActivity.this.findViewById(R.id.Repeticao);
+        viewRepeticao = NovaTransferenciaActivity.this.findViewById(R.id.Repeticao);
         viewObservacao = NovaTransferenciaActivity.this.findViewById(R.id.Observacao);
         viewAnexo = NovaTransferenciaActivity.this.findViewById(R.id.Anexo);
 //        viewFavorito = NovaTransferenciaActivity.this.findViewById(R.id.Fa);
@@ -207,11 +198,6 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         drawableBotaoNegao = this.getDrawable(R.drawable.botoes_transferencia);
 
 
-
-
-
-
-
         btnRepeticao.setOnClickListener(view -> alteraRepeticao());
 
         btnObservacao.setOnClickListener(view -> alteraObservacao());
@@ -219,33 +205,46 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         btnFavorito.setOnClickListener(view -> alteraFavorito());
 
 
+        inputObservacao = findViewById(R.id.nova_transferencia_observacao);
+
+        spinnerFrequenciaRepeticao = findViewById(R.id.nova_transferencia_spinner_frequencia_repeticao);
+        inputParcelas = findViewById(R.id.nova_transferencia_parcelas);
+        textInfoParcelas = findViewById(R.id.nova_transferencia_texto_informacao);
 
 
 
+        inputParcelas.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+                if(charSequence.length() > 0 && charSequence.charAt(0) == '0'){
+                inputParcelas.setText("");
+                }else {
+                    calcularParcelas(charSequence.toString(), spinnerFrequenciaRepeticao.getSelectedItemPosition());
+                }
+            }
 
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
 
+        spinnerFrequenciaRepeticao.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
+                calcularParcelas(inputParcelas.getText().toString(),i);
 
+            }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
 
 //        btnRepeticao.setOnClickListener(view -> {
@@ -259,22 +258,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 //        });
 
 
-
-
-
 //ri
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         //Centralizar texto da toolbar
@@ -289,13 +273,53 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         Log.d("teste", categorias.toString());
 
         inputValor = findViewById(R.id.nova_transferencia_valor);
+
+
+        inputValor.addTextChangedListener(new TextWatcher() {
+            boolean usuarioDigitou = true;
+            int cursor = -1;
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Toast.makeText(NovaTransferenciaActivity.this, String.valueOf(usuarioDigitou), Toast.LENGTH_SHORT).show();
+                cursor = inputValor.getSelectionEnd();
+                Toast.makeText(NovaTransferenciaActivity.this, String.valueOf(cursor), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    Log.d("teste",charSequence.toString() );
+                    if(usuarioDigitou) {
+                        usuarioDigitou = false;
+
+                        try {
+                        inputValor.setText(
+                                FORMATADOR_INPUT_VALOR.format(
+                                        FORMATADOR_INPUT_VALOR.parse(charSequence.toString())
+                                )
+                        );
+                    } catch (ParseException e) {
+//                        inputValor.setText("R$ 0,00");
+                    throw new RuntimeException(e);
+                    }
+                    } else {
+                        usuarioDigitou = true;
+                        inputValor.setSelection(Math.min(cursor, charSequence.length()));
+                    }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
         inputDescricao = findViewById(R.id.nova_transferencia_descricao);
 
         textTitulo = findViewById(R.id.nova_transferencia_titulo);
         textTitulo.setText("Nova " + modo);
 
         textData = findViewById(R.id.nova_transferencia_data);
-        textData.setText(Dashboard.FORMATADOR_DIA.format(calendario.getTime()));
+        textData.setText(DashboardActivity.FORMATADOR_DIA.format(calendario.getTime()));
 
         spinnerCategorias = findViewById(R.id.nova_transferencia_spinner_categorias);
 
@@ -319,17 +343,61 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
             json.put("descricao", inputDescricao.getText().toString());
             json.put("favorito", favorita);
             json.put("fixa", false);
-            json.put("inicioRepeticao", null);
             json.put("totalParcelas", null);
-            json.put("frequencia", null);
+            json.put("frequencia", repetida ? TIPO_TRANSFERENCIAS[spinnerFrequenciaRepeticao.getSelectedItemPosition()] : null);
             json.put("observacao", null);
-            json.put("parcelada", false);
+            json.put("parcelada", repetida);
             json.put("idCategoria", categorias.stream().filter(categoria -> valorSpinner.equals(categoria.nome)).findAny().get().idCategoria);
 
-            Dashboard.webSocket.send(new GsonBuilder().serializeNulls().create().toJson(json));
+            DashboardActivity.webSocket.send(new GsonBuilder().serializeNulls().create().toJson(json));
 
             this.finish();
         });
+    }
+
+    public void calcularParcelas(String parcelas, int indiceFrequencia){
+        if(parcelas.isEmpty()) {
+            textInfoParcelas.setText("Insira o valor da parcela");
+        } else {
+            String frequencia = TIPO_TRANSFERENCIAS[indiceFrequencia];
+            int parsa = Integer.parseInt(parcelas);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(calendar.getTime());
+
+
+//            new String[]{ , "", "", "", "", "", "", ""};
+
+            switch (frequencia){
+                case "DIAS":
+                calendar.add(Calendar.DAY_OF_MONTH, parsa - 1);
+                break;
+
+                case "SEMANAS":
+                    calendar.add(Calendar.WEEK_OF_YEAR, parsa);
+                    break;
+                case "QUINZENAS":
+                    calendar.add(Calendar.DAY_OF_MONTH, (parsa - 1) * 15);
+                    break;
+                    case "MESES":
+                    calendar.add(Calendar.MONTH, (parsa - 1));
+                    break;
+                case "BIMESTRES":
+                    calendar.add(Calendar.MONTH, (parsa - 1) * 2);
+                    break;
+                case "TRIMESTRES":
+                    calendar.add(Calendar.MONTH, (parsa - 1) * 3);
+                    break;
+                case "SEMESTRES":
+                    calendar.add(Calendar.MONTH, (parsa - 1) * 6);
+                    break;
+                case "ANOS":
+                    calendar.add(Calendar.YEAR, (parsa - 1));
+                    break;
+
+            }
+
+            textInfoParcelas.setText("Serão " + parcelas + " parcelas de " + (Double.parseDouble(inputValor.getText().toString()) / parsa) + "cada, com final em " + DashboardActivity.FORMATADOR_DIA.format(calendar.getTime()));
+        }
     }
 
     public static class DatePickerFragment extends DialogFragment
@@ -360,4 +428,5 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
             rodavel.run();
         }
     }
+
 }

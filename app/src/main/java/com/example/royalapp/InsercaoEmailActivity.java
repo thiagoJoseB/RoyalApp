@@ -10,11 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.royalapp.remote.API;
 import com.example.royalapp.remote.request.InserirEmail;
 import com.example.royalapp.remote.response.Resultado;
 import com.example.royalapp.remote.Status;
-import com.example.royalapp.remote.APIUtil;
-import com.example.royalapp.remote.RouterInterface;
 
 import java.util.regex.Pattern;
 
@@ -22,15 +21,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class InsercaoEmail extends AppCompatActivity {
+public class InsercaoEmailActivity extends AppCompatActivity {
 
     /// 20 Recuperar os viwes
 
     EditText txtInsercaoEmail;
     Button btnInsercaoEmail;
     private final String tipo = "PEDIR";
-
-    RouterInterface routerInterface;
 
 
     @Override
@@ -43,8 +40,6 @@ public class InsercaoEmail extends AppCompatActivity {
         txtInsercaoEmail = findViewById(R.id.txtInsercaoEmail);
         btnInsercaoEmail = findViewById(R.id.btnInsercaoEmail);
 
-
-        routerInterface = APIUtil.getApiInterface();
 
         btnInsercaoEmail.setOnClickListener(view -> {
 
@@ -96,7 +91,7 @@ public class InsercaoEmail extends AppCompatActivity {
     ///23 metodo addUsuario
     public void addInserirEmail(InserirEmail inserirEmail){
         /// verbo , rota
-        Call<Resultado> call = routerInterface.addInserirEmail(inserirEmail);
+        Call<Resultado> call = API.get().addInserirEmail(inserirEmail);
 
         call.enqueue(new Callback<Resultado>() {
             @Override
@@ -106,13 +101,13 @@ public class InsercaoEmail extends AppCompatActivity {
 
                     if(status == Status.OK.codigo) {
 
-                            Intent intent = new Intent(InsercaoEmail.this, InserirCodigo.class);
+                            Intent intent = new Intent(InsercaoEmailActivity.this, InserirCodigoActivity.class);
                             intent.putExtra("email", txtInsercaoEmail.getText().toString());
                             startActivity(intent);
                             finish();
 
                     }else{
-                        Toast.makeText(InsercaoEmail.this, "ERRO DO CUTRIM",Toast.LENGTH_LONG).show();
+                        Toast.makeText(InsercaoEmailActivity.this, "ERRO DO CUTRIM",Toast.LENGTH_LONG).show();
 
                     }
 //                    //Log.d("REPOSNSE-", String.valueOf(response.raw()));

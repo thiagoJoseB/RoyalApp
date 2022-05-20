@@ -12,7 +12,7 @@ public enum Status {
     REQUISICAO_INVALIDA(69)
     ;
     
-    private Status(int codigo){
+    Status(int codigo){
 	this.codigo = codigo;
     }
     

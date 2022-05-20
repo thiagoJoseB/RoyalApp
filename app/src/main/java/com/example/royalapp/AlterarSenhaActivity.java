@@ -10,23 +10,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.royalapp.remote.API;
 import com.example.royalapp.remote.response.Resultado;
 import com.example.royalapp.remote.request.SenhaNova;
-import com.example.royalapp.remote.APIUtil;
-import com.example.royalapp.remote.RouterInterface;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class AlterarSenha extends AppCompatActivity {
+public class AlterarSenhaActivity extends AppCompatActivity {
 
     private EditText txtNovaSenha;
     private EditText txtConfirmarNovaSenha;
     private Button btnConfirmarSenha;
 
-    RouterInterface routerInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +35,6 @@ public class AlterarSenha extends AppCompatActivity {
        txtConfirmarNovaSenha = findViewById(R.id.txtConfirmarNovaSenha);
        btnConfirmarSenha = findViewById(R.id.btnConfirmarSenha);
 
-        routerInterface = APIUtil.getApiInterface();
 
         btnConfirmarSenha.setOnClickListener(view -> {
 
@@ -97,7 +94,7 @@ public class AlterarSenha extends AppCompatActivity {
     }
 
     public void addSenhaNova(SenhaNova senhaNova){
-        Call<Resultado> call = routerInterface.addSenhaNova(senhaNova);
+        Call<Resultado> call = API.get().addSenhaNova(senhaNova);
 
         call.enqueue(new Callback<Resultado>() {
             @Override
@@ -105,12 +102,12 @@ public class AlterarSenha extends AppCompatActivity {
                 Log.d("teste", Integer.toString(response.code()));
 
                 if(response.isSuccessful()){
-                    Toast.makeText(AlterarSenha.this, "BOA", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(AlterarSenha.this, LoginUsuario.class);
+                    Toast.makeText(AlterarSenhaActivity.this, "BOA", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AlterarSenhaActivity.this, LoginUsuarioActivity.class);
                     startActivity(intent);
 
                 } else {
-                    Toast.makeText(AlterarSenha.this, "ERRO", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AlterarSenhaActivity.this, "ERRO", Toast.LENGTH_SHORT).show();
                 }
 
 

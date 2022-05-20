@@ -3,7 +3,7 @@
 
     <!-- View background color -->
     <solid
-        android:color="@color/white" >
+        android:color="@color/transparent" >
     </solid>
 
     <!-- View border color and width -->

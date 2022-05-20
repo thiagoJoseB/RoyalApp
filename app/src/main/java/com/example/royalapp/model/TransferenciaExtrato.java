@@ -4,9 +4,8 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
-public class Extrato {
+public class TransferenciaExtrato {
 
     @SerializedName("categoria")
     @Expose
@@ -30,12 +29,12 @@ public class Extrato {
 
 
 
-    public Extrato(int i, Extrato extrato){
+    public TransferenciaExtrato(int i, TransferenciaExtrato transferenciaExtrato){
 
     }
 
 
-    public Extrato(int categoria , BigDecimal valor, String descricao,  String data ) {
+    public TransferenciaExtrato(int categoria , BigDecimal valor, String descricao, String data ) {
         this.categoria = categoria;
         this.valor = valor;
         this.descricao = descricao;

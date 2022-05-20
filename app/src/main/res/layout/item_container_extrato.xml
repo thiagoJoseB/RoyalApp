@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,7 +9,7 @@
     app:cardElevation="4dp">
 
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
@@ -16,72 +17,63 @@
             android:gravity="center_vertical">
 
 
-
             <TextView
                 android:id="@+id/txtCardImagem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="40sp"
 
                 android:fontFamily="@font/material_icons"
-                android:text="house"
-                />
+                android:textSize="40sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/txtCardCategoria"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="8dp">
-
-                <TextView
-                    android:id="@+id/txtCardCategoria"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textAlignment="center"
-                    android:text="Casa" />
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/txtCardPreco"
+                app:layout_constraintStart_toStartOf="@+id/txtCardPreco" />
 
             <TextView
                 android:id="@+id/txtCardPreco"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="R$ -22,17"
+                android:layout_marginStart="8dp"
                 android:textColor="@color/vermelhoNegativo"
 
-                />
 
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/txtCardImagem"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/txtCardDescricao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:textSize="16sp"
-
-                android:text="Design Móveis "/>
-
-
-            </LinearLayout>
+                app:layout_constraintStart_toEndOf="@+id/txtCardImagem"
+                app:layout_constraintStart_toStartOf="@+id/txtCardPreco"
+                app:layout_constraintTop_toBottomOf="@+id/txtCardPreco" />
 
 
-
-            
-
-
-                <TextView
-                    android:id="@+id/txtCardData"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="JAN 2022"
-                    android:textColor="@color/cinzaExtrato"
-                    android:layout_marginLeft="100dp"/>
+            <TextView
+                android:id="@+id/txtCardData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:textColor="@color/cinzaExtrato"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-
-
-
-       </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.cardview.widget.CardView>

@@ -1,11 +1,12 @@
 package com.example.royalapp;
 
+import static com.example.royalapp.DashboardActivity.FORMATADOR_MOEDA;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,10 +17,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.royalapp.model.Categoria;
-import com.example.royalapp.model.Extrato;
-import com.example.royalapp.model.ItemExtrato;
-import com.example.royalapp.remote.APIUtil;
-import com.example.royalapp.remote.RouterInterface;
+import com.example.royalapp.model.TransferenciaExtrato;
+import com.example.royalapp.remote.API;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -28,14 +27,9 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 
-public class ExtratoUsuario extends AppCompatActivity {
-
-    ///19
-    RouterInterface routerInterface;
-    List<Extrato> list = new ArrayList<>();
+public class ExtratoUsuarioActivity extends AppCompatActivity {
+    List<TransferenciaExtrato> list = new ArrayList<>();
     RecyclerView recyclerView;
 
     private Spinner menu;
@@ -49,48 +43,27 @@ public class ExtratoUsuario extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_extrato_usuario);
 
-        //Centralizar texto da toolbar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ///20
-        routerInterface = APIUtil.getApiInterface();
         recyclerView = findViewById(R.id.recyclerview);
 
-        ///21
-        ///***RECEBE OS DADOS DE EXTRATO **///
-        Call<List<Extrato>> call = routerInterface.getExtratos( getIntent().getStringExtra("k"), 2022, 5);
-        Intent intent = new Intent(ExtratoUsuario.this, RouterInterface.class);
+        Call<List<TransferenciaExtrato>> call = API.get().getExtratos( getIntent().getStringExtra("k"), 2022, 5);
 
-
-
-
-
-
-        call.enqueue(new Callback<List<Extrato>>() {
+        call.enqueue(new Callback<List<TransferenciaExtrato>>() {
             @Override
-            public void onResponse(Call<List<Extrato>> call, Response<List<Extrato>> response) {
-
-                List<ItemExtrato> itemExtratos = new ArrayList<>();
+            public void onResponse(Call<List<TransferenciaExtrato>> call, Response<List<TransferenciaExtrato>> response) {
                 list = response.body();
 
 
-
-                ///22
-                for (int i = 0; i< list.size(); i++){
-
-
-                    itemExtratos.add(new ItemExtrato(0 ,list.get(i)));
-                }
-
-                recyclerView.setAdapter(new ExtratoAdapter(itemExtratos));
+                recyclerView.setAdapter(new ExtratoAdapter(response.body()));
 
 
             }
 
             @Override
-            public void onFailure(Call<List<Extrato>> call, Throwable t) {
+            public void onFailure(Call<List<TransferenciaExtrato>> call, Throwable t) {
 
                 Log.d("API-ERRO",t.getMessage());
 
@@ -109,15 +82,11 @@ public class ExtratoUsuario extends AppCompatActivity {
 
     }
 
+    private class ExtratoAdapter extends RecyclerView.Adapter<ExtratoAdapter.ExtratoViewHolder> {
 
-    /**
-     * 09 passo aula de recyclerView
-     *///
-    private class ExtratoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+        List<TransferenciaExtrato> itemExtratos;
 
-        List<ItemExtrato> itemExtratos;
-
-        public ExtratoAdapter(List<ItemExtrato> itemExtratos) {
+        public ExtratoAdapter(List<TransferenciaExtrato> itemExtratos) {
             this.itemExtratos = itemExtratos;
 
 
@@ -125,9 +94,7 @@ public class ExtratoUsuario extends AppCompatActivity {
         ////15
         @NonNull
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            ///18
-            ///*INFLA A ESTRUTURA XML E OS DADOS REFERENTES A EXTRATO*/////
+        public ExtratoAdapter.ExtratoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
                 return new ExtratoAdapter.ExtratoViewHolder(
                         LayoutInflater.from(parent.getContext())
@@ -138,14 +105,11 @@ public class ExtratoUsuario extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            ///17 passo aula de recyclerView
-            ////**RECUPERA OS DADOS DE EXTRATO**/////
-            if (getItemViewType(position) ==0){
+        public void onBindViewHolder(@NonNull ExtratoAdapter.ExtratoViewHolder holder, int position) {
 
-                Extrato extrato = (Extrato) itemExtratos.get(position).getObject();
-                ((ExtratoAdapter.ExtratoViewHolder) holder).setExtratoData(extrato);
-            }
+                TransferenciaExtrato transferenciaExtrato =  itemExtratos.get(position);
+                holder.setExtratoData(transferenciaExtrato);
+
 
         }
 
@@ -155,11 +119,7 @@ public class ExtratoUsuario extends AppCompatActivity {
             return itemExtratos.size();
         }
 
-        ///16 ///***RECUPERA O TIPO DE OBJETO DE ITEM***////
-        public int getItemViewCount(int position ){
 
-               return itemExtratos.get(position).getType();
-            }
 
 
 
@@ -167,16 +127,12 @@ public class ExtratoUsuario extends AppCompatActivity {
      * 10 passo aula de recyclerView
      *///
     class ExtratoViewHolder extends RecyclerView.ViewHolder {
-        /// 11 recycler
-        private TextView txtCategoria, txtDescricao,  txtImagem , txtData , txtPreco;
+        private final TextView txtCategoria, txtDescricao,  txtImagem , txtData , txtPreco;
 
 
 
         public ExtratoViewHolder(@NonNull View itemView) {
-
             super(itemView);
-
-            ////12
             txtCategoria = itemView.findViewById(R.id.txtCardCategoria);
             txtDescricao = itemView.findViewById(R.id.txtCardDescricao);
             txtPreco = itemView.findViewById(R.id.txtCardPreco);
@@ -185,33 +141,34 @@ public class ExtratoUsuario extends AppCompatActivity {
         }
 
         ///13
-        public void setExtratoData(Extrato extrato){
-            txtDescricao.setText(extrato.getDescricao());
-            txtPreco.setText(extrato.getValor().toString());
-            txtData.setText(extrato.getData());
+        public void setExtratoData(TransferenciaExtrato transferenciaExtrato){
+            txtDescricao.setText(transferenciaExtrato.getDescricao());
+            txtPreco.setText(FORMATADOR_MOEDA.format(transferenciaExtrato.getValor()));
+            txtData.setText(transferenciaExtrato.getData());
 
             Categoria categoria = null;
 
-            if (extrato.getValor().compareTo(BigDecimal.ZERO) > 0) { //receita
-                txtPreco.setTextColor(ExtratoUsuario.this.getResources().getColor(R.color.verdePositivo));
+            if (transferenciaExtrato.getValor().compareTo(BigDecimal.ZERO) > 0) { //receita
+                txtPreco.setTextColor(ExtratoUsuarioActivity.this.getResources().getColor(R.color.verdePositivo));
 
 
 
-                for(Categoria cat : Dashboard.receitas){
-                    if(cat.idCategoria == extrato.getCategoria()){
+                for(Categoria cat : DashboardActivity.receitas){
+                    if(cat.idCategoria == transferenciaExtrato.getCategoria()){
                         categoria = cat;
                     }
                 }
 
 
             } else { //despesa
-                for(Categoria cat : Dashboard.despesas){
-                    if(cat.idCategoria == extrato.getCategoria()){
+                for(Categoria cat : DashboardActivity.despesas){
+                    if(cat.idCategoria == transferenciaExtrato.getCategoria()){
                         categoria = cat;
                     }
                 }
             }
 
+            assert categoria != null;
             txtCategoria.setText(categoria.nome);
             txtImagem.setText(categoria.icone);
         }

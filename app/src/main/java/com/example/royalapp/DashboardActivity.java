@@ -1,31 +1,20 @@
 package com.example.royalapp;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.os.TestLooperManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.DialogFragment;
 
 import com.example.royalapp.model.Categoria;
-import com.example.royalapp.remote.APIUtil;
-import com.example.royalapp.remote.RouterInterface;
-import com.example.royalapp.remote.response.DashboardData;
+import com.example.royalapp.remote.API;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -35,18 +24,16 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,7 +48,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Dashboard extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity {
 
 
     public static final Locale BRASIL = new Locale("pt", "BR");
@@ -77,6 +64,7 @@ public class Dashboard extends AppCompatActivity {
     private Button buttonNovaDespesa;
     private Button buttonNovaReceita;
     private TextView btnExtrato;
+    private BottomNavigationView menuBaixo;
 
 
 
@@ -105,14 +93,20 @@ public class Dashboard extends AppCompatActivity {
 
 //        getSupportActionBar().setCustomView(R.layout.toolbar_circle);
 
-
+        
 
         getSupportActionBar().hide();
         viewTextSaldoGeral = this.findViewById(R.id.dashboard_saldo_principal_texto);
         viewTextReceitaGeral = this.findViewById(R.id.dashboard_receita_principal_texto);
         viewTextDespesaGeral = this.findViewById(R.id.dashboard_despesa_principal_texto);
 
+        menuBaixo = this.findViewById(R.id.dashboard_menu_baixo);
+        menuBaixo.setSelectedItemId(R.id.menu_baixo_geral);
 
+        menuBaixo.setOnItemSelectedListener(item -> {
+
+            return false;
+        });
 
         buttonNovaDespesa = this.findViewById(R.id.dashboard_nova_despesa);
         buttonNovaReceita = this.findViewById(R.id.dashboard_nova_receita);
@@ -125,7 +119,7 @@ public class Dashboard extends AppCompatActivity {
         Gson gson = new Gson();
         Type tipoArrayCategorias = new TypeToken<List<Categoria>>(){}.getType();
 
-        APIUtil.getApiInterface().getDashboardInfo(token, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1).enqueue(new Callback<String>() {
+        API.get().getDashboardInfo(token, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 JsonArray json = JsonParser.parseString(response.body()).getAsJsonArray();
@@ -151,21 +145,21 @@ public class Dashboard extends AppCompatActivity {
                 viewEfeitoDespesaGeral.stopShimmer();
                 viewEfeitoDespesaGeral.setVisibility(View.GONE);
 
-                Dashboard.this.atualizarValoresPrincipais();
+                DashboardActivity.this.atualizarValoresPrincipais();
 
                 Log.d("teste", viewTextSaldoGeral.getParent().getClass().getName());
 
-                Toast.makeText(Dashboard.this, "carregou", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DashboardActivity.this, "carregou", Toast.LENGTH_SHORT).show();
 
                 OkHttpClient client = new OkHttpClient();
 
                 webSocket = client.newWebSocket(
-                        new Request.Builder().url(APIUtil.WS_API_URL + "dashboard/" + token).build(),
+                        new Request.Builder().url(API.WS_API_URL + "dashboard/" + token).build(),
                         new DashboardWebSocket()
                 );
 
                 buttonNovaDespesa.setOnClickListener(view -> {
-                    Intent intent = new Intent(Dashboard.this, NovaTransferenciaActivity.class);
+                    Intent intent = new Intent(DashboardActivity.this, NovaTransferenciaActivity.class);
 
                     intent.putExtra("modo", "despesa");
 
@@ -180,7 +174,7 @@ public class Dashboard extends AppCompatActivity {
                 });
 
                 buttonNovaReceita.setOnClickListener(view -> {
-                    Intent intent = new Intent(Dashboard.this, NovaTransferenciaActivity.class);
+                    Intent intent = new Intent(DashboardActivity.this, NovaTransferenciaActivity.class);
 
                     intent.putExtra("modo", "receita");
                     intent.putParcelableArrayListExtra("categorias", new ArrayList<>(receitas));
@@ -203,7 +197,7 @@ public class Dashboard extends AppCompatActivity {
         });
 
         btnExtrato.setOnClickListener(view -> {
-            Intent intent = new Intent(Dashboard.this, ExtratoUsuario.class);
+            Intent intent = new Intent(DashboardActivity.this, ExtratoUsuarioActivity.class);
             intent.putExtra("k", token);
 
             startActivity(intent);
@@ -327,7 +321,7 @@ public class Dashboard extends AppCompatActivity {
                                 despesa = despesa.add(valor);
                                 saldo = saldo.subtract(valor);
 
-                                Dashboard.this.atualizarValoresPrincipais();
+                                DashboardActivity.this.atualizarValoresPrincipais();
                                 break;
                             }
                         }
@@ -341,7 +335,7 @@ public class Dashboard extends AppCompatActivity {
                                 receita = receita.add(valor);
                                 saldo = saldo.add(valor);
 
-                                Dashboard.this.atualizarValoresPrincipais();
+                                DashboardActivity.this.atualizarValoresPrincipais();
                                 break;
                             }
                         }

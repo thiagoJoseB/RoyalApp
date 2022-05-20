@@ -5,17 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class Transferencia extends AppCompatActivity {
+public class SenhaConfirmadaActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transferencia);
+        setContentView(R.layout.activity_senha_confirmada);
 
 
 
-        //Centralizar texto da toolbar
+
+
+
+        //toolbar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.toolbar_login);
+        getSupportActionBar().setCustomView(R.layout.toolbar_app);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

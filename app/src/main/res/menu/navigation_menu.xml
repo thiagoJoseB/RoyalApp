@@ -2,18 +2,14 @@
 <menu xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-<!--   <item-->
 
-<!--       android:title="@string/app_name"-->
-
-<!--       />-->
 
 
    <item
-       android:id="@+id/visaoGeral"
-       android:icon="@drawable/icon_home_24"
-       android:title="Visão Geral"
-
+       android:id="@+id/contas"
+       android:icon="@drawable/icon_receipt_24"
+       android:title="Contas"
+      android:enabled="false"
 
 
 
@@ -27,18 +23,25 @@
 
 
        />
+
    <item
-       android:id="@+id/contas"
-       android:icon="@drawable/icon_receipt_24"
-       android:title="Contas"
+       android:id="@+id/menu_baixo_geral"
+       android:icon="@drawable/icon_home_24"
+       android:title="Visão Geral"
+
 
 
 
        />
+
+
+
    <item
        android:id="@+id/metas"
        android:icon="@drawable/icon_bar_chart_24"
        android:title="Metas"
+       android:enabled="false"
+
 
        />
 
@@ -46,58 +49,9 @@
        android:id="@+id/graficos"
        android:icon="@drawable/icon_chart_outlined_24"
        android:title="Graficos"
+       android:enabled="false"
 
        />
-
-   <item
-       android:id="@+id/grupos"
-       android:icon="@drawable/icon_group_24"
-       android:title="Grupos"
-
-       />
-
-<!--   <item-->
-<!--       android:id="@+id/imgProbile"-->
-<!--       android:layout_width="70dp"-->
-<!--       android:layout_height="70dp"-->
-<!--       android:scaleType="centerCrop"-->
-<!--       android:src="@drawable/transferir"-->
-<!--       tools:ignore="MenuTitle"-->
-<!--       />-->
-
-<!--   <item-->
-<!--       android:id="@+id/view"-->
-<!--       android:layout_width="1dp"-->
-<!--       android:layout_height="1dp"-->
-<!--       android:layout_marginStart="10dp"-->
-
-<!--       tools:ignore="MenuTitle" />-->
-
-<!--   <item-->
-<!--       android:layout_width="0dp"-->
-<!--       android:layout_height="wrap_content"-->
-<!--       android:text="Nome da pesssoa"-->
-<!--       android:layout_marginStart="20dp"-->
-<!--       android:textSize="18sp"-->
-<!--       android:textColor="@color/black"-->
-<!--       android:textStyle="bold"-->
-
-
-<!--       tools:ignore="MenuTitle" />-->
-
-
-<!--   <item-->
-<!--       android:layout_width="0dp"-->
-<!--       android:layout_height="wrap_content"-->
-<!--       android:text="Ver perfil"-->
-<!--       android:layout_marginStart="20dp"-->
-<!--       android:textSize="12sp"-->
-<!--       android:textColor="@color/black"-->
-<!--       -->
-<!--       tools:ignore="MenuTitle" />-->
-
-
-
 
 
 

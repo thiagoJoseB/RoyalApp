@@ -16,8 +16,19 @@
         <item>Outubro</item>
         <item>Novembro</item>
         <item>Dezembro</item>
-
-
     </string-array>
+
+    <string-array name="frequencia">
+        <item>Dias</item>
+        <item>Semanas</item>
+        <item>Quinzenas</item>
+        <item>Meses</item>
+        <item>Bimestres</item>
+        <item>Trimestres</item>
+        <item>Semestres</item>
+        <item>Anos</item>
+    </string-array>
+
+
 
 </resources>
