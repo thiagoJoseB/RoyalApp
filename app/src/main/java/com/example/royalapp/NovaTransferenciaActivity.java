@@ -314,13 +314,8 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
 
 
+                String formatted = DashboardActivity.FORMATADOR_MOEDA.format(parsearCaixaDeTexto(charSequence.toString().replaceAll("[R$,.\\s]", "")));
 
-                String cleanString = charSequence.toString().replaceAll("[R$,.\\s]", "");
-
-                BigDecimal parsed = new BigDecimal(cleanString);
-                String formatted = DashboardActivity.FORMATADOR_MOEDA.format(parsed.divide(new BigDecimal(100)));
-
-                ultimo = formatted;
                     inputValor.setText(formatted);
                     inputValor.setSelection(Math.min(cursor, formatted.length()));
                     inputValor.addTextChangedListener(this);
@@ -357,7 +352,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
             json.put("metodo", modo);
             json.put("arg", "inserir");
-            json.put("valor", Double.parseDouble(inputValor.getText().toString()));
+            json.put("valor", parsearCaixaDeTexto(inputValor.getText().toString()).doubleValue());
             json.put("data", new java.sql.Date(calendario.getTime().getTime()).toString());
             json.put("descricao", inputDescricao.getText().toString());
             json.put("favorito", favorita);
@@ -415,7 +410,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
             }
 
-            textInfoParcelas.setText("Serão " + parcelas + " parcelas de " + (Double.parseDouble(inputValor.getText().toString()) / parsa) + "cada, com final em " + DashboardActivity.FORMATADOR_DIA.format(calendar.getTime()));
+            textInfoParcelas.setText("Serão " + parcelas + " parcelas de " + (parsearCaixaDeTexto(inputValor.getText().toString()).divide(new BigDecimal(parsa), RoundingMode.DOWN)) + "cada, com final em " + DashboardActivity.FORMATADOR_DIA.format(calendar.getTime()));
         }
     }
 
@@ -447,5 +442,13 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
             rodavel.run();
         }
     }
+
+    public static BigDecimal parsearCaixaDeTexto(String texto){
+        String cleanString = texto.replaceAll("[R$,.\\s]", "");
+
+        return new BigDecimal(cleanString).divide(CEM, RoundingMode.DOWN);
+    }
+
+    private static final BigDecimal CEM = new BigDecimal(100);
 
 }
