@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".TransacoesFavoritas">
+    tools:context=".TransferenciaFavoritas">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -63,6 +63,7 @@
 
 
         <Button
+            android:id="@+id/btnConfirmarFavorito"
             android:layout_width="122dp"
             android:layout_height="52dp"
             android:layout_gravity="center"

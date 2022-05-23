@@ -17,7 +17,7 @@
             android:name=".PerfilUsuario"
             android:exported="false" />
         <activity
-            android:name=".TransacoesFavoritas"
+            android:name=".TransferenciaFavoritas"
             android:exported="false" />
         <activity
             android:name=".ExtratoUsuarioActivity"

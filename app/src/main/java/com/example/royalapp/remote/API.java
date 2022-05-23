@@ -4,6 +4,8 @@ package com.example.royalapp.remote;
 
 ///13  requisicao , como vai ser feita , onde os dados vao estar
 
+import com.example.royalapp.TransferenciaFavoritas;
+import com.example.royalapp.model.ItemFavorito;
 import com.example.royalapp.model.TransferenciaExtrato;
 import com.example.royalapp.remote.request.Cadastro;
 import com.example.royalapp.remote.request.Codigo;
@@ -27,7 +29,7 @@ import retrofit2.http.Query;
 
 
 public interface API {
-    public  static final String API_URL = "http://10.107.144.22:8080/royal/";
+    public  static final String API_URL = "http://10.107.144.11:8080/royal/";
     public  static final String WS_API_URL = "ws" + API_URL.substring(4);
     static final Retrofit INTERNAL_RETROFIT = new Retrofit.Builder()
             .baseUrl(API_URL)
@@ -50,4 +52,5 @@ public interface API {
     @GET("data/saldo/categorias") Call<String> getDashboardInfo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("data/extrato-mes") Call<List<TransferenciaExtrato>> getExtratos(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("grafico/{tipo}") Call<String> graficoMensal(@Path("tipo") String tipo, @Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
+    @GET("data/favorito") Call<List<ItemFavorito>> getFavorito(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
 }
