@@ -8,29 +8,30 @@ import java.math.BigDecimal;
 public class TransferenciaExtrato {
 
     @SerializedName("categoria")
-    @Expose
-    private int categoria ;
+    public int categoria ;
+
+    @SerializedName("parcelas")
+    public Integer parcelas ;
+
+    @SerializedName("indice")
+    public Integer indice ;
 
     @SerializedName("valor")
-    @Expose
-    private BigDecimal valor ;
+    public BigDecimal valor ;
 
     @SerializedName("descricao")
-    @Expose
-    private String descricao;
+    public String descricao;
 
 
     @SerializedName("data")
-    @Expose
-    private String data;
+    public String data;
 
 
 
 
 
 
-    public TransferenciaExtrato(int i, TransferenciaExtrato transferenciaExtrato){
-
+    public TransferenciaExtrato(){
     }
 
 
@@ -38,41 +39,6 @@ public class TransferenciaExtrato {
         this.categoria = categoria;
         this.valor = valor;
         this.descricao = descricao;
-        this.data = data;
-
-
-
-    }
-
-    public int getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(int categoria) {
-        this.categoria = categoria;
-    }
-
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
         this.data = data;
     }
 }

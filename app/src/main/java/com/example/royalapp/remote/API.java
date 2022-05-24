@@ -28,9 +28,9 @@ import retrofit2.http.Query;
 
 
 public interface API {
-    public  static final String API_URL = "http://6.6.6.103:8080/royal/";
-    public  static final String WS_API_URL = "ws" + API_URL.substring(4);
-    static final Retrofit INTERNAL_RETROFIT = new Retrofit.Builder()
+    String API_URL = "http://6.6.6.103:8080/royal/";
+    String WS_API_URL = "ws" + API_URL.substring(4);
+    Retrofit INTERNAL_RETROFIT = new Retrofit.Builder()
             .baseUrl(API_URL)
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
@@ -38,7 +38,7 @@ public interface API {
                     .create()))
             .build();
 
-    public static API get(){
+    static API get(){
         return INTERNAL_RETROFIT.create(API.class);
     }
 
@@ -49,6 +49,7 @@ public interface API {
     @POST("resetar") Call<Resultado> addCodigo(@Body Codigo codigo);
     @POST("resetar") Call<Resultado> addSenhaNova(@Body SenhaNova senhaNova);
     @GET("data/saldo/categorias") Call<String> getDashboardInfo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
+    @GET("data/saldo") Call<String> getSaldo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("data/extrato-mes") Call<List<TransferenciaExtrato>> getExtratos(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("grafico/{tipo}") Call<String> graficoMensal(@Path("tipo") String tipo, @Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("data/favorito") Call<List<ItemFavorito>> getFavorito(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);

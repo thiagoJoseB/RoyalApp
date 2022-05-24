@@ -14,45 +14,45 @@
         android:theme="@style/Theme.RoyalApp"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".PerfilUsuario"
+            android:name=".activity.PerfilUsuario"
             android:exported="false" />
         <activity
-            android:name=".TransferenciaFavoritasActivity"
+            android:name=".activity.TransferenciaFavoritasActivity"
             android:exported="false" />
         <activity
-            android:name=".ExtratoUsuarioActivity"
+            android:name=".activity.ExtratoUsuarioActivity"
             android:exported="true"
-            android:parentActivityName=".DashboardActivity"
+            android:parentActivityName=".activity.DashboardActivity"
             android:launchMode="singleTop"/>
         <activity
-            android:name=".NovaTransferenciaActivity"
+            android:name=".activity.NovaTransferenciaActivity"
             android:exported="true"
-            android:parentActivityName=".DashboardActivity" />
+            android:parentActivityName=".activity.DashboardActivity" />
         <activity
-            android:name=".DashboardActivity"
+            android:name=".activity.DashboardActivity"
             android:exported="true"
             android:launchMode="singleInstance" />
         <activity
-            android:name=".SenhaConfirmadaActivity"
+            android:name=".activity.SenhaConfirmadaActivity"
             android:exported="true"
             android:launchMode="singleTop" />
         <activity
-            android:name=".AlterarSenhaActivity"
+            android:name=".activity.AlterarSenhaActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:parentActivityName=".InserirCodigoActivity" />
+            android:parentActivityName=".activity.InserirCodigoActivity" />
         <activity
-            android:name=".InserirCodigoActivity"
+            android:name=".activity.InserirCodigoActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:parentActivityName=".LoginUsuarioActivity" />
+            android:parentActivityName=".activity.LoginUsuarioActivity" />
         <activity
-            android:name=".InsercaoEmailActivity"
+            android:name=".activity.InsercaoEmailActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:parentActivityName=".LoginUsuarioActivity" />
+            android:parentActivityName=".activity.LoginUsuarioActivity" />
         <activity
-            android:name=".LoginUsuarioActivity"
+            android:name=".activity.LoginUsuarioActivity"
             android:exported="true"
             android:launchMode="singleTop">
             <intent-filter>
@@ -62,10 +62,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CadastroUsuarioActivity"
+            android:name=".activity.CadastroUsuarioActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:parentActivityName=".LoginUsuarioActivity" />
+            android:parentActivityName=".activity.LoginUsuarioActivity" />
     </application>
 
 </manifest>

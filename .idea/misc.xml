@@ -43,14 +43,14 @@
         <entry key="app/src/main/res/drawable/unchecked.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_alterar_senha.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_extrato_usuario.xml" value="0.55" />
+        <entry key="app/src/main/res/layout/activity_extrato_usuario.xml" value="0.34312796208530805" />
         <entry key="app/src/main/res/layout/activity_feed_extratos.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/layout/activity_insercao_email.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_inserir_codigo.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.55" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5770833333333333" />
         <entry key="app/src/main/res/layout/activity_menu.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_nova_transferencia.xml" value="0.55" />
+        <entry key="app/src/main/res/layout/activity_nova_transferencia.xml" value="0.4446564885496183" />
         <entry key="app/src/main/res/layout/activity_perfil_usuario.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_senha_confirmada.xml" value="0.11" />
         <entry key="app/src/main/res/layout/activity_transacoes_favoritas.xml" value="0.5911458333333334" />

@@ -1,6 +1,6 @@
-package com.example.royalapp;
+package com.example.royalapp.activity;
 
-import static com.example.royalapp.DashboardActivity.FORMATADOR_MOEDA;
+import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.royalapp.R;
 import com.example.royalapp.model.Categoria;
 import com.example.royalapp.model.ItemFavorito;
 import com.example.royalapp.remote.API;

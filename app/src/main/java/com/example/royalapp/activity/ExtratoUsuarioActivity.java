@@ -1,6 +1,6 @@
-package com.example.royalapp;
+package com.example.royalapp.activity;
 
-import static com.example.royalapp.DashboardActivity.FORMATADOR_MOEDA;
+import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.royalapp.R;
 import com.example.royalapp.model.Categoria;
 import com.example.royalapp.model.TransferenciaExtrato;
 import com.example.royalapp.remote.API;
@@ -162,19 +163,20 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
 
         ///13
         public void setExtratoData(TransferenciaExtrato transferenciaExtrato){
-            txtDescricao.setText(transferenciaExtrato.getDescricao());
-            txtPreco.setText(FORMATADOR_MOEDA.format(transferenciaExtrato.getValor()));
-            txtData.setText(transferenciaExtrato.getData());
+            txtDescricao.setText(transferenciaExtrato.descricao);
+            txtPreco.setText(FORMATADOR_MOEDA.format(transferenciaExtrato.valor));
+            txtData.setText(transferenciaExtrato.data +
+                    (transferenciaExtrato.indice != null ? "\nParcela " + (transferenciaExtrato.indice + 1) + "/" + transferenciaExtrato.parcelas: ""));
 
             Categoria categoria = null;
 
-            if (transferenciaExtrato.getValor().compareTo(BigDecimal.ZERO) > 0) { //receita
+            if (transferenciaExtrato.valor.compareTo(BigDecimal.ZERO) > 0) { //receita
                 txtPreco.setTextColor(ExtratoUsuarioActivity.this.getResources().getColor(R.color.verdePositivo));
 
 
 
                 for(Categoria cat : DashboardActivity.receitas){
-                    if(cat.idCategoria == transferenciaExtrato.getCategoria()){
+                    if(cat.idCategoria == transferenciaExtrato.categoria){
                         categoria = cat;
                     }
                 }
@@ -182,7 +184,7 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
 
             } else { //despesa
                 for(Categoria cat : DashboardActivity.despesas){
-                    if(cat.idCategoria == transferenciaExtrato.getCategoria()){
+                    if(cat.idCategoria == transferenciaExtrato.categoria){
                         categoria = cat;
                     }
                 }

@@ -1,4 +1,4 @@
-package com.example.royalapp;
+package com.example.royalapp.activity;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.royalapp.R;
 import com.example.royalapp.remote.API;
 import com.example.royalapp.remote.request.Codigo;
 import com.example.royalapp.remote.response.Resultado;

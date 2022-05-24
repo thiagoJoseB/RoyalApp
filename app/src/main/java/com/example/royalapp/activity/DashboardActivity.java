@@ -1,11 +1,14 @@
-package com.example.royalapp;
+package com.example.royalapp.activity;
+
+import static com.example.royalapp.Utilidades.CALENDARIO;
+import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
+import static com.example.royalapp.Utilidades.GSON;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.royalapp.R;
 import com.example.royalapp.model.Categoria;
 import com.example.royalapp.remote.API;
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -33,13 +37,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DateFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -52,19 +52,15 @@ import retrofit2.Response;
 public class DashboardActivity extends AppCompatActivity {
 
 
-    public static final Locale BRASIL = new Locale("pt", "BR");
-    public static final DateFormat FORMATADOR_DIA = DateFormat.getDateInstance(DateFormat.SHORT, BRASIL);
-    public static final NumberFormat FORMATADOR_MOEDA = NumberFormat.getCurrencyInstance(BRASIL);
+
 
 
     public static WebSocket webSocket;
-    public static List<Categoria> despesas = new ArrayList<>();
-    public static List<Categoria> receitas = new ArrayList<>();
+    public static final List<Categoria> despesas = new ArrayList<>();
+    public static final List<Categoria> receitas = new ArrayList<>();
     static String token = null;
 
-    static {
-        FORMATADOR_MOEDA.setRoundingMode(RoundingMode.DOWN);
-    }
+
 
     private TextView viewTextSaldoGeral;
     private TextView viewTextDespesaGeral;
@@ -81,9 +77,27 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void atualizarValoresPrincipais() {
 
-        viewTextReceitaGeral.setText(FORMATADOR_MOEDA.format(receita.longValue()));
-        viewTextDespesaGeral.setText(FORMATADOR_MOEDA.format(despesa.longValue()));
-        viewTextSaldoGeral.setText(FORMATADOR_MOEDA.format(saldo.longValue()));
+        API.get().getSaldo(token, CALENDARIO.get(Calendar.YEAR), CALENDARIO.get(Calendar.MONTH) + 1).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                JsonObject valores = JsonParser.parseString(response.body()).getAsJsonObject();
+
+                saldo = valores.get("saldo").getAsBigDecimal();
+
+                receita = valores.get("receita").getAsBigDecimal();
+
+                despesa = valores.get("despesa").getAsBigDecimal();
+
+                viewTextReceitaGeral.setText(FORMATADOR_MOEDA.format(receita));
+                viewTextDespesaGeral.setText(FORMATADOR_MOEDA.format(despesa));
+                viewTextSaldoGeral.setText(FORMATADOR_MOEDA.format(saldo));
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+            }
+        });
+
     }
 
     @Override
@@ -128,20 +142,19 @@ public class DashboardActivity extends AppCompatActivity {
             token = this.getIntent().getStringExtra("token");
         }
 
-        Calendar calendar = Calendar.getInstance();
-        Gson gson = new Gson();
+
         Type tipoArrayCategorias = new TypeToken<List<Categoria>>() {
         }.getType();
 
-        API.get().getDashboardInfo(token, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1).enqueue(new Callback<String>() {
+        API.get().getDashboardInfo(token, CALENDARIO.get(Calendar.YEAR), CALENDARIO.get(Calendar.MONTH) + 1).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 JsonArray json = JsonParser.parseString(response.body()).getAsJsonArray();
                 JsonObject valores = json.get(0).getAsJsonObject();
                 JsonObject categorias = json.get(1).getAsJsonObject();
 
-                despesas.addAll(gson.fromJson(categorias.get("despesas"), tipoArrayCategorias));
-                receitas.addAll(gson.fromJson(categorias.get("receitas"), tipoArrayCategorias));
+                despesas.addAll(GSON.fromJson(categorias.get("despesas"), tipoArrayCategorias));
+                receitas.addAll(GSON.fromJson(categorias.get("receitas"), tipoArrayCategorias));
 
 
                 saldo = valores.get("saldo").getAsBigDecimal();
@@ -295,11 +308,12 @@ public class DashboardActivity extends AppCompatActivity {
         API.get().graficoMensal("despesa", token, 2022, 5).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
+//                JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
+//
+//                json.entrySet().forEach(entry -> {
+//                    dataSet.addEntry(new PieEntry(entry.getValue().getAsFloat(), entry.getKey()));
+//                });
 
-                json.entrySet().forEach(entry -> {
-                    dataSet.addEntry(new PieEntry(entry.getValue().getAsFloat(), entry.getKey()));
-                });
             }
 
             @Override
@@ -329,11 +343,6 @@ public class DashboardActivity extends AppCompatActivity {
                     case "despesa": {
                         switch (json.get("arg").getAsString()) {
                             case "remover": {
-                                final BigDecimal valor = json.get("valor").getAsBigDecimal();
-
-                                despesa = despesa.add(valor);
-                                saldo = saldo.subtract(valor);
-
                                 DashboardActivity.this.atualizarValoresPrincipais();
                                 break;
                             }
@@ -343,11 +352,6 @@ public class DashboardActivity extends AppCompatActivity {
                     case "receita": {
                         switch (json.get("arg").getAsString()) {
                             case "adicionar": {
-                                final BigDecimal valor = json.get("valor").getAsBigDecimal();
-
-                                receita = receita.add(valor);
-                                saldo = saldo.add(valor);
-
                                 DashboardActivity.this.atualizarValoresPrincipais();
                                 break;
                             }

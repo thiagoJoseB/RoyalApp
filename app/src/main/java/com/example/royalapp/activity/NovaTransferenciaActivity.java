@@ -1,7 +1,8 @@
-package com.example.royalapp;
+package com.example.royalapp.activity;
 
-import static com.example.royalapp.DashboardActivity.BRASIL;
-import static com.example.royalapp.DashboardActivity.FORMATADOR_MOEDA;
+import static com.example.royalapp.Utilidades.BRASIL;
+import static com.example.royalapp.Utilidades.FORMATADOR_DIA;
+import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -25,17 +26,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.royalapp.R;
 import com.example.royalapp.model.Categoria;
-import com.example.royalapp.remote.response.DashboardData;
 import com.google.gson.GsonBuilder;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -95,7 +94,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     public void mostrarData(View v) {
 
         DialogFragment newFragment = new DatePickerFragment(calendario, () -> {
-            textData.setText(DashboardActivity.FORMATADOR_DIA.format(calendario.getTime()));
+            textData.setText(FORMATADOR_DIA.format(calendario.getTime()));
         });
 
         newFragment.show(getSupportFragmentManager(), "datePicker");
@@ -298,7 +297,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
 
         inputValor.addTextChangedListener(new TextWatcher() {
-            String ultimo = null;
+            final String ultimo = null;
             int cursor = -1;
 
             @Override
@@ -315,7 +314,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
 
 
-                String formatted = DashboardActivity.FORMATADOR_MOEDA.format(parsearCaixaDeTexto(charSequence.toString().replaceAll("[R$,.\\s]", "")));
+                String formatted = FORMATADOR_MOEDA.format(parsearCaixaDeTexto(charSequence.toString().replaceAll("[R$,.\\s]", "")));
 
                     inputValor.setText(formatted);
                     inputValor.setSelection(Math.min(cursor, formatted.length()));
@@ -334,7 +333,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         textTitulo.setText("Nova " + modo);
 
         textData = findViewById(R.id.nova_transferencia_data);
-        textData.setText(DashboardActivity.FORMATADOR_DIA.format(calendario.getTime()));
+        textData.setText(FORMATADOR_DIA.format(calendario.getTime()));
 
         spinnerCategorias = findViewById(R.id.nova_transferencia_spinner_categorias);
 
@@ -411,7 +410,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
             }
 
-            textInfoParcelas.setText("Serão " + parcelas + " parcelas de " + (FORMATADOR_MOEDA.format(parsearCaixaDeTexto(inputValor.getText().toString()).divide(new BigDecimal(parsa), 2, RoundingMode.DOWN))) + " cada, com final em " + DashboardActivity.FORMATADOR_DIA.format(calendar.getTime()));
+            textInfoParcelas.setText("Serão " + parcelas + " parcelas de " + (FORMATADOR_MOEDA.format(parsearCaixaDeTexto(inputValor.getText().toString()).divide(new BigDecimal(parsa), 2, RoundingMode.DOWN))) + " cada, com final em " + FORMATADOR_DIA.format(calendar.getTime()));
         }
     }
 

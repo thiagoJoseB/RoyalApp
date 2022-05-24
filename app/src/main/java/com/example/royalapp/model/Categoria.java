@@ -5,8 +5,6 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import java.io.Serializable;
-
 public final class Categoria implements Parcelable {
     public int idCategoria;
     public String nome;

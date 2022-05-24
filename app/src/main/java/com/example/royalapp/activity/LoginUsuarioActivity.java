@@ -1,4 +1,4 @@
-package com.example.royalapp;
+package com.example.royalapp.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.royalapp.R;
 import com.example.royalapp.remote.API;
 import com.example.royalapp.remote.Status;
 import com.example.royalapp.remote.request.Login;
@@ -147,7 +148,7 @@ public class LoginUsuarioActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
                     Log.e("login", t.getClass().getSimpleName(), t);
-                    Toast.makeText(LoginUsuarioActivity.this, "erro" + t.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginUsuarioActivity.this, "erro" + t, Toast.LENGTH_LONG).show();
                 }
             });
     }
