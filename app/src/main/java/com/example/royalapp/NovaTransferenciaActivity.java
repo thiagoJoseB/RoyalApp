@@ -1,6 +1,7 @@
 package com.example.royalapp;
 
 import static com.example.royalapp.DashboardActivity.BRASIL;
+import static com.example.royalapp.DashboardActivity.FORMATADOR_MOEDA;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -410,7 +411,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
             }
 
-            textInfoParcelas.setText("Serão " + parcelas + " parcelas de " + (parsearCaixaDeTexto(inputValor.getText().toString()).divide(new BigDecimal(parsa), RoundingMode.DOWN)) + "cada, com final em " + DashboardActivity.FORMATADOR_DIA.format(calendar.getTime()));
+            textInfoParcelas.setText("Serão " + parcelas + " parcelas de " + (FORMATADOR_MOEDA.format(parsearCaixaDeTexto(inputValor.getText().toString()).divide(new BigDecimal(parsa), 2, RoundingMode.DOWN))) + " cada, com final em " + DashboardActivity.FORMATADOR_DIA.format(calendar.getTime()));
         }
     }
 
@@ -446,7 +447,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     public static BigDecimal parsearCaixaDeTexto(String texto){
         String cleanString = texto.replaceAll("[R$,.\\s]", "");
 
-        return new BigDecimal(cleanString).divide(CEM, RoundingMode.DOWN);
+        return new BigDecimal(cleanString).divide(CEM, 2, RoundingMode.DOWN);
     }
 
     private static final BigDecimal CEM = new BigDecimal(100);

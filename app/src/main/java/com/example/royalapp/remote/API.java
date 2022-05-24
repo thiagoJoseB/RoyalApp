@@ -4,7 +4,6 @@ package com.example.royalapp.remote;
 
 ///13  requisicao , como vai ser feita , onde os dados vao estar
 
-import com.example.royalapp.TransferenciaFavoritas;
 import com.example.royalapp.model.ItemFavorito;
 import com.example.royalapp.model.TransferenciaExtrato;
 import com.example.royalapp.remote.request.Cadastro;
@@ -29,7 +28,7 @@ import retrofit2.http.Query;
 
 
 public interface API {
-    public  static final String API_URL = "http://10.107.144.11:8080/royal/";
+    public  static final String API_URL = "http://6.6.6.103:8080/royal/";
     public  static final String WS_API_URL = "ws" + API_URL.substring(4);
     static final Retrofit INTERNAL_RETROFIT = new Retrofit.Builder()
             .baseUrl(API_URL)

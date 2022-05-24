@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.example.royalapp.model.Categoria;
 import com.example.royalapp.model.ItemFavorito;
-import com.example.royalapp.model.TransferenciaExtrato;
 import com.example.royalapp.remote.API;
 
 import java.math.BigDecimal;
@@ -27,8 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TransferenciaFavoritas extends AppCompatActivity {
-    API api;
+public class TransferenciaFavoritasActivity extends AppCompatActivity {
     List<ItemFavorito> list = new ArrayList<>();
     RecyclerView recyclerView;
 
@@ -43,7 +41,7 @@ public class TransferenciaFavoritas extends AppCompatActivity {
 
 
 
-        recyclerView = findViewById(R.id.recyclerview);
+        recyclerView = findViewById(R.id.favoritas_recycler_view);
 
         Call<List<ItemFavorito>> call = API.get().getFavorito(DashboardActivity.token, 2022, 5);
 
@@ -136,16 +134,24 @@ public class TransferenciaFavoritas extends AppCompatActivity {
                 Categoria categoria = null;
 
 
-                if(itemFavorito.getValor().compareTo(BigDecimal.ZERO) > 0){
-                    txtPreco.setTextColor(TransferenciaFavoritas.this.getResources().getColor(R.color.verdePositivo));
+                if (itemFavorito.getValor().compareTo(BigDecimal.ZERO) > 0) { //receita
+                    txtPreco.setTextColor(TransferenciaFavoritasActivity.this.getResources().getColor(R.color.verdePositivo));
 
 
-                    for(Categoria cat : DashboardActivity.despesas){
+
+                    for(Categoria cat : DashboardActivity.receitas){
                         if(cat.idCategoria == itemFavorito.getCategoria()){
                             categoria = cat;
                         }
                     }
 
+
+                } else { //despesa
+                    for(Categoria cat : DashboardActivity.despesas){
+                        if(cat.idCategoria == itemFavorito.getCategoria()){
+                            categoria = cat;
+                        }
+                    }
                 }
 
                 assert categoria != null;

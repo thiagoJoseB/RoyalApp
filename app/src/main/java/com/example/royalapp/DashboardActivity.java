@@ -69,8 +69,9 @@ public class DashboardActivity extends AppCompatActivity {
     private TextView viewTextSaldoGeral;
     private TextView viewTextDespesaGeral;
     private TextView viewTextReceitaGeral;
-    private Button buttonNovaDespesa;
-    private Button buttonNovaReceita;
+    private View buttonNovaDespesa;
+    private View buttonNovaReceita;
+    private View buttonFavoritos;
     private TextView btnExtrato;
     private BottomNavigationView menuBaixo;
     private BigDecimal despesa;
@@ -120,6 +121,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         buttonNovaDespesa = this.findViewById(R.id.dashboard_nova_despesa);
         buttonNovaReceita = this.findViewById(R.id.dashboard_nova_receita);
+        buttonFavoritos = this.findViewById(R.id.dashboard_favoritos);
         btnExtrato = this.findViewById(R.id.btnExtrato);
         //pega o token da tela de login
         if (token == null) {
@@ -192,6 +194,10 @@ public class DashboardActivity extends AppCompatActivity {
                     startActivity(intent);
 
                 });
+
+                buttonFavoritos.setOnClickListener(view ->
+                    startActivity(new Intent(DashboardActivity.this, TransferenciaFavoritasActivity.class))
+                );
 
                 client.dispatcher().executorService().shutdown();
             }

@@ -47,6 +47,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:orientation="vertical"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -55,8 +57,6 @@
                     android:id="@+id/constraintLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
                     android:background="@drawable/borda_saldo"
                     android:backgroundTint="@color/white"
                     android:elevation="4dp"
@@ -210,35 +210,87 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
-                    android:layout_marginStart="8dp"
-
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
                     android:background="@drawable/borda_graficos"
                     android:backgroundTint="@color/white"
                     android:elevation="4dp">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
                         android:orientation="horizontal">
 
-                        <Button
+                        <LinearLayout
                             android:id="@+id/dashboard_nova_despesa"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-
-
+                            android:layout_width="108dp"
+                            android:layout_height="match_parent"
                             android:layout_margin="8dp"
-                            android:text="Nova despesa" />
+                            android:orientation="vertical"
+                            android:gravity="center"
 
-                        <Button
+                            android:background="@drawable/botao_dashboard">
+
+                            <TextView
+                                style="@style/TextAppearance.MaterialComponents.Headline6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Despesa"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@drawable/remove_circle_outline_24"
+                                app:tint="@color/vermelhoNegativo" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/dashboard_favoritos"
+                            android:layout_width="108dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="8dp"
+                            android:orientation="vertical"
+                            android:gravity="center"
+
+                            android:background="@drawable/botao_dashboard">
+
+                            <TextView
+                                style="@style/TextAppearance.MaterialComponents.Headline6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Favoritos"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@drawable/star_24"
+                                app:tint="@color/amareloEstrela" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:id="@+id/dashboard_nova_receita"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="108dp"
+                            android:layout_height="match_parent"
                             android:layout_margin="8dp"
-                            android:text="Nova receita" />
+                            android:orientation="vertical"
+                            android:gravity="center"
+
+                            android:background="@drawable/botao_dashboard">
+
+                            <TextView
+                                style="@style/TextAppearance.MaterialComponents.Headline6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Receita"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/imageView"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@drawable/add_circle_outline_24"/>
+                        </LinearLayout>
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -247,9 +299,7 @@
                     android:id="@+id/constraintLayout2"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
                     android:background="@drawable/borda_graficos"
                     android:backgroundTint="@color/white"
                     android:elevation="4dp"
