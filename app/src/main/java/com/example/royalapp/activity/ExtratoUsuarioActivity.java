@@ -63,6 +63,12 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
                     finish();
                     break;
                 }
+                case R.id.menu_baixo_perfil: {
+                    Intent intent = new Intent(ExtratoUsuarioActivity.this, PerfilUsuario.class);
+                    startActivity(intent);
+                    this.finish();
+                    break;
+                }
             }
 
             return false;

@@ -10,6 +10,7 @@ import com.example.royalapp.remote.request.Cadastro;
 import com.example.royalapp.remote.request.Codigo;
 import com.example.royalapp.remote.request.InserirEmail;
 import com.example.royalapp.remote.request.Login;
+import com.example.royalapp.remote.request.PerfilDoUsuario;
 import com.example.royalapp.remote.response.Resultado;
 import com.example.royalapp.remote.request.SenhaNova;
 import com.google.gson.GsonBuilder;
@@ -28,7 +29,7 @@ import retrofit2.http.Query;
 
 
 public interface API {
-    String API_URL = "http://6.6.6.103:8080/royal/";
+    String API_URL = "http://10.107.144.13:8080/royal/";
     String WS_API_URL = "ws" + API_URL.substring(4);
     Retrofit INTERNAL_RETROFIT = new Retrofit.Builder()
             .baseUrl(API_URL)
@@ -54,5 +55,5 @@ public interface API {
     @GET("grafico/{tipo}") Call<String> graficoMensal(@Path("tipo") String tipo, @Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("data/favorito") Call<List<ItemFavorito>> getFavorito(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
 
-    @GET("data/perfil") Call<String> getPerfil(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
+    @GET("data/perfil") Call<String> getPerfil(@Query("k") String token);
 }

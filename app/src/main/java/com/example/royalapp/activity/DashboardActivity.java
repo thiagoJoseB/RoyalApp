@@ -128,6 +128,12 @@ public class DashboardActivity extends AppCompatActivity {
                     this.finish();
                     break;
                 }
+                case R.id.menu_baixo_perfil: {
+                    Intent intent = new Intent(DashboardActivity.this, PerfilUsuario.class);
+                    startActivity(intent);
+                    this.finish();
+                    break;
+                }
             }
 
             return false;

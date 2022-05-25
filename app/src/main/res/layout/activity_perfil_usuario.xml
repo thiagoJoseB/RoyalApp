@@ -28,6 +28,7 @@
                 app:cardCornerRadius="50dp">
 
                 <ImageView
+                    android:id="@+id/fotoPerfil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:scaleType="centerCrop"
@@ -47,7 +48,7 @@
 
 
                 <EditText
-                   android:id="@+id/txtNomeCompleto"
+                    android:id="@+id/txtNomeCompleto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="8dp"
@@ -69,7 +70,7 @@
 
 
                 <EditText
-                   android:id="@+id/txtEmailPerfil"
+                    android:id="@+id/txtEmailPerfil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="8dp"
@@ -115,17 +116,15 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+            <Button
+                android:id="@+id/btnTrocarSenhaPerfil"
+                android:layout_width="123dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:text="Trocar Senha"
+                android:textSize="10sp" />
 
 
-
-                <Button
-                    android:id="@+id/btnTrocarSenhaPerfil"
-                    android:layout_width="123dp"
-                    android:layout_height="40dp"
-                    android:text="Trocar Senha"
-                    android:textSize="10sp"
-                    android:layout_marginTop="10dp"
-                     />
 
 
 
@@ -137,15 +136,36 @@
 
 
     <Button
-        android:id="@+id/btnEntrar_Login"
+        android:id="@+id/btnSalvarPerfil"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Salvar"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="16dp"
+
+        android:layout_above="@+id/perfil_menu_baixo"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        />
+        android:text="Salvar" />
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/cinzaExtrato"
+        app:menu="@menu/navigation_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/perfil_menu_baixo">
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+
+
+
+
+
+
+
+
+
+
 
 
 </RelativeLayout>
+
