@@ -98,8 +98,6 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         });
 
         newFragment.show(getSupportFragmentManager(), "datePicker");
-
-
     }
 
     private void alteraRepeticao() {

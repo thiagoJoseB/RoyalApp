@@ -17,17 +17,22 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.royalapp.R;
+import com.example.royalapp.Utilidades;
 import com.example.royalapp.model.Categoria;
 import com.example.royalapp.remote.API;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -231,18 +236,6 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
 
-
-
-////        final DrawerLayout drawerLayout = findViewById(R.id.tela);
-//
-//        findViewById(R.id.imgMenu).setOnClickListener(view -> drawerLayout.openDrawer(GravityCompat.START));
-//
-//        NavigationView navigationView = findViewById(R.id.option);
-//        navigationView.setItemIconTintList(null);
-
-
-        //inicia o codigo do piechard
-
         PieChart chart = findViewById(R.id.dashboard_grafico_mes);
         chart.setUsePercentValues(false);
         chart.getDescription().setEnabled(false);
@@ -253,73 +246,48 @@ public class DashboardActivity extends AppCompatActivity {
         chart.setTransparentCircleColor(Color.WHITE);
         chart.setTransparentCircleAlpha(110);
 
-
-        chart.setDrawCenterText(true);
-
-        chart.setRotationAngle(0);
-        // enable rotation of the chart by touch
-        chart.setRotationEnabled(true);
-        chart.setHighlightPerTapEnabled(true);
-
-        // chart.setUnit(" €");
-        // chart.setDrawUnitsInChart(true);
-
-        // add a selection listener
-
-
-        // chart.spin(2000, 0, 360);
-
-        Legend l = chart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-//        l.setDrawInside(false);
-//        l.setXEntrySpace(7f);
-//        l.setYEntrySpace(0f);
-//        l.setYOffset(0f);
-
-        // entry label styling
-        chart.setEntryLabelColor(Color.WHITE);
+        chart.setDrawCenterText(false);
+        chart.setRotationEnabled(false);
+        chart.setHighlightPerTapEnabled(false);
+        chart.setEntryLabelColor(0xfff5f5f5); //whitesmoke
         chart.setEntryLabelTextSize(12f);
 
-
-        //RICHARD - o valor será ejetado nessa arrayList
-
-
-
-        PieDataSet dataSet = new PieDataSet(new ArrayList<>(), "valor pra ser mudado");
-
+        PieDataSet dataSet = new PieDataSet(new ArrayList<>(), null);
         dataSet.setDrawIcons(false);
-        dataSet.setIconsOffset(new MPPointF(0, 40));
-        dataSet.setSelectionShift(5f);
 
-        // add a lot of colors
-
-        ArrayList<Integer> colors = new ArrayList<>();
-
-        for (int c : ColorTemplate.PASTEL_COLORS) {
-            colors.add(c);
-        }
-
-
-        dataSet.setColors(colors);
-        //dataSet.setSelectionShift(0f);
-
-        PieData data = new PieData(dataSet);
-        data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(11f);
-        data.setValueTextColor(Color.WHITE);
-        chart.setData(data);
-
-        API.get().graficoMensal("despesa", token, 2022, 5).enqueue(new Callback<String>() {
+        API.get().graficoMensal("despesa", token, CALENDARIO.get(Calendar.YEAR), CALENDARIO.get(Calendar.MONTH) + 1).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-//                JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
-//
-//                json.entrySet().forEach(entry -> {
-//                    dataSet.addEntry(new PieEntry(entry.getValue().getAsFloat(), entry.getKey()));
-//                });
+                ArrayList<Integer> colors = new ArrayList<>();
+                JsonObject object = JsonParser.parseString(response.body()).getAsJsonObject();
 
+                PieData data = new PieData(dataSet);
+
+                data.setValueFormatter(new ValueFormatter() {
+                    @Override
+                    public String getFormattedValue(float value) {
+                        return FORMATADOR_MOEDA.format(value);
+                    }
+                });
+
+                data.setValueTextSize(11f);
+                data.setValueTextColor(Color.WHITE);
+
+                object.entrySet().forEach(entry -> {
+                    int idCategoria = Integer.parseInt(entry.getKey());
+                    Categoria categoria = despesas.stream().filter(cat -> cat.idCategoria == idCategoria).findAny().get();
+
+                    colors.add(Integer.parseInt(categoria.cor, 16) | 0xFF000000); // pra tirar o transparente
+
+                    dataSet.addEntry(new PieEntry(
+                            entry.getValue().getAsFloat(),
+                            categoria.nome
+                    ));
+                });
+
+                dataSet.setColors(colors);
+                chart.setData(data);
+                chart.invalidate();
             }
 
             @Override
