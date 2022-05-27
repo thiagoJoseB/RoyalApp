@@ -1,9 +1,5 @@
 package com.example.royalapp.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +8,10 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.royalapp.R;
 import com.example.royalapp.remote.API;
@@ -35,8 +35,8 @@ public class LoginUsuarioActivity extends AppCompatActivity {
     TextView txtEsqueci_Senha;
 
 
-   TextView criarConta;
-   TextView esqueciSenha;
+    TextView criarConta;
+    TextView esqueciSenha;
 
 
     @Override
@@ -66,12 +66,11 @@ public class LoginUsuarioActivity extends AppCompatActivity {
         });
 
 
-
         btnEntrar_Login.setOnClickListener(view -> {
 
             if (!validate()) {
 
-                Toast.makeText (this, "TODOS OS CAMPOS DEVEM SER PREENCHIDOS!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "TODOS OS CAMPOS DEVEM SER PREENCHIDOS!", Toast.LENGTH_LONG).show();
                 return;
 
             } else {
@@ -87,16 +86,13 @@ public class LoginUsuarioActivity extends AppCompatActivity {
 
                 ///
                 /// 24 chama o metodo
+
                 addLogin(login);
 
             }
 
 
-
-
         });
-
-
 
 
         //Centralizar texto da toolbar
@@ -106,65 +102,70 @@ public class LoginUsuarioActivity extends AppCompatActivity {
     }
 
 
-    public void addLogin(Login login){
+    public void addLogin(Login login) {
 
 
         API.get().login(login).enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    Log.d("teste", "cacildes");
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                Log.d("teste", "cacildes");
 
-                    if(response.isSuccessful()){
-                        JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
+                if (response.isSuccessful()) {
+                    JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
 
-                        Log.d("teste", json.toString());
+                    Log.d("teste", json.toString());
 
-                        if(json.get("status").getAsInt() == Status.OK.codigo) {
-                            if(json.get("found").getAsBoolean()) {
+                    if (json.get("status").getAsInt() == Status.OK.codigo) {
+                        if (json.get("found").getAsBoolean()) {
+                            Toast.makeText(LoginUsuarioActivity.this, "FOI PRA DASH", Toast.LENGTH_LONG).show();
 
-                                Toast.makeText(LoginUsuarioActivity.this, "FOI PRA DASH", Toast.LENGTH_LONG).show();
+                            String token = json.get("token").getAsString();
 
+                            Intent intent = new Intent(LoginUsuarioActivity.this, DashboardActivity.class);
+                            DashboardActivity.token = token;
 
-                                Intent intent = new Intent(LoginUsuarioActivity.this, DashboardActivity.class);
-                                intent.putExtra("token", json.get("token").getAsString());
-
-                                LoginUsuarioActivity.this.startActivity(intent);
-
-                                LoginUsuarioActivity.this.finish();
-                            }else{
-                                Toast.makeText(LoginUsuarioActivity.this, "SENHA OU LOGIN INVALIDO", Toast.LENGTH_LONG).show();
-
+                            if(checkbox.isChecked()){
+                                getSharedPreferences("data", MODE_PRIVATE).edit().putString("token", token).apply();
+                                Log.d("teste", "a terra é plana");
                             }
 
-                        }else{
-                            Toast.makeText(LoginUsuarioActivity.this, "ERRO DO CUTRIM",Toast.LENGTH_LONG).show();
+                            LoginUsuarioActivity.this.startActivity(intent);
+
+                            LoginUsuarioActivity.this.finish();
+                        } else {
+                            Toast.makeText(LoginUsuarioActivity.this, "SENHA OU LOGIN INVALIDO", Toast.LENGTH_LONG).show();
 
                         }
-                    } else {
-                        Toast.makeText(LoginUsuarioActivity.this, "erro" + response.code(), Toast.LENGTH_LONG).show();
-                    }
-                }
 
-                @Override
-                public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
-                    Log.e("login", t.getClass().getSimpleName(), t);
-                    Toast.makeText(LoginUsuarioActivity.this, "erro" + t, Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(LoginUsuarioActivity.this, "ERRO DO CUTRIM", Toast.LENGTH_LONG).show();
+
+                    }
+                } else {
+                    Toast.makeText(LoginUsuarioActivity.this, "erro" + response.code(), Toast.LENGTH_LONG).show();
                 }
-            });
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                Log.e("login", t.getClass().getSimpleName(), t);
+                Toast.makeText(LoginUsuarioActivity.this, "erro" + t, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 
-    /** FUNÇÃO DE VALIDAÇÃO **/
-    public boolean validate(){
+    /**
+     * FUNÇÃO DE VALIDAÇÃO
+     **/
+    public boolean validate() {
 
         return (
-               !txtEmail.getText().toString().isEmpty() &&
-                !txtSenha.getText().toString().isEmpty()
+                !txtEmail.getText().toString().isEmpty() &&
+                        !txtSenha.getText().toString().isEmpty()
         );
 
     }
-
-
 
 
 }

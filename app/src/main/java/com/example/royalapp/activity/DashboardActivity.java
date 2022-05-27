@@ -257,11 +257,6 @@ public class DashboardActivity extends AppCompatActivity {
             atualizarGrafico();
         });
 
-        //pega o token da tela de login, se n tiver um já
-        if (token == null) {
-            token = this.getIntent().getStringExtra("token");
-        }
-
 
         Type tipoArrayCategorias = new TypeToken<List<Categoria>>() {
         }.getType();

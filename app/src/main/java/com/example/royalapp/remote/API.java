@@ -29,7 +29,7 @@ import retrofit2.http.Query;
 
 
 public interface API {
-    String API_URL = "http://6.6.6.69:8080/royal/";
+    String API_URL = "http://10.107.144.11:8080/royal/";
     String WS_API_URL = "ws" + API_URL.substring(4);
     Retrofit INTERNAL_RETROFIT = new Retrofit.Builder()
             .baseUrl(API_URL)
@@ -49,6 +49,9 @@ public interface API {
     @POST("resetar") Call<Resultado> addInserirEmail(@Body InserirEmail inserirEmail);
     @POST("resetar") Call<Resultado> addCodigo(@Body Codigo codigo);
     @POST("resetar") Call<Resultado> addSenhaNova(@Body SenhaNova senhaNova);
+
+    @POST("autologin") Call<String> autoLogin(@Body String body);
+
     @GET("data/saldo/categorias") Call<String> getDashboardInfo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("data/saldo") Call<String> getSaldo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("data/extrato-mes") Call<List<TransferenciaExtrato>> getExtratos(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
@@ -56,4 +59,6 @@ public interface API {
     @GET("data/favorito") Call<List<ItemFavorito>> getFavorito(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
 
     @GET("data/perfil") Call<String> getPerfil(@Query("k") String token);
+
+
 }

@@ -14,13 +14,15 @@
         android:theme="@style/Theme.RoyalApp"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activity.PerfilUsuario"
+            android:name=".activity.LoginUsuarioActivity"
             android:launchMode="singleInstance"/>
         <activity
-            android:name=".activity.TransferenciaFavoritasActivity" />
+            android:name=".activity.PerfilUsuario"
+            android:launchMode="singleInstance" />
+        <activity android:name=".activity.TransferenciaFavoritasActivity" />
         <activity
             android:name=".activity.ExtratoUsuarioActivity"
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleInstance" />
         <activity
             android:name=".activity.NovaTransferenciaActivity"
             android:exported="true"
@@ -44,19 +46,18 @@
             android:launchMode="singleTop"
             android:parentActivityName=".activity.LoginUsuarioActivity" />
         <activity
-            android:name=".activity.LoginUsuarioActivity"
+            android:name=".activity.CadastroUsuarioActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activity.LoginUsuarioActivity" />
+        <activity
+            android:name=".activity.InicioActivity"
             android:exported="true"
             android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.CadastroUsuarioActivity"
-            android:launchMode="singleTop"
-            android:parentActivityName=".activity.LoginUsuarioActivity" />
     </application>
 
 </manifest>

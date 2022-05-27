@@ -15,6 +15,8 @@ import com.example.royalapp.R;
 import com.example.royalapp.remote.API;
 import com.example.royalapp.remote.request.PerfilDoUsuario;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 
 import retrofit2.Call;
@@ -25,8 +27,6 @@ public class PerfilUsuario extends AppCompatActivity {
 
     EditText txtNomeCompleto;
     EditText txtEmailPerfil;
-    Button btnTrocarSenha;
-    Button btnSalvarPerfil;
     CheckBox checkboxPerfil;
 
     private BottomNavigationView menuBaixo;
@@ -42,8 +42,6 @@ public class PerfilUsuario extends AppCompatActivity {
 
         txtNomeCompleto = findViewById(R.id.txtNomeCompleto);
         txtEmailPerfil = findViewById(R.id.txtEmailPerfil);
-        btnTrocarSenha = findViewById(R.id.btnTrocarSenhaPerfil);
-        btnSalvarPerfil = findViewById(R.id.btnSalvarPerfil);
         checkboxPerfil = findViewById(R.id.checkboxPerfil);
 
         menuBaixo = findViewById(R.id.perfil_menu_baixo);
@@ -72,68 +70,26 @@ public class PerfilUsuario extends AppCompatActivity {
             return false;
         });
 
+        API.get().getPerfil(DashboardActivity.token).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
 
-        btnSalvarPerfil.setOnClickListener(view -> {
-            if(!validate()){
-                Toast.makeText(this, "Os Campos Devem Ser Preenchidos", Toast.LENGTH_LONG).show();
-                return;
+                txtNomeCompleto.setText(json.get("nome").getAsString());
+                txtEmailPerfil.setText(json.get("email").getAsString());
+                checkboxPerfil.setChecked(json.get("duasetapas").getAsBoolean());
 
-            }else{
-
-                PerfilDoUsuario perfilDoUsuario = new PerfilDoUsuario();
-
-                perfilDoUsuario.setNome(txtNomeCompleto.getText().toString());
-                perfilDoUsuario.setEmail(txtEmailPerfil.getText().toString());
-                perfilDoUsuario.setDuasestapas(checkboxPerfil.isChecked());
-
-
-                addPerfilUsuario(perfilDoUsuario);
             }
 
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
 
-
-                });
-
-
-
-
-    }
-
-    public void addPerfilUsuario(PerfilDoUsuario perfilDoUsuario){
-
-        Call<String> call = API.get().getPerfil(DashboardActivity.token);
-
-
-      call.enqueue(new Callback<String>() {
-          @Override
-          public void onResponse(Call<String> call, Response<String> response) {
-              if(response.isSuccessful()){
-                  Toast.makeText(PerfilUsuario.this,"Perfil Aleterado",Toast.LENGTH_LONG).show();
-              }
-
-          }
-
-          @Override
-          public void onFailure(Call<String> call, Throwable t) {
-
-              Log.d("API-ERRO",t.getMessage());
-
-
-          }
-      });
+            }
+        });
 
 
 
-    }
 
-
-
-    /// FUNCAO DE VALIDADE
-    public boolean validate(){
-        return (
-                !txtNomeCompleto.getText().toString().isEmpty() &&
-                        !txtEmailPerfil.getText().toString().isEmpty()
-            );
 
     }
 }
