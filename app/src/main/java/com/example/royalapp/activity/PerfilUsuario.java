@@ -74,21 +74,21 @@ public class PerfilUsuario extends AppCompatActivity {
 
 
         btnSalvarPerfil.setOnClickListener(view -> {
-            if(!validate()){
-                Toast.makeText(this, "Os Campos Devem Ser Preenchidos", Toast.LENGTH_LONG).show();
-                return;
 
-            }else{
+            PerfilDoUsuario perfilDoUsuario = new PerfilDoUsuario();
 
-                PerfilDoUsuario perfilDoUsuario = new PerfilDoUsuario();
-
-                perfilDoUsuario.setNome(txtNomeCompleto.getText().toString());
-                perfilDoUsuario.setEmail(txtEmailPerfil.getText().toString());
+                perfilDoUsuario.getNome();
+                perfilDoUsuario.getEmail();
                 perfilDoUsuario.setDuasestapas(checkboxPerfil.isChecked());
 
 
                 addPerfilUsuario(perfilDoUsuario);
-            }
+
+
+
+
+
+
 
 
 
@@ -127,13 +127,17 @@ public class PerfilUsuario extends AppCompatActivity {
     }
 
 
-
-    /// FUNCAO DE VALIDADE
-    public boolean validate(){
-        return (
-                !txtNomeCompleto.getText().toString().isEmpty() &&
-                        !txtEmailPerfil.getText().toString().isEmpty()
+         ////FUNCAO DE VALIDADE
+        public boolean validate () {
+            return (
+                    !txtNomeCompleto.getText().toString().isEmpty() &&
+                            !txtEmailPerfil.getText().toString().isEmpty()
             );
 
+        }
     }
-}
+
+
+
+
+

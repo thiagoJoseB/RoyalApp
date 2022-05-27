@@ -14,13 +14,15 @@
         android:theme="@style/Theme.RoyalApp"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activity.PerfilUsuario"
-            android:launchMode="singleInstance"/>
+            android:name=".Graficos"
+            android:exported="false" />
         <activity
-            android:name=".activity.TransferenciaFavoritasActivity" />
+            android:name=".activity.PerfilUsuario"
+            android:launchMode="singleInstance" />
+        <activity android:name=".activity.TransferenciaFavoritasActivity" />
         <activity
             android:name=".activity.ExtratoUsuarioActivity"
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleInstance" />
         <activity
             android:name=".activity.NovaTransferenciaActivity"
             android:exported="true"
