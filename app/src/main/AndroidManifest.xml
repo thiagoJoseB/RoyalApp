@@ -17,6 +17,9 @@
             android:name=".activity.LoginUsuarioActivity"
             android:launchMode="singleInstance"/>
         <activity
+            android:name=".Graficos"
+            android:exported="false" />
+        <activity
             android:name=".activity.PerfilUsuario"
             android:launchMode="singleInstance" />
         <activity android:name=".activity.TransferenciaFavoritasActivity" />
