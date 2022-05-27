@@ -1,5 +1,8 @@
 package com.example.royalapp.activity;
 
+import static com.example.royalapp.Constantes.anoAlvo;
+import static com.example.royalapp.Constantes.mesAlvoInicio0;
+import static com.example.royalapp.Utilidades.CALENDARIO;
 import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
 
 import androidx.annotation.NonNull;
@@ -17,10 +20,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.royalapp.Constantes;
 import com.example.royalapp.R;
+import com.example.royalapp.Utilidades;
 import com.example.royalapp.model.Categoria;
 import com.example.royalapp.model.TransferenciaExtrato;
 import com.example.royalapp.remote.API;
+import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.math.BigDecimal;
@@ -35,12 +41,8 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
     List<TransferenciaExtrato> list = new ArrayList<>();
     RecyclerView recyclerView;
 
-    private Spinner menu;
-    private Spinner menu2;
+    private TextView seletorPeriodo;
     private BottomNavigationView menuBaixo;
-
-    String[] opcoes = {"janeiro", "fevereiro", "marco", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"};
-    String[] ano = {"2022"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,37 +78,57 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerview);
 
-        Call<List<TransferenciaExtrato>> call = API.get().getExtratos(DashboardActivity.token, 2022, 5);
+
+
+
+        seletorPeriodo = findViewById(R.id.extratos_seletor_periodo);
+
+        MonthYearPickerDialogFragment dialogFragment = MonthYearPickerDialogFragment
+                .getInstance(mesAlvoInicio0, anoAlvo, 0, CALENDARIO.getTimeInMillis(), "Data alvo", Utilidades.BRASIL);
+
+
+
+        seletorPeriodo.setOnClickListener(view -> {
+            assert dialogFragment.getArguments() != null;
+            dialogFragment.getArguments().putInt("month", mesAlvoInicio0); //gambi
+            dialogFragment.getArguments().putInt("year", anoAlvo); //gambi
+
+
+            dialogFragment.show(getSupportFragmentManager(), null);
+        });
+
+        dialogFragment.setOnDateSetListener((year, monthOfYear) -> {
+            mesAlvoInicio0 = monthOfYear;
+            anoAlvo = year;
+
+            this.atualizarMesAnoAlvo();
+        });
+
+
+
+        atualizarMesAnoAlvo();
+
+    }
+
+    private void atualizarMesAnoAlvo() {
+        seletorPeriodo.setText(
+                String.format(this.getString(R.string.mes_ano_seletor), Constantes.MESES[mesAlvoInicio0], String.valueOf(anoAlvo))
+        );
+
+        Call<List<TransferenciaExtrato>> call = API.get().getExtratos(DashboardActivity.token, anoAlvo, mesAlvoInicio0 + 1);
 
         call.enqueue(new Callback<List<TransferenciaExtrato>>() {
             @Override
             public void onResponse(Call<List<TransferenciaExtrato>> call, Response<List<TransferenciaExtrato>> response) {
                 list = response.body();
 
-
                 recyclerView.setAdapter(new ExtratoAdapter(response.body()));
-
-
             }
 
             @Override
             public void onFailure(Call<List<TransferenciaExtrato>> call, Throwable t) {
-
-                Log.d("API-ERRO",t.getMessage());
-
             }
         });
-
-
-        menu = findViewById(R.id.spiner_meses);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, opcoes);
-        menu.setAdapter(adapter);
-
-        menu2 = findViewById(R.id.spiner_ano);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, ano);
-        menu2.setAdapter(adapter2);
-
-
     }
 
     private class ExtratoAdapter extends RecyclerView.Adapter<ExtratoAdapter.ExtratoViewHolder> {

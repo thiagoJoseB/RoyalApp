@@ -18,7 +18,7 @@
         >
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -43,31 +43,8 @@
 
 
             <LinearLayout
-                android:id="@+id/linearLayout6"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mes" />
-
-                <Spinner
-                    android:id="@+id/spiner_meses"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:background="@drawable/borda_input_transferencia" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
                 android:id="@+id/linearLayout7"
-                android:layout_width="150dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
 
@@ -78,10 +55,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ano" />
+                    android:text="Periodo"
+                    style="@style/TextAppearance.Material3.LabelLarge"/>
 
-                <Spinner
-                    android:id="@+id/spiner_ano"
+                <TextView
+                    android:id="@+id/extratos_seletor_periodo"
+
+                    android:gravity="center"
+                    android:text="@string/mes_ano_seletor"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:background="@drawable/borda_input_transferencia" />
@@ -103,7 +84,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Categoria" />
+                    android:text="Categoria"
+                    style="@style/TextAppearance.Material3.LabelLarge"/>
 
                 <Spinner
 
@@ -127,7 +109,7 @@
                 tools:layout_editor_absoluteX="32dp" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
 
     </ScrollView>

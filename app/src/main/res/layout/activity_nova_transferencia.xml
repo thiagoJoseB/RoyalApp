@@ -51,7 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:background="@drawable/borda_input_transferencia"
-                    android:drawablePadding="8dp" />
+                    android:paddingStart="8dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -72,12 +72,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:background="@drawable/borda_input_transferencia"
-                    android:drawablePadding="8dp"
 
-                    android:drawableStart="@drawable/attach_money_24"
+                    android:paddingStart="8dp"
                     android:text="R$ 0,00"
-                    android:inputType="numberDecimal"
-                    android:paddingLeft="10dp" />
+                    android:inputType="numberDecimal"/>
             </LinearLayout>
 
             <LinearLayout

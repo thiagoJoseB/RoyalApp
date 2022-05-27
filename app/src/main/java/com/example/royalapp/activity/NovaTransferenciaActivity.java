@@ -3,6 +3,7 @@ package com.example.royalapp.activity;
 import static com.example.royalapp.Utilidades.BRASIL;
 import static com.example.royalapp.Utilidades.FORMATADOR_DIA;
 import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
+import static com.example.royalapp.Utilidades.PATTERN_DINHEIRO_BR;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -35,6 +36,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -43,11 +45,7 @@ import java.util.stream.Collectors;
 
 public class NovaTransferenciaActivity extends AppCompatActivity {
     private static final String[] TIPO_TRANSFERENCIAS = new String[]{ "DIAS", "SEMANAS", "QUINZENAS", "MESES", "BIMESTRES", "TRIMESTRES", "SEMESTRES", "ANOS"};
-    public static final DecimalFormat FORMATADOR_INPUT_VALOR = new DecimalFormat("#,##0.00", DecimalFormatSymbols.getInstance(BRASIL));
 
-    static {
-        FORMATADOR_INPUT_VALOR.setRoundingMode(RoundingMode.DOWN);
-    }
 
     private final Calendar calendario = Calendar.getInstance();
     private List<Categoria> categorias;
@@ -245,21 +243,6 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
             }
         });
 
-
-//        btnRepeticao.setOnClickListener(view -> {
-////                System.out.println("dsfsdfdsffdsfds");
-//            TransitionManager.beginDelayedTransition(NovaTransferenciaActivity.this.findViewById(R.id.Repeticao));
-//            alteraBotao(numero);
-//            numero += 1;
-//
-//
-//
-//        });
-
-
-//ri
-
-
         //Centralizar texto da toolbar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.toolbar_transferencia);
@@ -273,30 +256,8 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
         inputValor = findViewById(R.id.nova_transferencia_valor);
 
-
-//        private String current = "";
-//        @Override
-//        public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            if(!s.toString().equals(current)){
-//       [your_edittext].removeTextChangedListener(this);
-//
-//                String cleanString = s.toString().replaceAll("[$,.]", "");
-//
-//                double parsed = Double.parseDouble(cleanString);
-//                String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
-//
-//                current = formatted;
-//       [your_edittext].setText(formatted);
-//       [your_edittext].setSelection(formatted.length());
-//
-//       [your_edittext].addTextChangedListener(this);
-//            }
-//        }
-
-
         inputValor.addTextChangedListener(new TextWatcher() {
-            final String ultimo = null;
-            int cursor = -1;
+            int cursor = 0;
 
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -304,20 +265,16 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int start, int i1, int i2) {
-                Log.d("teste", Integer.toString(start));
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                inputValor.removeTextChangedListener(this);
 
-                if(!charSequence.toString().equals(ultimo)){
-                    inputValor.removeTextChangedListener(this);
+                String formatted = FORMATADOR_MOEDA.format(parsearCaixaDeTexto(PATTERN_DINHEIRO_BR.matcher(charSequence).replaceAll("")));
 
+                inputValor.setText(formatted);
+                inputValor.setSelection(Math.min(cursor, formatted.length()));
+                inputValor.addTextChangedListener(this);
 
-
-                String formatted = FORMATADOR_MOEDA.format(parsearCaixaDeTexto(charSequence.toString().replaceAll("[R$,.\\s]", "")));
-
-                    inputValor.setText(formatted);
-                    inputValor.setSelection(Math.min(cursor, formatted.length()));
-                    inputValor.addTextChangedListener(this);
-                }
+                calcularParcelas(inputParcelas.getText().toString(), spinnerFrequenciaRepeticao.getSelectedItemPosition());
             }
 
             @Override
@@ -355,6 +312,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
             json.put("descricao", inputDescricao.getText().toString());
             json.put("favorito", favorita);
             json.put("fixa", false);
+            json.put("anexo", null);
             json.put("totalParcelas", repetida ? Integer.parseInt(inputParcelas.getText().toString()) : null);
             json.put("frequencia", repetida ? TIPO_TRANSFERENCIAS[spinnerFrequenciaRepeticao.getSelectedItemPosition()] : null);
             json.put("observacao", observacao ? inputObservacao.getText().toString() : null);
@@ -374,10 +332,6 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
             String frequencia = TIPO_TRANSFERENCIAS[indiceFrequencia];
             int parsa = Integer.parseInt(parcelas);
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(calendar.getTime());
-
-
-//            new String[]{ , "", "", "", "", "", "", ""};
 
             switch (frequencia){
                 case "DIAS":
@@ -408,7 +362,24 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
             }
 
-            textInfoParcelas.setText("Serão " + parcelas + " parcelas de " + (FORMATADOR_MOEDA.format(parsearCaixaDeTexto(inputValor.getText().toString()).divide(new BigDecimal(parsa), 2, RoundingMode.DOWN))) + " cada, com final em " + FORMATADOR_DIA.format(calendar.getTime()));
+            BigDecimal[] resuntado =
+                    parsearCaixaDeTexto(inputValor.getText().toString()).multiply(CEM).divideAndRemainder(new BigDecimal(parsa));
+
+            resuntado[1] = resuntado[1].setScale(0);
+            resuntado[0] = resuntado[0].divide(CEM, 2, RoundingMode.DOWN);
+
+            String mensagem;
+
+            Log.d("teste", Arrays.toString(resuntado));
+
+            if(resuntado[1].equals(BigDecimal.ZERO)){
+                mensagem = parcelas + " parcelas de " + FORMATADOR_MOEDA.format(resuntado[0]) + " cada";
+            } else {
+                mensagem = resuntado[1] + " parcelas de " + FORMATADOR_MOEDA.format(resuntado[0].add(new BigDecimal("0.01"))) + " e " + new BigDecimal(parsa).subtract(resuntado[1]) + " parcelas de " + FORMATADOR_MOEDA.format(resuntado[0]);
+            }
+
+
+            textInfoParcelas.setText("Serão " + mensagem + " com final em " + FORMATADOR_DIA.format(calendar.getTime()));
         }
     }
 

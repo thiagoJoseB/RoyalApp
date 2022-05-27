@@ -29,7 +29,7 @@ import retrofit2.http.Query;
 
 
 public interface API {
-    String API_URL = "http://10.107.144.13:8080/royal/";
+    String API_URL = "http://6.6.6.104:8080/royal/";
     String WS_API_URL = "ws" + API_URL.substring(4);
     Retrofit INTERNAL_RETROFIT = new Retrofit.Builder()
             .baseUrl(API_URL)
