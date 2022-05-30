@@ -16,7 +16,9 @@ import com.example.royalapp.remote.request.SenhaNova;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -29,9 +31,13 @@ import retrofit2.http.Query;
 
 
 public interface API {
-    String API_URL = "http://10.107.144.11:8080/royal/";
+    public static OkHttpClient OK_HTTP_CLIENT = new OkHttpClient.Builder()
+            .readTimeout(5,TimeUnit.SECONDS)
+            .writeTimeout(5, TimeUnit.SECONDS).build();
+    String API_URL = "http://10.107.144.10:8080/royal/";
     String WS_API_URL = "ws" + API_URL.substring(4);
     Retrofit INTERNAL_RETROFIT = new Retrofit.Builder()
+            .client(OK_HTTP_CLIENT)
             .baseUrl(API_URL)
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()

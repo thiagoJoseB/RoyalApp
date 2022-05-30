@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 public class InicioActivity extends AppCompatActivity {
@@ -27,58 +29,68 @@ public class InicioActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
+        SharedPreferences stack = getSharedPreferences("data", MODE_PRIVATE);
 
-        Executors.newSingleThreadExecutor().execute(() -> {
-            SharedPreferences stack = getSharedPreferences("data", MODE_PRIVATE);
 
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+        if (stack.contains("token")) {
+            String token = stack.getString("token", null);
+            JsonObject objeto = new JsonObject();
+            objeto.addProperty("token", token);
 
-            if (stack.contains("token")) {
-                String token = stack.getString("token", null);
-                JsonObject objeto = new JsonObject();
-                objeto.addProperty("token", token);
+            long inicio = System.currentTimeMillis();
 
-                Response<String> body;
+            API.get().autoLogin(objeto.toString()).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    int demora = (int) (System.currentTimeMillis() - inicio);
+                    dormir(demora < 1500 ? 1500 - demora : 0);
 
-                Log.d("teste", objeto.toString());
+                    if (response.code() == 200) {
+                        DashboardActivity.token = token;
 
-                try {
-                    body = API.get().autoLogin(objeto.toString()).execute();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                        runOnUiThread(() -> {
+                            Intent intent = new Intent(InicioActivity.this, DashboardActivity.class);
+                            startActivity(intent);
+                            InicioActivity.this.finish();
+                        });
+                    } else {
+                        runOnUiThread(() -> {
+                            Intent intent = new Intent(InicioActivity.this, LoginUsuarioActivity.class);
+                            startActivity(intent);
+                            InicioActivity.this.finish();
+                        });
+                    }
                 }
 
-                Log.d("teste", String.valueOf(body.code()));
-                Log.d("teste", Objects.toString(body.body()));
-
-                if (body.code() == 200) {
-                    DashboardActivity.token = token;
-
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
                     runOnUiThread(() -> {
-                        Intent intent = new Intent(this, DashboardActivity.class);
+                        Intent intent = new Intent(InicioActivity.this, LoginUsuarioActivity.class);
                         startActivity(intent);
-                        this.finish();
-                    });
-                } else {
-                    runOnUiThread(() -> {
-                        Intent intent = new Intent(this, LoginUsuarioActivity.class);
-                        startActivity(intent);
-                        this.finish();
+                        InicioActivity.this.finish();
                     });
                 }
-            } else {
+            });
+        } else {
+            new Thread(() -> {
+                dormir(1500);
+
                 runOnUiThread(() -> {
                     Intent intent = new Intent(this, LoginUsuarioActivity.class);
                     startActivity(intent);
                     this.finish();
                 });
-            }
-        });
+            }).start();
+        }
 
 
+    }
+
+    public static void dormir(int milis){
+        try {
+            Thread.sleep(milis);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

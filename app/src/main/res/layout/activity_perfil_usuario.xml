@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.PerfilUsuario">
+    tools:context=".activity.PerfilUsuarioActivity">
 
 
     <ScrollView
@@ -136,6 +136,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/perfil_menu_baixo">
         <Button
+            android:onClick="deslogar"
             android:id="@+id/perfil_botao_deslogar"
             android:layout_width="0dp"
             android:layout_margin="8dp"

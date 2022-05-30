@@ -1,19 +1,17 @@
 package com.example.royalapp.activity;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.royalapp.R;
 import com.example.royalapp.remote.API;
-import com.example.royalapp.remote.request.PerfilDoUsuario;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -23,7 +21,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PerfilUsuario extends AppCompatActivity {
+public class PerfilUsuarioActivity extends AppCompatActivity {
 
     EditText txtNomeCompleto;
     EditText txtEmailPerfil;
@@ -51,13 +49,13 @@ public class PerfilUsuario extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.menu_baixo_geral: {
-                    Intent intent = new Intent(PerfilUsuario.this, DashboardActivity.class);
+                    Intent intent = new Intent(PerfilUsuarioActivity.this, DashboardActivity.class);
                     startActivity(intent);
                     this.finish();
                     break;
                 }
                 case R.id.menu_baixo_extratos: {
-                    Intent intent = new Intent(PerfilUsuario.this, ExtratoUsuarioActivity.class);
+                    Intent intent = new Intent(PerfilUsuarioActivity.this, ExtratoUsuarioActivity.class);
                     startActivity(intent);
                     this.finish();
                     break;
@@ -91,6 +89,21 @@ public class PerfilUsuario extends AppCompatActivity {
 
 
 
+        }
+
+        public void deslogar(View a){
+            new AlertDialog.Builder(this)
+                    .setMessage("Deseja sair da sua conta?")
+                    .setNegativeButton("Cancelar", (v, i) -> {})
+                    .setPositiveButton("Sair", (v, i) -> {
+                        DashboardActivity.token = null;
+
+                        getSharedPreferences("data", MODE_PRIVATE).edit().remove("token").apply();
+
+                        Intent intent = new Intent(PerfilUsuarioActivity.this, LoginUsuarioActivity.class);
+                        startActivity(intent);
+                        this.finish();
+                    }).create().show();
         }
     }
 

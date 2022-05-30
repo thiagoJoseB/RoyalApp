@@ -12,12 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.royalapp.Constantes;
@@ -66,7 +63,7 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.menu_baixo_perfil: {
-                    Intent intent = new Intent(ExtratoUsuarioActivity.this, PerfilUsuario.class);
+                    Intent intent = new Intent(ExtratoUsuarioActivity.this, PerfilUsuarioActivity.class);
                     startActivity(intent);
                     this.finish();
                     break;

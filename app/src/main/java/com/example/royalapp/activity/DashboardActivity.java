@@ -5,6 +5,7 @@ import static com.example.royalapp.Constantes.mesAlvoInicio0;
 import static com.example.royalapp.Utilidades.CALENDARIO;
 import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
 import static com.example.royalapp.Utilidades.GSON;
+import static com.example.royalapp.remote.API.OK_HTTP_CLIENT;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -27,32 +28,22 @@ import com.example.royalapp.remote.API;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.MPPointF;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
@@ -141,7 +132,7 @@ public class DashboardActivity extends AppCompatActivity {
                 data.setValueFormatter(new ValueFormatter() {
                     @Override
                     public String getFormattedValue(float value) {
-                        return FORMATADOR_MOEDA.format(value);
+                        return FORMATADOR_MOEDA.format(new BigDecimal(Float.toString(value)));
                     }
                 });
 
@@ -162,6 +153,7 @@ public class DashboardActivity extends AppCompatActivity {
 
                 dataSet.setColors(colors);
                 chart.setData(data);
+
                 chart.invalidate();
             }
 
@@ -229,7 +221,7 @@ public class DashboardActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.menu_baixo_perfil: {
-                    Intent intent = new Intent(DashboardActivity.this, PerfilUsuario.class);
+                    Intent intent = new Intent(DashboardActivity.this, PerfilUsuarioActivity.class);
                     startActivity(intent);
                     this.finish();
                     break;
@@ -294,9 +286,8 @@ public class DashboardActivity extends AppCompatActivity {
 
                 Toast.makeText(DashboardActivity.this, "carregou", Toast.LENGTH_SHORT).show();
 
-                OkHttpClient client = new OkHttpClient();
 
-                webSocket = client.newWebSocket(
+                webSocket = OK_HTTP_CLIENT.newWebSocket(
                         new Request.Builder().url(API.WS_API_URL + "dashboard/" + token).build(),
                         new DashboardWebSocket()
                 );
@@ -327,8 +318,6 @@ public class DashboardActivity extends AppCompatActivity {
                 buttonFavoritos.setOnClickListener(view ->
                     startActivity(new Intent(DashboardActivity.this, TransferenciaFavoritasActivity.class))
                 );
-
-                client.dispatcher().executorService().shutdown();
             }
 
             @Override
@@ -344,18 +333,17 @@ public class DashboardActivity extends AppCompatActivity {
         chart = findViewById(R.id.dashboard_grafico_mes);
         chart.setUsePercentValues(false);
         chart.getDescription().setEnabled(false);
-        chart.setExtraOffsets(5, 10, 5, 5);
+
 
         chart.setDrawHoleEnabled(false);
 
-        chart.setTransparentCircleColor(Color.WHITE);
-        chart.setTransparentCircleAlpha(110);
 
         chart.setDrawCenterText(false);
         chart.setRotationEnabled(false);
         chart.setHighlightPerTapEnabled(false);
         chart.setEntryLabelColor(0xfff5f5f5); //whitesmoke
         chart.setEntryLabelTextSize(12f);
+
 
 
         dataSet.setDrawIcons(false);
@@ -392,6 +380,7 @@ public class DashboardActivity extends AppCompatActivity {
                             case "adicionar": {
                                 DashboardActivity.this.atualizarValoresPrincipais();
                                 break;
+
                             }
                         }
                         break;

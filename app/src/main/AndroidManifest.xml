@@ -20,7 +20,7 @@
             android:name=".Graficos"
             android:exported="false" />
         <activity
-            android:name=".activity.PerfilUsuario"
+            android:name=".activity.PerfilUsuarioActivity"
             android:launchMode="singleInstance" />
         <activity android:name=".activity.TransferenciaFavoritasActivity" />
         <activity
