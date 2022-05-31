@@ -81,7 +81,7 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
         seletorPeriodo = findViewById(R.id.extratos_seletor_periodo);
 
         MonthYearPickerDialogFragment dialogFragment = MonthYearPickerDialogFragment
-                .getInstance(mesAlvoInicio0, anoAlvo, 0, CALENDARIO.getTimeInMillis(), "Data alvo", Utilidades.BRASIL);
+                .getInstance(mesAlvoInicio0, anoAlvo, "Data alvo", Utilidades.BRASIL);
 
 
 
@@ -200,7 +200,7 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
 
 
 
-                for(Categoria cat : DashboardActivity.receitas){
+                for(Categoria cat : Categoria.RECEITAS){
                     if(cat.idCategoria == transferenciaExtrato.categoria){
                         categoria = cat;
                     }
@@ -208,7 +208,7 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
 
 
             } else { //despesa
-                for(Categoria cat : DashboardActivity.despesas){
+                for(Categoria cat : Categoria.DESPESAS){
                     if(cat.idCategoria == transferenciaExtrato.categoria){
                         categoria = cat;
                     }

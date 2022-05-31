@@ -6,65 +6,26 @@ import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 
 public class ItemFavorito {
-    @SerializedName("categoria")
-    @Expose
-    private int categoria ;
+    public String anexo;
+    public String data;
+    public String descricao;
+    public boolean fixa;
+    public Frequencia nomeFrequencia;
+    public int categoria;
+    public int id;
+    public String observacao;
+    public boolean parcelada;
+    public int parcelas;
+    public BigDecimal valor;
 
-    @SerializedName("valor")
-    @Expose
-    private BigDecimal valor ;
-
-    @SerializedName("descricao")
-    @Expose
-    private String descricao;
-
-
-    @SerializedName("data")
-    @Expose
-    private String data;
-
-
-    public ItemFavorito(int i, ItemFavorito itemFavorito){
-
-    }
-
-    public ItemFavorito (int categoria, BigDecimal valor, String descricao, String data){
-        this.categoria = categoria;
-        this.valor = valor;
-        this.descricao = descricao;
-        this.data = data;
-    }
-
-
-    public int getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(int categoria) {
-        this.categoria = categoria;
-    }
-
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
+    public enum Frequencia {
+        DIAS,
+        SEMANAS,
+        QUINZENAS,
+        MESES,
+        BIMESTRES,
+        TRIMESTRES,
+        SEMESTRES,
+        ANOS;
     }
 }

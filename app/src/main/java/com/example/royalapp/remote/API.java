@@ -15,10 +15,13 @@ import com.example.royalapp.remote.response.Resultado;
 import com.example.royalapp.remote.request.SenhaNova;
 import com.google.gson.GsonBuilder;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -26,6 +29,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Body;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -34,7 +38,7 @@ public interface API {
     public static OkHttpClient OK_HTTP_CLIENT = new OkHttpClient.Builder()
             .readTimeout(5,TimeUnit.SECONDS)
             .writeTimeout(5, TimeUnit.SECONDS).build();
-    String API_URL = "http://10.107.144.10:8080/royal/";
+    String API_URL = "http://6.6.6.69:8080/royal/";
     String WS_API_URL = "ws" + API_URL.substring(4);
     Retrofit INTERNAL_RETROFIT = new Retrofit.Builder()
             .client(OK_HTTP_CLIENT)
@@ -42,6 +46,7 @@ public interface API {
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
                     .setLenient()
+                    .serializeNulls()
                     .create()))
             .build();
 
@@ -58,13 +63,14 @@ public interface API {
 
     @POST("autologin") Call<String> autoLogin(@Body String body);
 
-    @GET("data/saldo/categorias") Call<String> getDashboardInfo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
-    @GET("data/saldo") Call<String> getSaldo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
+    @GET("data/saldo/categorias/saldo-geral") Call<String> getDashboardInfo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
+    @GET("data/saldo/saldo-geral") Call<String> getSaldo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("data/extrato-mes") Call<List<TransferenciaExtrato>> getExtratos(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("grafico/{tipo}") Call<String> graficoMensal(@Path("tipo") String tipo, @Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("data/favorito") Call<List<ItemFavorito>> getFavorito(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
 
-    @GET("data/perfil") Call<String> getPerfil(@Query("k") String token);
+    @GET("data/perfil") Call<String>  getPerfil(@Query("k") String token);
+    @GET("upload/{imagem}") Call<ResponseBody> imagem( @Path("imagem") String imagem, @Query("k") String token);
 
-
+    @PUT("upload") Call<String> enviaFoto(@Query("k") String token, @Body RequestBody corpoComInputStream);
 }

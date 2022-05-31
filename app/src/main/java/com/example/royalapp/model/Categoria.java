@@ -5,7 +5,11 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-public final class Categoria implements Parcelable {
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+public final class Categoria{
     public int idCategoria;
     public String nome;
     public String cor;
@@ -17,25 +21,6 @@ public final class Categoria implements Parcelable {
         this.cor = cor;
         this.icone = icone;
     }
-
-    protected Categoria(Parcel in) {
-        idCategoria = in.readInt();
-        nome = in.readString();
-        cor = in.readString();
-        icone = in.readString();
-    }
-
-    public static final Creator<Categoria> CREATOR = new Creator<Categoria>() {
-        @Override
-        public Categoria createFromParcel(Parcel in) {
-            return new Categoria(in);
-        }
-
-        @Override
-        public Categoria[] newArray(int size) {
-            return new Categoria[size];
-        }
-    };
 
     @NonNull
     @Override
@@ -50,17 +35,11 @@ public final class Categoria implements Parcelable {
         return sb.toString();
     }
 
+    public static List<Categoria> DESPESAS = new ArrayList<>();
+    public static List<Categoria> RECEITAS = new ArrayList<>();
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public static List<Categoria> para(BigDecimal valor){
+        return valor.compareTo(BigDecimal.ZERO) > 0 ? RECEITAS : DESPESAS;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(idCategoria);
-        parcel.writeString(nome);
-        parcel.writeString(cor);
-        parcel.writeString(icone);
-    }
 }

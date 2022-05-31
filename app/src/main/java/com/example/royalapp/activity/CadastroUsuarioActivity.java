@@ -114,7 +114,8 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call<Resultado> call, Response<Resultado> response) {
-                if(response.isSuccessful()){
+                if(response.code() == 200 || response.code() == 204){
+                    Toast.makeText(CadastroUsuarioActivity.this, response.body().toString(), Toast.LENGTH_SHORT).show();
                     int status = response.body().status;
 
                     if(status == Status.OK.codigo){
@@ -130,10 +131,6 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                         Toast.makeText(CadastroUsuarioActivity.this, "ERRO DO CUTRIM",Toast.LENGTH_LONG).show();
 
                     }
-//                    //Log.d("REPOSNSE-", String.valueOf(response.raw()));
-//                    Toast.makeText(CadastroUsuario.this,
-//                            "",
-//                            Toast.LENGTH_LONG).show();
                 }
 
 

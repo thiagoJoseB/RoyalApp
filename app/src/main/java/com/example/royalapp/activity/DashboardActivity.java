@@ -58,8 +58,7 @@ public class DashboardActivity extends AppCompatActivity {
 
 
     public static WebSocket webSocket;
-    public static final List<Categoria> despesas = new ArrayList<>();
-    public static final List<Categoria> receitas = new ArrayList<>();
+
     static String token = null;
 
 
@@ -77,9 +76,9 @@ public class DashboardActivity extends AppCompatActivity {
     private PieChart chart;
     private final PieDataSet dataSet = new PieDataSet(new ArrayList<>(), null);
 
-    private BigDecimal despesa;
-    private BigDecimal receita;
-    private BigDecimal saldo;
+    private BigDecimal despesaMensal;
+    private BigDecimal receitaMensal;
+    private BigDecimal saldoGeral;
     private String tipoGrafico = "despesa";
 
     public void atualizarMesAnoAlvo(){
@@ -96,18 +95,19 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 Log.d("teste", response.body());
-                JsonObject valores = JsonParser.parseString(response.body()).getAsJsonObject();
+                JsonArray array = JsonParser.parseString(response.body()).getAsJsonArray();
+                JsonObject valores = array.get(0).getAsJsonObject();
 
 
-                saldo = valores.get("saldo").getAsBigDecimal();
+                saldoGeral = array.get(1).getAsBigDecimal();
 
-                receita = valores.get("receita").getAsBigDecimal();
+                receitaMensal = valores.get("receita").getAsBigDecimal();
 
-                despesa = valores.get("despesa").getAsBigDecimal();
+                despesaMensal = valores.get("despesa").getAsBigDecimal();
 
-                viewTextReceitaGeral.setText(FORMATADOR_MOEDA.format(receita));
-                viewTextDespesaGeral.setText(FORMATADOR_MOEDA.format(despesa));
-                viewTextSaldoGeral.setText(FORMATADOR_MOEDA.format(saldo));
+                viewTextReceitaGeral.setText(FORMATADOR_MOEDA.format(receitaMensal));
+                viewTextDespesaGeral.setText(FORMATADOR_MOEDA.format(despesaMensal));
+                viewTextSaldoGeral.setText(FORMATADOR_MOEDA.format(saldoGeral));
             }
 
             @Override
@@ -141,7 +141,7 @@ public class DashboardActivity extends AppCompatActivity {
 
                 object.entrySet().forEach(entry -> {
                     int idCategoria = Integer.parseInt(entry.getKey());
-                    Categoria categoria = (tipoGrafico.equals("despesa") ? despesas : receitas).stream().filter(cat -> cat.idCategoria == idCategoria).findAny().get();
+                    Categoria categoria = (tipoGrafico.equals("despesa") ? Categoria.DESPESAS : Categoria.RECEITAS).stream().filter(cat -> cat.idCategoria == idCategoria).findAny().get();
 
                     colors.add(Integer.parseInt(categoria.cor, 16) | 0xFF000000); // pra tirar o transparente
 
@@ -181,7 +181,7 @@ public class DashboardActivity extends AppCompatActivity {
         viewSeletorMesAno = this.findViewById(R.id.dashboard_seletor_mes_ano);
 
         MonthYearPickerDialogFragment dialogFragment = MonthYearPickerDialogFragment
-                .getInstance(mesAlvoInicio0, anoAlvo, 0, CALENDARIO.getTimeInMillis(), "Data alvo", Utilidades.BRASIL);
+                .getInstance(mesAlvoInicio0, anoAlvo, "Data alvo", Utilidades.BRASIL);
 
 
 
@@ -261,21 +261,21 @@ public class DashboardActivity extends AppCompatActivity {
                 JsonObject valores = json.get(0).getAsJsonObject();
                 JsonObject categorias = json.get(1).getAsJsonObject();
 
-                despesas.addAll(GSON.fromJson(categorias.get("despesas"), tipoArrayCategorias));
-                receitas.addAll(GSON.fromJson(categorias.get("receitas"), tipoArrayCategorias));
+                Categoria.DESPESAS = (GSON.fromJson(categorias.get("despesas"), tipoArrayCategorias));
+                Categoria.RECEITAS = (GSON.fromJson(categorias.get("receitas"), tipoArrayCategorias));
 
 
-                saldo = valores.get("saldo").getAsBigDecimal();
+                saldoGeral = json.get(2).getAsBigDecimal();
                 ShimmerFrameLayout viewEfeitoSaldoGeral = findViewById(R.id.dashboard_saldo_principal_efeito);
                 viewEfeitoSaldoGeral.stopShimmer();
                 viewEfeitoSaldoGeral.setVisibility(View.GONE);
 
-                receita = valores.get("receita").getAsBigDecimal();
+                receitaMensal = valores.get("receita").getAsBigDecimal();
                 ShimmerFrameLayout viewEfeitoReceitaGeral = findViewById(R.id.dashboard_receita_principa_efeito);
                 viewEfeitoReceitaGeral.stopShimmer();
                 viewEfeitoReceitaGeral.setVisibility(View.GONE);
 
-                despesa = valores.get("despesa").getAsBigDecimal();
+                despesaMensal = valores.get("despesa").getAsBigDecimal();
                 ShimmerFrameLayout viewEfeitoDespesaGeral = findViewById(R.id.dashboard_despesa_principal_efeito);
                 viewEfeitoDespesaGeral.stopShimmer();
                 viewEfeitoDespesaGeral.setVisibility(View.GONE);
@@ -298,7 +298,6 @@ public class DashboardActivity extends AppCompatActivity {
                     intent.putExtra("modo", "despesa");
 
 
-                    intent.putParcelableArrayListExtra("categorias", new ArrayList<>(despesas));
 
 
                     startActivity(intent);
@@ -309,7 +308,6 @@ public class DashboardActivity extends AppCompatActivity {
                     Intent intent = new Intent(DashboardActivity.this, NovaTransferenciaActivity.class);
 
                     intent.putExtra("modo", "receita");
-                    intent.putParcelableArrayListExtra("categorias", new ArrayList<>(receitas));
 
                     startActivity(intent);
 
@@ -388,7 +386,7 @@ public class DashboardActivity extends AppCompatActivity {
                 }
 
 
-                Log.d("teste", "despesa=" + despesa + "receita=" + receita);
+                Log.d("teste", "despesa=" + despesaMensal + "receita=" + receitaMensal);
             });
 
 

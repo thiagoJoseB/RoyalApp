@@ -250,42 +250,6 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
 
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginBottom="17dp"-->
-            <!--                android:orientation="vertical">-->
-
-            <!--                <TextView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:text="Data de Inicio"-->
-            <!--                    android:textColor="#888787"-->
-
-            <!--                    tools:layout_editor_absoluteX="8dp"-->
-            <!--                    tools:layout_editor_absoluteY="491dp" />-->
-
-
-            <!--                <EditText-->
-
-            <!--                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="30dp"-->
-            <!--                    android:background="@drawable/borda_input_transferencia"-->
-            <!--                    android:drawablePadding="8dp"-->
-
-
-            <!--                    android:inputType="numberDecimal"-->
-            <!--                    android:paddingLeft="10dp"-->
-            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                    app:layout_constraintHorizontal_bias="1.0"-->
-            <!--                    app:layout_constraintStart_toStartOf="parent"-->
-
-            <!--&lt;!&ndash;                    tools:layout_editor_absoluteY="510dp" />&ndash;&gt;-->
-
-            <!--            </LinearLayout>-->
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -418,46 +382,29 @@
             android:orientation="vertical"
             android:padding="8dp"
             android:visibility="gone"
+            android:onClick="buscarArquivo"
 
             app:layout_constraintTop_toBottomOf="@+id/Observacao">
-
-
-            <LinearLayout
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
 
                 <TextView
                     style="@style/TextAppearance.MaterialComponents.Headline6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Anexo"
+                    android:text="Anexo"/>
 
 
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="491dp" />
 
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/anexo" />
 
                 <TextView
-
+                    android:layout_marginTop="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="TESTE TESTE TESTE" />
+                    android:text="Nenhum arquivo selecionado."
+                    android:drawablePadding="8dp"
+                    android:id="@+id/nova_transferencia_anexo_nome"
+                    app:drawableStartCompat="@drawable/image_24" />
 
-            </LinearLayout>
 
 
         </LinearLayout>

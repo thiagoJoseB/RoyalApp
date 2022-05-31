@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Royal Finance</string>
     <string name="mes_ano_seletor">%s, %s</string>
+    <string name="texto_aleatorio">tjkljsdkfjkdj</string>
+    <string name="descricao">Descrição</string>
+    <string name="dinheiro_aleatorio">R$ 666,69</string>
+    <string name="observacao">Observação</string>
+    <string name="parcelada">Parcelada</string>
 
 
     <string-array name="meses">

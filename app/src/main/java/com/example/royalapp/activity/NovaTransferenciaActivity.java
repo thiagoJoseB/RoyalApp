@@ -1,19 +1,24 @@
 package com.example.royalapp.activity;
 
-import static com.example.royalapp.Utilidades.BRASIL;
 import static com.example.royalapp.Utilidades.FORMATADOR_DIA;
 import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
 import static com.example.royalapp.Utilidades.PATTERN_DINHEIRO_BR;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -30,18 +35,22 @@ import android.widget.TextView;
 
 import com.example.royalapp.R;
 import com.example.royalapp.model.Categoria;
+import com.example.royalapp.remote.API;
 import com.google.gson.GsonBuilder;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import okhttp3.RequestBody;
 
 public class NovaTransferenciaActivity extends AppCompatActivity {
     private static final String[] TIPO_TRANSFERENCIAS = new String[]{ "DIAS", "SEMANAS", "QUINZENAS", "MESES", "BIMESTRES", "TRIMESTRES", "SEMESTRES", "ANOS"};
@@ -67,6 +76,8 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
     ViewGroup repeticao;
     TextView repeticao1;
+
+
     LinearLayout btnRepeticao;
     LinearLayout btnObservacao;
     LinearLayout btnAnexo;
@@ -75,6 +86,8 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     View viewRepeticao;
     View viewObservacao;
     View viewAnexo;
+
+    TextView textAnexoNome;
 
     ImageView imageBotaoRepeticao;
     ImageView imageBotaoObservacao;
@@ -88,6 +101,8 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     boolean observacao = false;
     boolean anexo = false;
     boolean favorita = false;
+
+    Uri anexoUri = null;
 
     public void mostrarData(View v) {
 
@@ -184,7 +199,10 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         viewRepeticao = NovaTransferenciaActivity.this.findViewById(R.id.Repeticao);
         viewObservacao = NovaTransferenciaActivity.this.findViewById(R.id.Observacao);
         viewAnexo = NovaTransferenciaActivity.this.findViewById(R.id.Anexo);
-//        viewFavorito = NovaTransferenciaActivity.this.findViewById(R.id.Fa);
+
+
+        textAnexoNome = NovaTransferenciaActivity.this.findViewById(R.id.nova_transferencia_anexo_nome);
+
 
         imageBotaoRepeticao = this.findViewById(R.id.nova_transferencia_image_repeticao);
         imageBotaoObservacao = this.findViewById(R.id.nova_transferencia_image_observacao);
@@ -248,8 +266,8 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.toolbar_transferencia);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        categorias = this.getIntent().getParcelableArrayListExtra("categorias");
         modo = this.getIntent().getStringExtra("modo");
+        categorias = modo.equals("despesa") ? Categoria.DESPESAS : Categoria.RECEITAS;
 
 
         Log.d("teste", categorias.toString());
@@ -297,32 +315,91 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
         buttonGravar = findViewById(R.id.nova_transferencia_gravar);
         buttonGravar.setOnClickListener(view -> {
-            Map<String, Object> json = new HashMap<>();
             String valorSpinner = spinnerCategorias.getSelectedItem().toString();
 
 //            metodo: transferencia, arg: 'inserir', valor: valor, data: data, descricao: descricao, favorito: favoritado, fixa: parcelaFixa,
 //                    inicioRepeticao: dataInicio.value !== '' ? dataInicio.value : null, totalParcelas: (repetido && duracao.value ? parseInt(duracao.value) : null),
 //                    frequencia: dataFR.value !== '' ? dataFR.value : null, observacao: observacao, idCategoria: idCategoria, parcelada: repetido
 
+            new Thread(() -> {
+                Map<String, Object> json = new HashMap<>();
 
-            json.put("metodo", modo);
-            json.put("arg", "inserir");
-            json.put("valor", parsearCaixaDeTexto(inputValor.getText().toString()).doubleValue());
-            json.put("data", new java.sql.Date(calendario.getTime().getTime()).toString());
-            json.put("descricao", inputDescricao.getText().toString());
-            json.put("favorito", favorita);
-            json.put("fixa", false);
-            json.put("anexo", null);
-            json.put("totalParcelas", repetida ? Integer.parseInt(inputParcelas.getText().toString()) : null);
-            json.put("frequencia", repetida ? TIPO_TRANSFERENCIAS[spinnerFrequenciaRepeticao.getSelectedItemPosition()] : null);
-            json.put("observacao", observacao ? inputObservacao.getText().toString() : null);
-            json.put("parcelada", repetida);
-            json.put("idCategoria", categorias.stream().filter(categoria -> valorSpinner.equals(categoria.nome)).findAny().get().idCategoria);
+                final String anexo;
 
-            DashboardActivity.webSocket.send(new GsonBuilder().serializeNulls().create().toJson(json));
+                if(anexoUri != null){
+                    try {
+                        InputStream inputStream = this.getContentResolver().openInputStream(anexoUri);
+
+                        byte[] buf = new byte[inputStream.available()];
+                        while (inputStream.read(buf) != -1);
+
+                        anexo = API.get().enviaFoto(DashboardActivity.token, RequestBody.create(buf)).execute().body();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                    anexo = null;
+                }
+
+                json.put("metodo", modo);
+                json.put("arg", "inserir");
+                json.put("valor", parsearCaixaDeTexto(inputValor.getText().toString()).doubleValue());
+                json.put("data", new java.sql.Date(calendario.getTime().getTime()).toString());
+                json.put("descricao", inputDescricao.getText().toString());
+                json.put("favorito", favorita);
+                json.put("fixa", false);
+                json.put("anexo", anexo);
+                json.put("totalParcelas", repetida ? Integer.parseInt(inputParcelas.getText().toString()) : null);
+                json.put("frequencia", repetida ? TIPO_TRANSFERENCIAS[spinnerFrequenciaRepeticao.getSelectedItemPosition()] : null);
+                json.put("observacao", observacao ? inputObservacao.getText().toString() : null);
+                json.put("parcelada", repetida);
+                json.put("idCategoria", categorias.stream().filter(categoria -> valorSpinner.equals(categoria.nome)).findAny().get().idCategoria);
+
+                DashboardActivity.webSocket.send(new GsonBuilder().serializeNulls().create().toJson(json));
+            }).start();
+
+
+
 
             this.finish();
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 69){
+
+            if(resultCode == RESULT_OK) {
+
+                anexoUri = data.getData();
+
+
+//            MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri).ge
+
+                Cursor c = getContentResolver().query(anexoUri, null, null, null, null);
+                c.moveToFirst();
+                String nome = c.getString(c.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME));
+                c.close();
+
+                textAnexoNome.setText(nome);
+                textAnexoNome.setTypeface(null, Typeface.BOLD);
+            } else {
+                anexoUri = null;
+
+                textAnexoNome.setText("Nenhum arquivo selecionado.");
+                textAnexoNome.setTypeface(null, Typeface.NORMAL);
+            }
+        }
+    }
+
+    public void buscarArquivo(View v){
+        Intent i = new Intent(Intent.ACTION_PICK);
+
+        i.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+
+        startActivityForResult(i, 69);
     }
 
     public void calcularParcelas(String parcelas, int indiceFrequencia){

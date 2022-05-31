@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.21666666666666667" />
         <entry key="..\:/Users/Teste/Desktop/projeto/RoyalApp/app/src/main/res/drawable/circle.xml" value="0.1" />
         <entry key="..\:/Users/Teste/Desktop/projeto/RoyalApp/app/src/main/res/drawable/circulo_negativo.xml" value="0.1" />
         <entry key="..\:/Users/Teste/Desktop/projeto/RoyalApp/app/src/main/res/drawable/despeca_receita_circulo.xml" value="0.1235" />
@@ -63,6 +64,7 @@
         <entry key="app/src/main/res/layout/botoes.xml" value="0.18854166666666666" />
         <entry key="app/src/main/res/layout/cadastro_usuario.xml" value="0.335" />
         <entry key="app/src/main/res/layout/circle_toolbar.xml" value="0.5820512820512821" />
+        <entry key="app/src/main/res/layout/dialog_transferencia.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_container_extrato.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/layout/style.xml" value="0.1" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.1" />
@@ -79,9 +81,6 @@
         <entry key="app/src/main/res/menu/navigation_menu.xml" value="0.1" />
       </map>
     </option>
-  </component>
-  <component name="ProjectPlainTextFileTypeManager">
-    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/leao_icone.svg" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />

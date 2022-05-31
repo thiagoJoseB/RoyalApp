@@ -1,5 +1,6 @@
 package com.example.royalapp.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -27,12 +28,13 @@ public class InicioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_inicio);
 
 
+
         getSupportActionBar().hide();
 
         SharedPreferences stack = getSharedPreferences("data", MODE_PRIVATE);
 
 
-        if (stack.contains("token")) {
+
             String token = stack.getString("token", null);
             JsonObject objeto = new JsonObject();
             objeto.addProperty("token", token);
@@ -43,6 +45,9 @@ public class InicioActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     int demora = (int) (System.currentTimeMillis() - inicio);
+
+                    Log.d("teste", String.valueOf(demora));
+
                     dormir(demora < 1500 ? 1500 - demora : 0);
 
                     if (response.code() == 200) {
@@ -53,35 +58,36 @@ public class InicioActivity extends AppCompatActivity {
                             startActivity(intent);
                             InicioActivity.this.finish();
                         });
-                    } else {
+                    } else if(response.code() != 500) {
                         runOnUiThread(() -> {
                             Intent intent = new Intent(InicioActivity.this, LoginUsuarioActivity.class);
                             startActivity(intent);
                             InicioActivity.this.finish();
+                        });
+                    } else {
+                        runOnUiThread(() -> {
+                            new AlertDialog.Builder(InicioActivity.this)
+                                    .setMessage("Parece que houve um erro com o servidor, tente mais tarde.")
+                                    .setTitle("Erro")
+                                    .setPositiveButton("Sair", (v, wich)-> System.exit(0))
+                                    .create().show();
                         });
                     }
                 }
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
+
+
                     runOnUiThread(() -> {
-                        Intent intent = new Intent(InicioActivity.this, LoginUsuarioActivity.class);
-                        startActivity(intent);
-                        InicioActivity.this.finish();
+                        new AlertDialog.Builder(InicioActivity.this)
+                                .setMessage("Houve um erro durante a conexão com o servidor, talvez não haja Internet?")
+                                .setTitle("Erro")
+                                .setPositiveButton("Sair", (v, wich)-> System.exit(0))
+                                .create().show();
                     });
                 }
             });
-        } else {
-            new Thread(() -> {
-                dormir(1500);
-
-                runOnUiThread(() -> {
-                    Intent intent = new Intent(this, LoginUsuarioActivity.class);
-                    startActivity(intent);
-                    this.finish();
-                });
-            }).start();
-        }
 
 
     }
