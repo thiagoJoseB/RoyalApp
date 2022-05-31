@@ -21,7 +21,6 @@ public class SenhaConfirmadaActivity extends AppCompatActivity {
 
         //toolbar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.toolbar_app);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

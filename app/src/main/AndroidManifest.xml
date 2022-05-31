@@ -22,7 +22,11 @@
         <activity
             android:name=".activity.PerfilUsuarioActivity"
             android:launchMode="singleInstance" />
-        <activity android:name=".activity.TransferenciaFavoritasActivity" />
+        <activity
+            android:name=".activity.TransferenciaFavoritasActivity"
+            android:exported="true"
+
+            android:parentActivityName=".activity.DashboardActivity"/>
         <activity
             android:name=".activity.ExtratoUsuarioActivity"
             android:launchMode="singleInstance" />

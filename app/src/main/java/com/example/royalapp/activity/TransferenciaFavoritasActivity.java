@@ -51,9 +51,13 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transacoes_favoritas);
 
+
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
+
+
         atualizarDensidade(this); //famosa gambi
-
-
 
         recyclerView = findViewById(R.id.favoritas_recycler_view);
 
@@ -115,7 +119,8 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
 
                 @Override
                 public void onClick(View v) {
-                    LinearLayout layout = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_transferencia, null);
+                    LinearLayout layoutPai = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_transferencia, null);
+                    LinearLayout layout = layoutPai.findViewById(R.id.dialog_transferencia_layout_itens);
 
                     if (itemFavorito.anexo != null) {
                         ImageView imageView =  layout.findViewById(R.id.dialog_transferencia_imagem);
@@ -171,7 +176,7 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
                     }
 
                     new AlertDialog.Builder(TransferenciaFavoritasActivity.this)
-                            .setView(layout)
+                            .setView(layoutPai)
                             .create().show();
                 }
 

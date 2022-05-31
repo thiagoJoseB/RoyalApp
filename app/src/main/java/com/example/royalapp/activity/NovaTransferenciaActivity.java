@@ -263,7 +263,6 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
         //Centralizar texto da toolbar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.toolbar_transferencia);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         modo = this.getIntent().getStringExtra("modo");

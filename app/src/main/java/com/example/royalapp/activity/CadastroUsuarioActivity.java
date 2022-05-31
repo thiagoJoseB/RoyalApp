@@ -95,7 +95,6 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
          //Centralizar texto da toolbar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.toolbar_app);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 

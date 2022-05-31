@@ -35,7 +35,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_perfil_usuario);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.toolbar_transferencia);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         txtNomeCompleto = findViewById(R.id.txtNomeCompleto);
