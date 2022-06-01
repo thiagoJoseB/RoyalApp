@@ -2,6 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.RoyalApp" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowDisablePreview">true</item>
+
         <item name="colorPrimary">@color/corPrincipalEscura</item>
         <item name="colorPrimaryVariant">@color/corPrincipal</item>
         <item name="colorOnPrimary">@color/white</item>

@@ -2,7 +2,6 @@ package com.example.royalapp.activity;
 
 import static com.example.royalapp.Constantes.anoAlvo;
 import static com.example.royalapp.Constantes.mesAlvoInicio0;
-import static com.example.royalapp.Utilidades.CALENDARIO;
 import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
 
 import androidx.annotation.NonNull;
@@ -10,11 +9,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.royalapp.Constantes;
@@ -29,6 +32,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,7 +43,9 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
     RecyclerView recyclerView;
 
     private TextView seletorPeriodo;
+    private TextView seletorCategoria;
     private BottomNavigationView menuBaixo;
+    private final List<Categoria> categoriasAtivas = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +85,42 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
 
 
         seletorPeriodo = findViewById(R.id.extratos_seletor_periodo);
+        seletorCategoria = findViewById(R.id.extratos_seletor_categoria);
+
+        seletorCategoria.setOnClickListener(new View.OnClickListener() {
+            View singletonView;
+
+            @Override
+            public void onClick(View v) {
+                if(singletonView == null){
+                    singletonView = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_selecionador_categoria, null, false);
+                    LinearLayout receitasLayout = singletonView.findViewById(R.id.dialog_selecionador_categoria_list_receitas);
+                    LinearLayout despesaLayout = singletonView.findViewById(R.id.dialog_selecionador_categoria_list_despesas);
+
+                    for (Categoria receita : Categoria.RECEITAS) {
+                        receitasLayout.addView(ExtratoUsuarioActivity.this.itemOptionCriador(receita));
+                    }
+
+                    for (Categoria despesa : Categoria.DESPESAS) {
+                        despesaLayout.addView(ExtratoUsuarioActivity.this.itemOptionCriador(despesa));
+                    }
+                }else {
+                    //evita erros
+                    ((ViewGroup)singletonView.getParent()).removeView(singletonView);
+
+                }
+
+                new AlertDialog.Builder(ExtratoUsuarioActivity.this)
+
+                        .setView(singletonView)
+                        .create().show();
+            }
+        });
+
 
         MonthYearPickerDialogFragment dialogFragment = MonthYearPickerDialogFragment
                 .getInstance(mesAlvoInicio0, anoAlvo, "Data alvo", Utilidades.BRASIL);
+
 
 
 
@@ -126,6 +165,22 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
             public void onFailure(Call<List<TransferenciaExtrato>> call, Throwable t) {
             }
         });
+    }
+
+
+    public void cliqueDaCheckboxCategoria(View checkBox1) {
+        CheckBox checkBox = (CheckBox) checkBox1;
+        Categoria categoria = (Categoria) checkBox.getTag();
+
+        if(checkBox.isChecked()){
+            categoriasAtivas.add(categoria);
+        } else {
+            categoriasAtivas.remove(categoria);
+        }
+
+        seletorCategoria.setText(categoriasAtivas.stream().map(c -> c.nome).collect(Collectors.joining(", ")));
+
+
     }
 
     private class ExtratoAdapter extends RecyclerView.Adapter<ExtratoAdapter.ExtratoViewHolder> {
@@ -220,6 +275,25 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
             txtImagem.setText(categoria.icone);
         }
     }
+    }
+
+    private View itemOptionCriador(Categoria categoria){
+        View selector = getLayoutInflater().inflate(R.layout.item_option_categoria, null, false);
+
+        TextView iconeText = selector.findViewById(R.id.item_option_categoria_icone);
+        TextView nomeText = selector.findViewById(R.id.item_option_categoria_nome);
+        CheckBox ativadoCheckbox = selector.findViewById(R.id.item_option_categoria_checkbox);
+
+        iconeText.setText(categoria.icone);
+        iconeText.setTextColor(Integer.parseInt(categoria.cor, 16) | 0xFF000000);
+
+        nomeText.setText(categoria.nome);
+
+        // cria so um evento
+        ativadoCheckbox.setTag(categoria);
+        ativadoCheckbox.setOnClickListener(this::cliqueDaCheckboxCategoria);
+
+        return selector;
     }
 
     }

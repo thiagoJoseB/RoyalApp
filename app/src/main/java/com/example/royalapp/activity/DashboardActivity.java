@@ -7,6 +7,7 @@ import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
 import static com.example.royalapp.Utilidades.GSON;
 import static com.example.royalapp.remote.API.OK_HTTP_CLIENT;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.example.royalapp.remote.API;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -249,6 +251,27 @@ public class DashboardActivity extends AppCompatActivity {
             atualizarGrafico();
         });
 
+        buttonNovaDespesa.setOnClickListener(view -> {
+            Intent intent = new Intent(DashboardActivity.this, NovaTransferenciaActivity.class);
+
+
+            intent.putExtra("modo", "despesa");
+
+            startActivity(intent);
+        });
+
+        buttonNovaReceita.setOnClickListener(view -> {
+            Intent intent = new Intent(DashboardActivity.this, NovaTransferenciaActivity.class);
+
+            intent.putExtra("modo", "receita");
+
+            startActivity(intent);
+
+        });
+
+        buttonFavoritos.setOnClickListener(view ->
+                startActivity(new Intent(DashboardActivity.this, TransferenciaFavoritasActivity.class))
+        );
 
         Type tipoArrayCategorias = new TypeToken<List<Categoria>>() {
         }.getType();
@@ -292,30 +315,7 @@ public class DashboardActivity extends AppCompatActivity {
                         new DashboardWebSocket()
                 );
 
-                buttonNovaDespesa.setOnClickListener(view -> {
-                    Intent intent = new Intent(DashboardActivity.this, NovaTransferenciaActivity.class);
 
-                    intent.putExtra("modo", "despesa");
-
-
-
-
-                    startActivity(intent);
-
-                });
-
-                buttonNovaReceita.setOnClickListener(view -> {
-                    Intent intent = new Intent(DashboardActivity.this, NovaTransferenciaActivity.class);
-
-                    intent.putExtra("modo", "receita");
-
-                    startActivity(intent);
-
-                });
-
-                buttonFavoritos.setOnClickListener(view ->
-                    startActivity(new Intent(DashboardActivity.this, TransferenciaFavoritasActivity.class))
-                );
             }
 
             @Override
@@ -343,6 +343,9 @@ public class DashboardActivity extends AppCompatActivity {
         chart.setEntryLabelTextSize(12f);
 
 
+        Legend legend = chart.getLegend();
+
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
 
         dataSet.setDrawIcons(false);
 
