@@ -6,16 +6,22 @@
     android:orientation="horizontal"
     android:gravity="center"
     android:labelFor="@+id/item_option_categoria_checkbox"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
     >
 
 
     <TextView
         android:id="@+id/item_option_categoria_icone"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:fontFamily="@font/material_icons"
-        android:text="house"
-        android:textSize="40sp"
+        android:background="@drawable/circle"
+        android:backgroundTint="@color/corPrincipal"
+        android:textColor="@color/white"
+        android:text="real_estate_agent"
+        android:gravity="center"
+        android:textSize="36sp"
         android:layout_marginStart="8dp"/>
 
     <TextView

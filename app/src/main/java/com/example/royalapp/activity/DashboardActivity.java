@@ -75,6 +75,10 @@ public class DashboardActivity extends AppCompatActivity {
     private BottomNavigationView menuBaixo;
     private RadioGroup radioGroupDespesaOuReceita;
 
+    ShimmerFrameLayout viewEfeitoGeral;
+    ShimmerFrameLayout viewEfeitoReceita;
+    ShimmerFrameLayout viewEfeitoDespesa;
+
     private PieChart chart;
     private final PieDataSet dataSet = new PieDataSet(new ArrayList<>(), null);
 
@@ -92,6 +96,20 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     public void atualizarValoresPrincipais() {
+        viewTextSaldoGeral.setVisibility(View.INVISIBLE);
+        viewTextDespesaGeral.setVisibility(View.INVISIBLE);
+        viewTextReceitaGeral.setVisibility(View.INVISIBLE);
+
+        viewEfeitoGeral.setVisibility(View.VISIBLE);
+        viewEfeitoReceita.setVisibility(View.VISIBLE);
+        viewEfeitoDespesa.setVisibility(View.VISIBLE);
+        viewEfeitoGeral.startShimmer();
+        viewEfeitoReceita.startShimmer();
+        viewEfeitoDespesa.startShimmer();
+
+
+
+
 
         API.get().getSaldo(token, Constantes.anoAlvo, mesAlvoInicio0 + 1).enqueue(new Callback<String>() {
             @Override
@@ -110,6 +128,17 @@ public class DashboardActivity extends AppCompatActivity {
                 viewTextReceitaGeral.setText(FORMATADOR_MOEDA.format(receitaMensal));
                 viewTextDespesaGeral.setText(FORMATADOR_MOEDA.format(despesaMensal));
                 viewTextSaldoGeral.setText(FORMATADOR_MOEDA.format(saldoGeral));
+
+                viewTextSaldoGeral.setVisibility(View.VISIBLE);
+                viewTextDespesaGeral.setVisibility(View.VISIBLE);
+                viewTextReceitaGeral.setVisibility(View.VISIBLE);
+
+                viewEfeitoGeral.stopShimmer();
+                viewEfeitoReceita.stopShimmer();
+                viewEfeitoDespesa.stopShimmer();
+                viewEfeitoReceita.setVisibility(View.GONE);
+                viewEfeitoGeral.setVisibility(View.GONE);
+                viewEfeitoDespesa.setVisibility(View.GONE);
             }
 
             @Override
@@ -276,6 +305,10 @@ public class DashboardActivity extends AppCompatActivity {
         Type tipoArrayCategorias = new TypeToken<List<Categoria>>() {
         }.getType();
 
+                 viewEfeitoGeral = findViewById(R.id.dashboard_saldo_principal_efeito);
+                 viewEfeitoReceita = findViewById(R.id.dashboard_receita_principa_efeito);
+                 viewEfeitoDespesa = findViewById(R.id.dashboard_despesa_principal_efeito);
+
         API.get().getDashboardInfo(token, CALENDARIO.get(Calendar.YEAR), CALENDARIO.get(Calendar.MONTH) + 1).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -288,22 +321,23 @@ public class DashboardActivity extends AppCompatActivity {
                 Categoria.RECEITAS = (GSON.fromJson(categorias.get("receitas"), tipoArrayCategorias));
 
 
+
+                viewEfeitoGeral.stopShimmer();
+                viewEfeitoReceita.stopShimmer();
+                viewEfeitoDespesa.stopShimmer();
+                viewEfeitoReceita.setVisibility(View.GONE);
+                viewEfeitoGeral.setVisibility(View.GONE);
+                viewEfeitoDespesa.setVisibility(View.GONE);
+
                 saldoGeral = json.get(2).getAsBigDecimal();
-                ShimmerFrameLayout viewEfeitoSaldoGeral = findViewById(R.id.dashboard_saldo_principal_efeito);
-                viewEfeitoSaldoGeral.stopShimmer();
-                viewEfeitoSaldoGeral.setVisibility(View.GONE);
-
                 receitaMensal = valores.get("receita").getAsBigDecimal();
-                ShimmerFrameLayout viewEfeitoReceitaGeral = findViewById(R.id.dashboard_receita_principa_efeito);
-                viewEfeitoReceitaGeral.stopShimmer();
-                viewEfeitoReceitaGeral.setVisibility(View.GONE);
-
                 despesaMensal = valores.get("despesa").getAsBigDecimal();
-                ShimmerFrameLayout viewEfeitoDespesaGeral = findViewById(R.id.dashboard_despesa_principal_efeito);
-                viewEfeitoDespesaGeral.stopShimmer();
-                viewEfeitoDespesaGeral.setVisibility(View.GONE);
 
-                DashboardActivity.this.atualizarValoresPrincipais();
+                viewTextReceitaGeral.setText(FORMATADOR_MOEDA.format(receitaMensal));
+                viewTextDespesaGeral.setText(FORMATADOR_MOEDA.format(despesaMensal));
+                viewTextSaldoGeral.setText(FORMATADOR_MOEDA.format(saldoGeral));
+
+                DashboardActivity.this.atualizarGrafico();
 
                 Log.d("teste", viewTextSaldoGeral.getParent().getClass().getName());
 

@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.royalapp.Constantes;
@@ -31,6 +30,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +39,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ExtratoUsuarioActivity extends AppCompatActivity {
-    List<TransferenciaExtrato> list = new ArrayList<>();
+    private List<TransferenciaExtrato> extratosBackup;
     RecyclerView recyclerView;
 
     private TextView seletorPeriodo;
@@ -93,7 +93,7 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(singletonView == null){
-                    singletonView = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_selecionador_categoria, null, false);
+                    singletonView = getLayoutInflater().inflate(R.layout.dialog_selecionador_categoria, null, false);
                     LinearLayout receitasLayout = singletonView.findViewById(R.id.dialog_selecionador_categoria_list_receitas);
                     LinearLayout despesaLayout = singletonView.findViewById(R.id.dialog_selecionador_categoria_list_despesas);
 
@@ -146,6 +146,22 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
 
     }
 
+    private void atualizarDoBackupPorCategorias(){
+        List<TransferenciaExtrato> nova;
+
+        if(categoriasAtivas.isEmpty()){
+
+            nova = Collections.unmodifiableList(extratosBackup);
+        } else {
+            //faz backups dos ids
+            List<Integer> ids = categoriasAtivas.stream().map(c -> c.idCategoria).collect(Collectors.toList());
+
+            nova = extratosBackup.stream().filter(extrato -> ids.contains(extrato.categoria)).collect(Collectors.toList());
+        }
+
+        recyclerView.setAdapter(new ExtratoAdapter(nova));
+    }
+
     private void atualizarMesAnoAlvo() {
         seletorPeriodo.setText(
                 String.format(this.getString(R.string.mes_ano_seletor), Constantes.MESES[mesAlvoInicio0], String.valueOf(anoAlvo))
@@ -156,13 +172,15 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<TransferenciaExtrato>>() {
             @Override
             public void onResponse(Call<List<TransferenciaExtrato>> call, Response<List<TransferenciaExtrato>> response) {
-                list = response.body();
+                extratosBackup = response.body();
 
-                recyclerView.setAdapter(new ExtratoAdapter(response.body()));
+                atualizarDoBackupPorCategorias();
+
             }
 
             @Override
             public void onFailure(Call<List<TransferenciaExtrato>> call, Throwable t) {
+                throw new RuntimeException(t);
             }
         });
     }
@@ -178,9 +196,8 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
             categoriasAtivas.remove(categoria);
         }
 
+        atualizarDoBackupPorCategorias();
         seletorCategoria.setText(categoriasAtivas.stream().map(c -> c.nome).collect(Collectors.joining(", ")));
-
-
     }
 
     private class ExtratoAdapter extends RecyclerView.Adapter<ExtratoAdapter.ExtratoViewHolder> {
@@ -190,8 +207,8 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
         public ExtratoAdapter(List<TransferenciaExtrato> itemExtratos) {
             this.itemExtratos = itemExtratos;
 
-
         }
+
         ////15
         @NonNull
         @Override
@@ -285,7 +302,7 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
         CheckBox ativadoCheckbox = selector.findViewById(R.id.item_option_categoria_checkbox);
 
         iconeText.setText(categoria.icone);
-        iconeText.setTextColor(Integer.parseInt(categoria.cor, 16) | 0xFF000000);
+        iconeText.getBackground().setTint(Integer.parseInt(categoria.cor, 16) | 0xFF000000);
 
         nomeText.setText(categoria.nome);
 

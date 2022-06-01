@@ -37,7 +37,6 @@
         <entry key="app/src/main/res/drawable/home_24.xml" value="0.1395" />
         <entry key="app/src/main/res/drawable/leao.xml" value="0.3345" />
         <entry key="app/src/main/res/drawable/menu_24.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable/nenhuma_imagem_enviada.xml" value="0.1645" />
         <entry key="app/src/main/res/drawable/receipt_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/receipt_long_24.xml" value="0.1395" />
         <entry key="app/src/main/res/drawable/remove_circle_outline_24.xml" value="0.1395" />
@@ -67,10 +66,10 @@
         <entry key="app/src/main/res/layout/botoes.xml" value="0.18854166666666666" />
         <entry key="app/src/main/res/layout/cadastro_usuario.xml" value="0.335" />
         <entry key="app/src/main/res/layout/circle_toolbar.xml" value="0.5820512820512821" />
-        <entry key="app/src/main/res/layout/dialog_selecionador_categoria.xml" value="0.19555555555555557" />
+        <entry key="app/src/main/res/layout/dialog_selecionador_categoria.xml" value="0.36770833333333336" />
         <entry key="app/src/main/res/layout/dialog_transferencia.xml" value="0.19166666666666668" />
         <entry key="app/src/main/res/layout/item_container_extrato.xml" value="0.35052083333333334" />
-        <entry key="app/src/main/res/layout/item_option_categoria.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_option_categoria.xml" value="0.5911458333333334" />
         <entry key="app/src/main/res/layout/layout_header.xml" value="0.5820512820512821" />
         <entry key="app/src/main/res/layout/layout_perfil_menu.xml" value="0.5820512820512821" />
         <entry key="app/src/main/res/layout/style.xml" value="0.1" />
