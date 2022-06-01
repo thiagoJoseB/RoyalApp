@@ -55,7 +55,8 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("");
+
+//        getSupportActionBar().setTitle("");
 
         atualizarDensidade(this); //famosa gambi
 
@@ -83,7 +84,6 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
         });
 
 
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
 
     }

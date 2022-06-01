@@ -25,7 +25,6 @@
         <activity
             android:name=".activity.TransferenciaFavoritasActivity"
             android:exported="true"
-
             android:parentActivityName=".activity.DashboardActivity"/>
         <activity
             android:name=".activity.ExtratoUsuarioActivity"
