@@ -1,7 +1,5 @@
 package com.example.royalapp.activity;
 
-import static com.example.royalapp.Constantes.anoAlvo;
-import static com.example.royalapp.Constantes.mesAlvoInicio0;
 import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
 
 import androidx.annotation.NonNull;
@@ -22,6 +20,7 @@ import android.widget.TextView;
 import com.example.royalapp.Constantes;
 import com.example.royalapp.R;
 import com.example.royalapp.Utilidades;
+import com.example.royalapp.Variaveis;
 import com.example.royalapp.model.Categoria;
 import com.example.royalapp.model.TransferenciaExtrato;
 import com.example.royalapp.remote.API;
@@ -119,23 +118,23 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
 
 
         MonthYearPickerDialogFragment dialogFragment = MonthYearPickerDialogFragment
-                .getInstance(mesAlvoInicio0, anoAlvo, "Data alvo", Utilidades.BRASIL);
+                .getInstance(Variaveis.mesAlvoInicio0, Variaveis.anoAlvo, "Data alvo", Utilidades.BRASIL);
 
 
 
 
         seletorPeriodo.setOnClickListener(view -> {
             assert dialogFragment.getArguments() != null;
-            dialogFragment.getArguments().putInt("month", mesAlvoInicio0); //gambi
-            dialogFragment.getArguments().putInt("year", anoAlvo); //gambi
+            dialogFragment.getArguments().putInt("month", Variaveis.mesAlvoInicio0); //gambi
+            dialogFragment.getArguments().putInt("year", Variaveis.anoAlvo); //gambi
 
 
             dialogFragment.show(getSupportFragmentManager(), null);
         });
 
         dialogFragment.setOnDateSetListener((year, monthOfYear) -> {
-            mesAlvoInicio0 = monthOfYear;
-            anoAlvo = year;
+            Variaveis.mesAlvoInicio0 = monthOfYear;
+            Variaveis.anoAlvo = year;
 
             this.atualizarMesAnoAlvo();
         });
@@ -164,10 +163,10 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
 
     private void atualizarMesAnoAlvo() {
         seletorPeriodo.setText(
-                String.format(this.getString(R.string.mes_ano_seletor), Constantes.MESES[mesAlvoInicio0], String.valueOf(anoAlvo))
+                String.format(this.getString(R.string.mes_ano_seletor), Constantes.MESES[Variaveis.mesAlvoInicio0], String.valueOf(Variaveis.anoAlvo))
         );
 
-        Call<List<TransferenciaExtrato>> call = API.get().getExtratos(DashboardActivity.token, anoAlvo, mesAlvoInicio0 + 1);
+        Call<List<TransferenciaExtrato>> call = API.get().getExtratos(DashboardActivity.token, Variaveis.anoAlvo, Variaveis.mesAlvoInicio0 + 1);
 
         call.enqueue(new Callback<List<TransferenciaExtrato>>() {
             @Override

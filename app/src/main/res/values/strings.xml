@@ -6,6 +6,7 @@
     <string name="dinheiro_aleatorio">R$ 666,69</string>
     <string name="observacao">Observação</string>
     <string name="parcelada">Parcelada</string>
+    <string name="grafico_mes_sem_dados">Nenhuma transferencia para %s/%s</string>
 
 
     <string-array name="meses">

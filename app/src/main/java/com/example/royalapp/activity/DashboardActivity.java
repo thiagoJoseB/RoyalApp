@@ -1,7 +1,5 @@
 package com.example.royalapp.activity;
 
-import static com.example.royalapp.Constantes.anoAlvo;
-import static com.example.royalapp.Constantes.mesAlvoInicio0;
 import static com.example.royalapp.Utilidades.CALENDARIO;
 import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
 import static com.example.royalapp.Utilidades.GSON;
@@ -13,6 +11,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,11 +23,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.royalapp.Constantes;
 import com.example.royalapp.R;
 import com.example.royalapp.Utilidades;
+import com.example.royalapp.Variaveis;
 import com.example.royalapp.model.Categoria;
 import com.example.royalapp.remote.API;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -79,6 +80,10 @@ public class DashboardActivity extends AppCompatActivity {
     ShimmerFrameLayout viewEfeitoReceita;
     ShimmerFrameLayout viewEfeitoDespesa;
 
+
+    private TextView viewGraficoTextoVazio;
+
+    ShimmerFrameLayout viewEfeitoGrafico;
     private PieChart chart;
     private final PieDataSet dataSet = new PieDataSet(new ArrayList<>(), null);
 
@@ -89,13 +94,13 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void atualizarMesAnoAlvo(){
         viewSeletorMesAno.setText(
-                String.format(this.getString(R.string.mes_ano_seletor), Constantes.MESES[Constantes.mesAlvoInicio0], String.valueOf(anoAlvo))
+                String.format(this.getString(R.string.mes_ano_seletor), Constantes.MESES[Variaveis.mesAlvoInicio0], String.valueOf(Variaveis.anoAlvo))
         );
 
         atualizarValoresPrincipais();
     }
 
-    public void atualizarValoresPrincipais() {
+    private void iniciarEsperaTexto(){
         viewTextSaldoGeral.setVisibility(View.INVISIBLE);
         viewTextDespesaGeral.setVisibility(View.INVISIBLE);
         viewTextReceitaGeral.setVisibility(View.INVISIBLE);
@@ -103,15 +108,61 @@ public class DashboardActivity extends AppCompatActivity {
         viewEfeitoGeral.setVisibility(View.VISIBLE);
         viewEfeitoReceita.setVisibility(View.VISIBLE);
         viewEfeitoDespesa.setVisibility(View.VISIBLE);
+
         viewEfeitoGeral.startShimmer();
         viewEfeitoReceita.startShimmer();
         viewEfeitoDespesa.startShimmer();
+    }
+
+    private void finalizarEsperaTextoBotandoValor(){
+        viewTextReceitaGeral.setText(FORMATADOR_MOEDA.format(receitaMensal));
+        viewTextDespesaGeral.setText(FORMATADOR_MOEDA.format(despesaMensal));
+        viewTextSaldoGeral.setText(FORMATADOR_MOEDA.format(saldoGeral));
+
+        viewTextSaldoGeral.setVisibility(View.VISIBLE);
+        viewTextDespesaGeral.setVisibility(View.VISIBLE);
+        viewTextReceitaGeral.setVisibility(View.VISIBLE);
+
+        viewEfeitoGeral.stopShimmer();
+        viewEfeitoReceita.stopShimmer();
+        viewEfeitoDespesa.stopShimmer();
+
+        viewEfeitoReceita.setVisibility(View.GONE);
+        viewEfeitoGeral.setVisibility(View.GONE);
+        viewEfeitoDespesa.setVisibility(View.GONE);
+    }
+
+    private void iniciarEsperaGrafico(){
+        viewEfeitoGrafico.setVisibility(View.VISIBLE);
+        viewGraficoTextoVazio.setVisibility(View.GONE);
+
+        chart.setVisibility(View.INVISIBLE);
+
+        viewEfeitoGrafico.startShimmer();
+    }
+
+    private void finalizarEsperaGrafico(boolean temResultado){
+        if(temResultado){
+
+            chart.setVisibility(View.VISIBLE);
+        } else {
+            viewGraficoTextoVazio.setVisibility(View.VISIBLE);
+        }
+
+        viewEfeitoGrafico.stopShimmer();
+
+        viewEfeitoGrafico.setVisibility(View.GONE);
+    }
+
+
+    public void atualizarValoresPrincipais() {
+
+
+        iniciarEsperaTexto();
 
 
 
-
-
-        API.get().getSaldo(token, Constantes.anoAlvo, mesAlvoInicio0 + 1).enqueue(new Callback<String>() {
+        API.get().getSaldo(token, Variaveis.anoAlvo, Variaveis.mesAlvoInicio0 + 1).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 Log.d("teste", response.body());
@@ -125,20 +176,7 @@ public class DashboardActivity extends AppCompatActivity {
 
                 despesaMensal = valores.get("despesa").getAsBigDecimal();
 
-                viewTextReceitaGeral.setText(FORMATADOR_MOEDA.format(receitaMensal));
-                viewTextDespesaGeral.setText(FORMATADOR_MOEDA.format(despesaMensal));
-                viewTextSaldoGeral.setText(FORMATADOR_MOEDA.format(saldoGeral));
-
-                viewTextSaldoGeral.setVisibility(View.VISIBLE);
-                viewTextDespesaGeral.setVisibility(View.VISIBLE);
-                viewTextReceitaGeral.setVisibility(View.VISIBLE);
-
-                viewEfeitoGeral.stopShimmer();
-                viewEfeitoReceita.stopShimmer();
-                viewEfeitoDespesa.stopShimmer();
-                viewEfeitoReceita.setVisibility(View.GONE);
-                viewEfeitoGeral.setVisibility(View.GONE);
-                viewEfeitoDespesa.setVisibility(View.GONE);
+                finalizarEsperaTextoBotandoValor();
             }
 
             @Override
@@ -151,7 +189,9 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     public void atualizarGrafico(){
-        API.get().graficoMensal(tipoGrafico, token, anoAlvo, mesAlvoInicio0 + 1).enqueue(new Callback<String>() {
+        iniciarEsperaGrafico();
+
+        API.get().graficoMensal(tipoGrafico, token, Variaveis.anoAlvo, Variaveis.mesAlvoInicio0 + 1).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 ArrayList<Integer> colors = new ArrayList<>();
@@ -170,17 +210,34 @@ public class DashboardActivity extends AppCompatActivity {
                 data.setValueTextSize(11f);
                 data.setValueTextColor(Color.WHITE);
 
-                object.entrySet().forEach(entry -> {
-                    int idCategoria = Integer.parseInt(entry.getKey());
-                    Categoria categoria = (tipoGrafico.equals("despesa") ? Categoria.DESPESAS : Categoria.RECEITAS).stream().filter(cat -> cat.idCategoria == idCategoria).findAny().get();
+                if(!object.entrySet().isEmpty()) {
 
-                    colors.add(Integer.parseInt(categoria.cor, 16) | 0xFF000000); // pra tirar o transparente
+                    object.entrySet().forEach(entry -> {
+                        int idCategoria = Integer.parseInt(entry.getKey());
+                        Categoria categoria = (tipoGrafico.equals("despesa") ? Categoria.DESPESAS : Categoria.RECEITAS).stream().filter(cat -> cat.idCategoria == idCategoria).findAny().get();
 
-                    dataSet.addEntry(new PieEntry(
-                            entry.getValue().getAsFloat(),
-                            categoria.nome
-                    ));
-                });
+                        colors.add(Integer.parseInt(categoria.cor, 16) | 0xFF000000); // pra tirar o transparente
+
+                        dataSet.addEntry(new PieEntry(
+                                entry.getValue().getAsFloat(),
+                                categoria.nome
+                        ));
+                    });
+
+                    finalizarEsperaGrafico(true);
+
+                } else {
+
+                    viewGraficoTextoVazio.setText(
+                            String.format(
+                                    getString(R.string.grafico_mes_sem_dados),
+                                    Constantes.MESES[Variaveis.mesAlvoInicio0],
+                                    String.valueOf(Variaveis.anoAlvo)
+                            )
+                    );
+
+                    finalizarEsperaGrafico(false);
+                }
 
                 dataSet.setColors(colors);
                 chart.setData(data);
@@ -212,28 +269,28 @@ public class DashboardActivity extends AppCompatActivity {
         viewSeletorMesAno = this.findViewById(R.id.dashboard_seletor_mes_ano);
 
         MonthYearPickerDialogFragment dialogFragment = MonthYearPickerDialogFragment
-                .getInstance(mesAlvoInicio0, anoAlvo, "Data alvo", Utilidades.BRASIL);
+                .getInstance(Variaveis.mesAlvoInicio0, Variaveis.anoAlvo, "Data alvo", Utilidades.BRASIL);
 
 
 
         viewSeletorMesAno.setOnClickListener(view -> {
             assert dialogFragment.getArguments() != null;
-            dialogFragment.getArguments().putInt("month", mesAlvoInicio0); //gambi
-            dialogFragment.getArguments().putInt("year", anoAlvo); //gambi
+            dialogFragment.getArguments().putInt("month", Variaveis.mesAlvoInicio0); //gambi
+            dialogFragment.getArguments().putInt("year", Variaveis.anoAlvo); //gambi
 
 
             dialogFragment.show(getSupportFragmentManager(), null);
         });
 
         dialogFragment.setOnDateSetListener((year, monthOfYear) -> {
-            mesAlvoInicio0 = monthOfYear;
-            anoAlvo = year;
+            Variaveis.mesAlvoInicio0 = monthOfYear;
+            Variaveis.anoAlvo = year;
 
             this.atualizarMesAnoAlvo();
         });
 
         viewSeletorMesAno.setText(
-                String.format(this.getString(R.string.mes_ano_seletor), Constantes.MESES[mesAlvoInicio0], String.valueOf(anoAlvo))
+                String.format(this.getString(R.string.mes_ano_seletor), Constantes.MESES[Variaveis.mesAlvoInicio0], String.valueOf(Variaveis.anoAlvo))
         );
 
 
@@ -308,6 +365,10 @@ public class DashboardActivity extends AppCompatActivity {
                  viewEfeitoGeral = findViewById(R.id.dashboard_saldo_principal_efeito);
                  viewEfeitoReceita = findViewById(R.id.dashboard_receita_principa_efeito);
                  viewEfeitoDespesa = findViewById(R.id.dashboard_despesa_principal_efeito);
+                 viewEfeitoGrafico = findViewById(R.id.dashboard_grafico_mes_efeito);
+
+
+                 viewGraficoTextoVazio = findViewById(R.id.dashboard_grafico_mes_vazio);
 
         API.get().getDashboardInfo(token, CALENDARIO.get(Calendar.YEAR), CALENDARIO.get(Calendar.MONTH) + 1).enqueue(new Callback<String>() {
             @Override
@@ -322,20 +383,12 @@ public class DashboardActivity extends AppCompatActivity {
 
 
 
-                viewEfeitoGeral.stopShimmer();
-                viewEfeitoReceita.stopShimmer();
-                viewEfeitoDespesa.stopShimmer();
-                viewEfeitoReceita.setVisibility(View.GONE);
-                viewEfeitoGeral.setVisibility(View.GONE);
-                viewEfeitoDespesa.setVisibility(View.GONE);
 
                 saldoGeral = json.get(2).getAsBigDecimal();
                 receitaMensal = valores.get("receita").getAsBigDecimal();
                 despesaMensal = valores.get("despesa").getAsBigDecimal();
 
-                viewTextReceitaGeral.setText(FORMATADOR_MOEDA.format(receitaMensal));
-                viewTextDespesaGeral.setText(FORMATADOR_MOEDA.format(despesaMensal));
-                viewTextSaldoGeral.setText(FORMATADOR_MOEDA.format(saldoGeral));
+                finalizarEsperaTextoBotandoValor();
 
                 DashboardActivity.this.atualizarGrafico();
 
@@ -375,6 +428,10 @@ public class DashboardActivity extends AppCompatActivity {
         chart.setHighlightPerTapEnabled(false);
         chart.setEntryLabelColor(0xfff5f5f5); //whitesmoke
         chart.setEntryLabelTextSize(12f);
+
+        chart.setNoDataText("Carregando as informações...");
+        chart.setNoDataTextColor(0xff000000);
+
 
 
         Legend legend = chart.getLegend();

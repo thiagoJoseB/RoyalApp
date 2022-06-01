@@ -110,11 +110,6 @@
                             android:layout_height="0dp"
                             android:layout_gravity="center"
                             android:background="@color/graywait"
-
-
-                            android:orientation="vertical"
-
-
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="@+id/dashboard_despesa_principal_texto"
                             app:layout_constraintHorizontal_bias="0.0"
@@ -343,10 +338,32 @@
                                 android:text="Receitas" />
                         </RadioGroup>
 
-                        <com.github.mikephil.charting.charts.PieChart
-                            android:id="@+id/dashboard_grafico_mes"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <com.facebook.shimmer.ShimmerFrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/graywait"
+                                    android:layout_margin="8dp"
+                                    android:id="@+id/dashboard_grafico_mes_efeito"/>
+                                <com.github.mikephil.charting.charts.PieChart
+                                    android:visibility="invisible"
+                                    android:id="@+id/dashboard_grafico_mes"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    />
+                                <TextView
+                                    android:visibility="gone"
+                                    android:text="@string/grafico_mes_sem_dados"
+                                    android:id="@+id/dashboard_grafico_mes_vazio"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    style="head"
+                                    />
+                            </RelativeLayout>
                     </LinearLayout>
 
 
