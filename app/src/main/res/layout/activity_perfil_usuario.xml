@@ -23,16 +23,13 @@
 
             <RelativeLayout
                 android:layout_width="100dp"
-                android:layout_height="125dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="30dp">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-
-                    android:layout_marginTop="20dp"
-
                     app:cardCornerRadius="50dp">
 
                     <ImageView
@@ -45,21 +42,23 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true">
+                    android:layout_alignParentBottom="true"
+                    android:backgroundTint="@color/corPrincipal"
+                    app:cardCornerRadius="50dp">
 
                     <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/camera" />
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/camera"
+
+                        android:backgroundTint="@color/white" />
 
 
                 </androidx.cardview.widget.CardView>
-
-
-
 
 
             </RelativeLayout>
@@ -122,6 +121,30 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="250dp"
+                android:layout_marginTop="20dp">
+
+                <Button
+                    android:layout_width="130dp"
+                    android:layout_height="50dp"
+                    android:text="alterar senha"
+                    android:textSize="11sp"/>
+
+
+
+
+
+
+
+            </LinearLayout>
+
+
+
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -166,6 +189,20 @@
 
 
 
+                    <Button
+                        android:id="@+id/perfil_botao_deslogar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_weight="1"
+                        android:onClick="deslogar"
+
+                        android:text="Deslogar" />
+
+
+
 
 
 
@@ -174,31 +211,31 @@
 
     </ScrollView>
 
-    <LinearLayout
-        android:layout_width="370dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_above="@+id/perfil_menu_baixo">
+<!--    <LinearLayout-->
+<!--        android:layout_width="370dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_above="@+id/perfil_menu_baixo"-->
+<!--        android:layout_marginLeft="25dp">-->
 
-        <Button
-            android:id="@+id/perfil_botao_deslogar"
-            android:layout_width="10dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            android:onClick="deslogar"
-            android:text="Deslogar" />
+<!--&lt;!&ndash;        <Button&ndash;&gt;-->
+<!--&lt;!&ndash;            android:id="@+id/perfil_botao_deslogar"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_width="10dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_margin="8dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_weight="1"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:onClick="deslogar"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:text="Deslogar" />&ndash;&gt;-->
 
-        <Button
-            android:id="@+id/perfil_botao_editar"
-            android:layout_width="10dp"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/perfil_menu_baixo"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            android:text="Editar" />
+<!--&lt;!&ndash;        <Button&ndash;&gt;-->
+<!--&lt;!&ndash;            android:id="@+id/perfil_botao_editar"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_width="10dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_above="@+id/perfil_menu_baixo"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_margin="8dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_weight="1"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:text="Mudar Senha" />&ndash;&gt;-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
