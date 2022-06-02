@@ -1,6 +1,10 @@
 package com.example.royalapp.activity;
 
 import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
+import static com.example.royalapp.Utilidades.GSON;
+import static com.example.royalapp.activity.TransferenciaFavoritasActivity.atualizarDensidade;
+import static com.example.royalapp.activity.TransferenciaFavoritasActivity.label;
+import static com.example.royalapp.activity.TransferenciaFavoritasActivity.texto;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -9,11 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,17 +30,25 @@ import com.example.royalapp.R;
 import com.example.royalapp.Utilidades;
 import com.example.royalapp.Variaveis;
 import com.example.royalapp.model.Categoria;
+import com.example.royalapp.model.Transferencia;
 import com.example.royalapp.model.TransferenciaExtrato;
 import com.example.royalapp.remote.API;
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.lang.ref.Reference;
+import java.lang.ref.SoftReference;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,6 +68,8 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_extrato_usuario);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
+        atualizarDensidade(this); //famosa gambi
 
         menuBaixo = this.findViewById(R.id.extratos_menu_baixo);
         menuBaixo.setSelectedItemId(R.id.menu_baixo_extratos);
@@ -171,7 +189,9 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<TransferenciaExtrato>>() {
             @Override
             public void onResponse(Call<List<TransferenciaExtrato>> call, Response<List<TransferenciaExtrato>> response) {
-                extratosBackup = response.body();
+                extratosBackup = Objects.requireNonNull(response.body());
+
+
 
                 atualizarDoBackupPorCategorias();
 
@@ -224,8 +244,120 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ExtratoAdapter.ExtratoViewHolder holder, int position) {
 
-                TransferenciaExtrato transferenciaExtrato =  itemExtratos.get(position);
+                TransferenciaExtrato transferenciaExtrato = itemExtratos.get(position);
+
+            Log.d("teste", GSON.toJson(extratosBackup));
+            Log.d("teste", GSON.toJson(transferenciaExtrato));
+
                 holder.setExtratoData(transferenciaExtrato);
+
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                private final Map<Integer, Bitmap> imagem = new HashMap<>();
+
+                private LinearLayout layoutPai;
+                private Transferencia transferencia;
+
+                private void rodar(){
+                    Transferencia transferencia1 = transferencia;
+
+                    if(layoutPai == null){
+                        layoutPai = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_transferencia, null);
+                        LinearLayout layout = layoutPai.findViewById(R.id.dialog_transferencia_layout_itens);
+
+                        if (transferencia1.anexo != null) {
+                            ImageView imageView =  layout.findViewById(R.id.dialog_transferencia_imagem);
+
+                            final Bitmap[] bitmap = {imagem.get(transferencia1.id)};
+
+                            if(bitmap[0] == null) { // tem o backup?, NAO?, backup poderia ser do linear layout tmb
+                                API.get().imagem(transferencia1.anexo, DashboardActivity.token).enqueue(new Callback<ResponseBody>() {
+                                    @Override
+                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                        bitmap[0] = BitmapFactory
+                                                .decodeStream(response.body().byteStream()); // so pega a img uma vez;
+
+
+                                        imagem.put(transferencia1.id, bitmap[0]);
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                        throw new RuntimeException(t);
+                                    }
+                                });
+                            } else { // TEM SIM
+                                imageView.setImageBitmap(bitmap[0]);
+                            }
+                        }
+
+                        layout.addView(label("Valor", ExtratoUsuarioActivity.this));
+                        layout.addView(texto(FORMATADOR_MOEDA.format(transferenciaExtrato.valor), ExtratoUsuarioActivity.this));
+
+                        layout.addView(label("Descricao", ExtratoUsuarioActivity.this));
+                        layout.addView(texto(transferencia1.descricao, ExtratoUsuarioActivity.this));
+
+                        layout.addView(label("Data", ExtratoUsuarioActivity.this));
+                        layout.addView(texto(Utilidades.FORMATADOR_DIA_LONGO.format(java.sql.Date.valueOf(transferenciaExtrato.data)), ExtratoUsuarioActivity.this));
+
+                        if (transferencia1.observacao != null) {
+                            layout.addView(label("Observação", ExtratoUsuarioActivity.this));
+                            layout.addView(texto(transferencia1.observacao, ExtratoUsuarioActivity.this));
+                        }
+
+
+                        if (transferenciaExtrato.indice != null) {
+                            layout.addView(label("Parcelada", ExtratoUsuarioActivity.this));
+                            layout.addView(texto("Sim", ExtratoUsuarioActivity.this));
+
+                            layout.addView(label("Parcela", ExtratoUsuarioActivity.this));
+                            layout.addView(texto((transferenciaExtrato.indice + 1) + " de " + transferencia1.parcelas + " parcelas", ExtratoUsuarioActivity.this));
+
+                            layout.addView(label("Frequencia", ExtratoUsuarioActivity.this));
+                            layout.addView(texto(transferencia1.nomeFrequencia.toString(), ExtratoUsuarioActivity.this));
+                        } else {
+                            layout.addView(label("Parcelada", ExtratoUsuarioActivity.this));
+                            layout.addView(texto("Não", ExtratoUsuarioActivity.this));
+                        }
+                    } else {
+                        ((ViewGroup)layoutPai.getParent()).removeView(layoutPai);
+                    }
+
+                    runOnUiThread(() -> {
+                        new AlertDialog.Builder(ExtratoUsuarioActivity.this)
+                                .setView(layoutPai)
+                                .create().show();
+                    });
+                }
+
+                @Override
+                public void onClick(View v) {
+
+
+                    if(transferencia == null){
+                        API.get().getTransferencia(DashboardActivity.token, transferenciaExtrato.id).enqueue(new Callback<List<Transferencia>>() {
+                            @Override
+                            public void onResponse(Call<List<Transferencia>> call, Response<List<Transferencia>> response) {
+                                transferencia = (response.body().get(0));
+                                rodar();
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<Transferencia>> call, Throwable t) {
+                                throw new RuntimeException(t);
+                            }
+                        });
+                    } else {
+                        rodar();
+                    }
+
+
+
+
+                }
+
+
+            });
 
 
         }

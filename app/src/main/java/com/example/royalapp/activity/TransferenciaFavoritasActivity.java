@@ -20,28 +20,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.royalapp.R;
 import com.example.royalapp.Utilidades;
 import com.example.royalapp.model.Categoria;
-import com.example.royalapp.model.ItemFavorito;
+import com.example.royalapp.model.Transferencia;
 import com.example.royalapp.remote.API;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TransferenciaFavoritasActivity extends AppCompatActivity {
-    List<ItemFavorito> list = new ArrayList<>();
+    List<Transferencia> list = new ArrayList<>();
     RecyclerView recyclerView;
 
 
@@ -56,17 +53,15 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        getSupportActionBar().setTitle("");
-
         atualizarDensidade(this); //famosa gambi
 
         recyclerView = findViewById(R.id.favoritas_recycler_view);
 
-        Call<List<ItemFavorito>> call = API.get().getFavorito(DashboardActivity.token, 2022, 5);
+        Call<List<Transferencia>> call = API.get().getFavorito(DashboardActivity.token, 2022, 5);
 
-        call.enqueue(new Callback<List<ItemFavorito>>() {
+        call.enqueue(new Callback<List<Transferencia>>() {
             @Override
-            public void onResponse(Call<List<ItemFavorito>> call, Response<List<ItemFavorito>> response) {
+            public void onResponse(Call<List<Transferencia>> call, Response<List<Transferencia>> response) {
                 list = response.body();
 
 
@@ -75,7 +70,7 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<ItemFavorito>> call, Throwable t) {
+            public void onFailure(Call<List<Transferencia>> call, Throwable t) {
 
                 Log.d("API-ERRO", t.getMessage());
 
@@ -91,9 +86,9 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
 
     private class TransferenciaFavoritoAdapter extends RecyclerView.Adapter<TransferenciaFavoritoAdapter.TransferenciaFavoritoViewHolder> {
 
-        List<ItemFavorito> itemFav;
+        List<Transferencia> itemFav;
 
-        public TransferenciaFavoritoAdapter(List<ItemFavorito> itemFav) {
+        public TransferenciaFavoritoAdapter(List<Transferencia> itemFav) {
             this.itemFav = itemFav;
         }
 
@@ -111,68 +106,73 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull TransferenciaFavoritoAdapter.TransferenciaFavoritoViewHolder holder, int position) {
 
-            ItemFavorito itemFavorito = itemFav.get(position);
+            Transferencia itemFavorito = itemFav.get(position);
             holder.setTransferenciaFavorita(itemFavorito);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 private Bitmap backup;
+                private LinearLayout layoutPai;
 
                 @Override
                 public void onClick(View v) {
-                    LinearLayout layoutPai = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_transferencia, null);
-                    LinearLayout layout = layoutPai.findViewById(R.id.dialog_transferencia_layout_itens);
+                    if(layoutPai == null){
+                        layoutPai = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_transferencia, null);
+                        LinearLayout layout = layoutPai.findViewById(R.id.dialog_transferencia_layout_itens);
 
-                    if (itemFavorito.anexo != null) {
-                        ImageView imageView =  layout.findViewById(R.id.dialog_transferencia_imagem);
+                        if (itemFavorito.anexo != null) {
+                            ImageView imageView =  layout.findViewById(R.id.dialog_transferencia_imagem);
 
-                        if(backup == null) { // tem o backup?, NAO?, backup poderia ser do linear layout tmb
+                            if(backup == null) { // tem o backup?, NAO?, backup poderia ser do linear layout tmb
 
-                            API.get().imagem(itemFavorito.anexo, DashboardActivity.token).enqueue(new Callback<ResponseBody>() {
-                                @Override
-                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                    backup = BitmapFactory
-                                            .decodeStream(response.body().byteStream()); // so pega a img uma vez;
+                                API.get().imagem(itemFavorito.anexo, DashboardActivity.token).enqueue(new Callback<ResponseBody>() {
+                                    @Override
+                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                        backup = BitmapFactory
+                                                .decodeStream(response.body().byteStream()); // so pega a img uma vez;
 
 
-                                    imageView.setImageBitmap(backup);
-                                }
+                                        imageView.setImageBitmap(backup);
+                                    }
 
-                                @Override
-                                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                    throw new RuntimeException(t);
-                                }
-                            });
-                        } else { // TEM SIM
-                            imageView.setImageBitmap(backup);
+                                    @Override
+                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                        throw new RuntimeException(t);
+                                    }
+                                });
+                            } else { // TEM SIM
+                                imageView.setImageBitmap(backup);
+                            }
                         }
-                    }
 
-                    layout.addView(label("Valor", TransferenciaFavoritasActivity.this));
-                    layout.addView(texto(FORMATADOR_MOEDA.format(itemFavorito.valor), TransferenciaFavoritasActivity.this));
+                        layout.addView(label("Valor", TransferenciaFavoritasActivity.this));
+                        layout.addView(texto(FORMATADOR_MOEDA.format(itemFavorito.valor), TransferenciaFavoritasActivity.this));
 
-                    layout.addView(label("Descricao", TransferenciaFavoritasActivity.this));
-                    layout.addView(texto(itemFavorito.descricao, TransferenciaFavoritasActivity.this));
+                        layout.addView(label("Descricao", TransferenciaFavoritasActivity.this));
+                        layout.addView(texto(itemFavorito.descricao, TransferenciaFavoritasActivity.this));
 
-                    layout.addView(label("Data", TransferenciaFavoritasActivity.this));
-                    layout.addView(texto(Utilidades.FORMATADOR_DIA_LONGO.format(java.sql.Date.valueOf(itemFavorito.data)), TransferenciaFavoritasActivity.this));
+                        layout.addView(label("Data", TransferenciaFavoritasActivity.this));
+                        layout.addView(texto(Utilidades.FORMATADOR_DIA_LONGO.format(java.sql.Date.valueOf(itemFavorito.data)), TransferenciaFavoritasActivity.this));
 
-                    if (itemFavorito.observacao != null) {
-                        layout.addView(label("Observação", TransferenciaFavoritasActivity.this));
-                        layout.addView(texto(itemFavorito.observacao, TransferenciaFavoritasActivity.this));
-                    }
+                        if (itemFavorito.observacao != null) {
+                            layout.addView(label("Observação", TransferenciaFavoritasActivity.this));
+                            layout.addView(texto(itemFavorito.observacao, TransferenciaFavoritasActivity.this));
+                        }
 
-                    if (itemFavorito.parcelada) {
-                        layout.addView(label("Parcelada", TransferenciaFavoritasActivity.this));
-                        layout.addView(texto("Sim", TransferenciaFavoritasActivity.this));
+                        if (itemFavorito.parcelada) {
+                            layout.addView(label("Parcelada", TransferenciaFavoritasActivity.this));
+                            layout.addView(texto("Sim", TransferenciaFavoritasActivity.this));
 
-                        layout.addView(label("Parcelas", TransferenciaFavoritasActivity.this));
-                        layout.addView(texto(String.valueOf(itemFavorito.parcelas), TransferenciaFavoritasActivity.this));
+                            layout.addView(label("Parcelas", TransferenciaFavoritasActivity.this));
+                            layout.addView(texto(String.valueOf(itemFavorito.parcelas), TransferenciaFavoritasActivity.this));
 
-                        layout.addView(label("Frequencia", TransferenciaFavoritasActivity.this));
-                        layout.addView(texto(String.valueOf(itemFavorito.nomeFrequencia.toString()), TransferenciaFavoritasActivity.this));
+                            layout.addView(label("Frequencia", TransferenciaFavoritasActivity.this));
+                            layout.addView(texto(String.valueOf(itemFavorito.nomeFrequencia.toString()), TransferenciaFavoritasActivity.this));
+                        } else {
+                            layout.addView(label("Parcelada", TransferenciaFavoritasActivity.this));
+                            layout.addView(texto("Não", TransferenciaFavoritasActivity.this));
+                        }
                     } else {
-                        layout.addView(label("Parcelada", TransferenciaFavoritasActivity.this));
-                        layout.addView(texto("Não", TransferenciaFavoritasActivity.this));
+                        ((ViewGroup)layoutPai.getParent()).removeView(layoutPai);
                     }
 
                     new AlertDialog.Builder(TransferenciaFavoritasActivity.this)
@@ -206,7 +206,7 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
             }
 
 
-            public void setTransferenciaFavorita(ItemFavorito itemFavorito) {
+            public void setTransferenciaFavorita(Transferencia itemFavorito) {
                 txtDescricao.setText(itemFavorito.descricao);
                 txtPreco.setText(FORMATADOR_MOEDA.format(itemFavorito.valor));
                 txtData.setText(itemFavorito.data);

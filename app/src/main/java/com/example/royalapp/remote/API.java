@@ -4,18 +4,16 @@ package com.example.royalapp.remote;
 
 ///13  requisicao , como vai ser feita , onde os dados vao estar
 
-import com.example.royalapp.model.ItemFavorito;
+import com.example.royalapp.model.Transferencia;
 import com.example.royalapp.model.TransferenciaExtrato;
 import com.example.royalapp.remote.request.Cadastro;
 import com.example.royalapp.remote.request.Codigo;
 import com.example.royalapp.remote.request.InserirEmail;
 import com.example.royalapp.remote.request.Login;
-import com.example.royalapp.remote.request.PerfilDoUsuario;
 import com.example.royalapp.remote.response.Resultado;
 import com.example.royalapp.remote.request.SenhaNova;
 import com.google.gson.GsonBuilder;
 
-import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -67,7 +65,8 @@ public interface API {
     @GET("data/saldo/saldo-geral") Call<String> getSaldo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("data/extrato-mes") Call<List<TransferenciaExtrato>> getExtratos(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("grafico/{tipo}") Call<String> graficoMensal(@Path("tipo") String tipo, @Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
-    @GET("data/favorito") Call<List<ItemFavorito>> getFavorito(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
+    @GET("data/favorito") Call<List<Transferencia>> getFavorito(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
+    @GET("data/transferencia") Call<List<Transferencia>> getTransferencia(@Query("k") String token, @Query("id") int id);
 
     @GET("data/perfil") Call<String>  getPerfil(@Query("k") String token);
     @GET("upload/{imagem}") Call<ResponseBody> imagem( @Path("imagem") String imagem, @Query("k") String token);

@@ -76,14 +76,14 @@ public class DashboardActivity extends AppCompatActivity {
     private BottomNavigationView menuBaixo;
     private RadioGroup radioGroupDespesaOuReceita;
 
-    ShimmerFrameLayout viewEfeitoGeral;
-    ShimmerFrameLayout viewEfeitoReceita;
-    ShimmerFrameLayout viewEfeitoDespesa;
+    private ShimmerFrameLayout viewEfeitoGeral;
+    private ShimmerFrameLayout viewEfeitoReceita;
+    private ShimmerFrameLayout viewEfeitoDespesa;
 
 
     private TextView viewGraficoTextoVazio;
 
-    ShimmerFrameLayout viewEfeitoGrafico;
+    private ShimmerFrameLayout viewEfeitoGrafico;
     private PieChart chart;
     private final PieDataSet dataSet = new PieDataSet(new ArrayList<>(), null);
 

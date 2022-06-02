@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
 
-public class ItemFavorito {
+public class Transferencia {
     public String anexo;
     public String data;
     public String descricao;
