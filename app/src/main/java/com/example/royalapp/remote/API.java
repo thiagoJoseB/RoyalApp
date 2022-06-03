@@ -10,6 +10,7 @@ import com.example.royalapp.remote.request.Cadastro;
 import com.example.royalapp.remote.request.Codigo;
 import com.example.royalapp.remote.request.InserirEmail;
 import com.example.royalapp.remote.request.Login;
+import com.example.royalapp.remote.request.NovaSenhaPerfil;
 import com.example.royalapp.remote.response.Resultado;
 import com.example.royalapp.remote.request.SenhaNova;
 import com.google.gson.GsonBuilder;
@@ -36,7 +37,7 @@ public interface API {
     public static OkHttpClient OK_HTTP_CLIENT = new OkHttpClient.Builder()
             .readTimeout(5,TimeUnit.SECONDS)
             .writeTimeout(5, TimeUnit.SECONDS).build();
-    String API_URL = "http://6.6.6.69:8080/royal/";
+    String API_URL = "http://10.107.144.10:8080/royal/";
     String WS_API_URL = "ws" + API_URL.substring(4);
     Retrofit INTERNAL_RETROFIT = new Retrofit.Builder()
             .client(OK_HTTP_CLIENT)
@@ -71,5 +72,11 @@ public interface API {
     @GET("data/perfil") Call<String>  getPerfil(@Query("k") String token);
     @GET("upload/{imagem}") Call<ResponseBody> imagem( @Path("imagem") String imagem, @Query("k") String token);
 
-    @PUT("upload") Call<String> enviaFoto(@Query("k") String token, @Body RequestBody corpoComInputStream);
+    @PUT("upload") Call<String> enviaFoto(@Query("k") String token, @Body RequestBody corpoComInputStream );
+
+    @POST("data/perfil") Call<Resultado>novaSenha(@Body NovaSenhaPerfil novaSenhaPerfil , @Query("k") String token);
+
+
+
+
 }

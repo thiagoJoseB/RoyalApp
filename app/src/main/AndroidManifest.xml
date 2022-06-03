@@ -15,7 +15,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".activity.LoginUsuarioActivity"
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleInstance" />
         <activity
             android:name=".Graficos"
             android:exported="false" />
@@ -25,7 +25,7 @@
         <activity
             android:name=".activity.TransferenciaFavoritasActivity"
             android:exported="true"
-            android:parentActivityName=".activity.DashboardActivity"/>
+            android:parentActivityName=".activity.DashboardActivity" />
         <activity
             android:name=".activity.ExtratoUsuarioActivity"
             android:launchMode="singleInstance" />
@@ -61,6 +61,7 @@
             android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
