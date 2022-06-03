@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
@@ -26,6 +27,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
     EditText txtNomeCompleto;
     EditText txtEmailPerfil;
     CheckBox checkboxPerfil;
+    Button btnAlterarSenha;
 
     private BottomNavigationView menuBaixo;
 
@@ -39,10 +41,16 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
         txtNomeCompleto = findViewById(R.id.txtNomeCompleto);
         txtEmailPerfil = findViewById(R.id.txtEmailPerfil);
+        btnAlterarSenha = findViewById(R.id.perfil_botao_editar);
         checkboxPerfil = findViewById(R.id.checkboxPerfil);
 
         menuBaixo = findViewById(R.id.perfil_menu_baixo);
         menuBaixo.setSelectedItemId(R.id.menu_baixo_perfil);
+
+
+        btnAlterarSenha.setOnClickListener(view -> {
+
+        });
 
         menuBaixo.setOnItemSelectedListener(item -> {
 
