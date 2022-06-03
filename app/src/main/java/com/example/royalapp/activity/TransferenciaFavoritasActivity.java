@@ -1,6 +1,7 @@
 package com.example.royalapp.activity;
 
 import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
+import static com.example.royalapp.Variaveis.IMAGENS;
 import static android.widget.LinearLayout.LayoutParams;
 
 import androidx.annotation.NonNull;
@@ -79,8 +80,6 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
         });
 
 
-
-
     }
 
 
@@ -112,26 +111,38 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 private Bitmap backup;
                 private LinearLayout layoutPai;
+                private AlertDialog alertDialog;
 
                 @Override
                 public void onClick(View v) {
-                    if(layoutPai == null){
+                    if (alertDialog == null) {
+                        alertDialog = new AlertDialog.Builder(TransferenciaFavoritasActivity.this)
+                                .create();
+
                         layoutPai = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_transferencia, null);
                         LinearLayout layout = layoutPai.findViewById(R.id.dialog_transferencia_layout_itens);
+                        ((TextView) layoutPai.findViewById(R.id.dialog_transferencia_titulo))
+                                .setText((itemFavorito.isDespesa() ? "Despesa" : "Receita") + " favorita");
+                        layoutPai.findViewById(R.id.dialog_transferencia_botao_sair).setOnClickListener(v2 -> {
+                            alertDialog.dismiss();
+                        });
 
                         if (itemFavorito.anexo != null) {
-                            ImageView imageView =  layout.findViewById(R.id.dialog_transferencia_imagem);
+                            ImageView imageView = layout.findViewById(R.id.dialog_transferencia_imagem);
 
-                            if(backup == null) { // tem o backup?, NAO?, backup poderia ser do linear layout tmb
 
+                            if (IMAGENS.containsKey(itemFavorito.id)) { // tem o backup?, sim?, backup poderia ser do linear layout tmb
+                                imageView.setImageBitmap(IMAGENS.get(itemFavorito.id));
+                            } else { // pega o novo
                                 API.get().imagem(itemFavorito.anexo, DashboardActivity.token).enqueue(new Callback<ResponseBody>() {
                                     @Override
                                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                        backup = BitmapFactory
+                                        final Bitmap bitmap = BitmapFactory
                                                 .decodeStream(response.body().byteStream()); // so pega a img uma vez;
 
 
-                                        imageView.setImageBitmap(backup);
+                                        IMAGENS.put(itemFavorito.id, bitmap);
+                                        imageView.setImageBitmap(bitmap);
                                     }
 
                                     @Override
@@ -139,8 +150,6 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
                                         throw new RuntimeException(t);
                                     }
                                 });
-                            } else { // TEM SIM
-                                imageView.setImageBitmap(backup);
                             }
                         }
 
@@ -153,7 +162,7 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
                         layout.addView(label("Data", TransferenciaFavoritasActivity.this));
                         layout.addView(texto(Utilidades.FORMATADOR_DIA_LONGO.format(java.sql.Date.valueOf(itemFavorito.data)), TransferenciaFavoritasActivity.this));
 
-                        if (itemFavorito.observacao != null) {
+                        if (itemFavorito.observacao != null && !itemFavorito.observacao.isEmpty()) {
                             layout.addView(label("Observação", TransferenciaFavoritasActivity.this));
                             layout.addView(texto(itemFavorito.observacao, TransferenciaFavoritasActivity.this));
                         }
@@ -171,13 +180,13 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
                             layout.addView(label("Parcelada", TransferenciaFavoritasActivity.this));
                             layout.addView(texto("Não", TransferenciaFavoritasActivity.this));
                         }
-                    } else {
-                        ((ViewGroup)layoutPai.getParent()).removeView(layoutPai);
+
+                        alertDialog.setView(layoutPai);
+
                     }
 
-                    new AlertDialog.Builder(TransferenciaFavoritasActivity.this)
-                            .setView(layoutPai)
-                            .create().show();
+
+                    alertDialog.show();
                 }
 
 
@@ -244,7 +253,7 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
 
     }
 
-    public static TextView label(String texto, Context context){
+    public static TextView label(String texto, Context context) {
         TextView textView = new TextView(context);
         textView.setLayoutParams(PARAMS_DISTANCIA_CIMA);
         textView.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_LabelLarge);
@@ -252,7 +261,7 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
         return textView;
     }
 
-    public static TextView texto(String texto, Context context){
+    public static TextView texto(String texto, Context context) {
         TextView textView = new TextView(context);
         textView.setLayoutParams(PARAMS);
         textView.setText(texto);
@@ -269,10 +278,10 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
             LayoutParams.WRAP_CONTENT
     );
 
-    public static void atualizarDensidade(Context context){
-        PARAMS.leftMargin = (int) ( 16 * context.getResources().getDisplayMetrics().density);
-        PARAMS_DISTANCIA_CIMA.leftMargin = (int) ( 16 * context.getResources().getDisplayMetrics().density);
-        PARAMS_DISTANCIA_CIMA.topMargin = (int) ( 8 * context.getResources().getDisplayMetrics().density);
+    public static void atualizarDensidade(Context context) {
+        PARAMS.leftMargin = (int) (16 * context.getResources().getDisplayMetrics().density);
+        PARAMS_DISTANCIA_CIMA.leftMargin = (int) (16 * context.getResources().getDisplayMetrics().density);
+        PARAMS_DISTANCIA_CIMA.topMargin = (int) (8 * context.getResources().getDisplayMetrics().density);
     }
 }
 

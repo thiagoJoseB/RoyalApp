@@ -6,15 +6,36 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView5"
-        style="@style/TextAppearance.MaterialComponents.Headline4"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:background="@color/corPrincipal"
-        android:gravity="center"
-        android:text="Transferência"
-        android:textColor="@color/white" />
+        android:background="@color/corPrincipal">
+
+        <TextView
+            android:id="@+id/dialog_transferencia_botao_sair"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="@font/material_icons"
+            android:src="@drawable/arrow"
+            android:text="arrow_back"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textSize="40sp" />
+
+        <TextView
+            android:id="@+id/dialog_transferencia_titulo"
+            style="@style/TextAppearance.MaterialComponents.Headline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="Transferência"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
 
 
 

@@ -46,7 +46,7 @@ public class InicioActivity extends AppCompatActivity {
                 public void onResponse(Call<String> call, Response<String> response) {
                     int demora = (int) (System.currentTimeMillis() - inicio);
 
-                    Log.d("teste", String.valueOf(demora));
+                    Log.d("teste", String.valueOf(response.code()));
 
                     dormir(demora < 1500 ? 1500 - demora : 0);
 

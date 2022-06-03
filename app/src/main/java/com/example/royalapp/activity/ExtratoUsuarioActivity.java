@@ -2,6 +2,7 @@ package com.example.royalapp.activity;
 
 import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
 import static com.example.royalapp.Utilidades.GSON;
+import static com.example.royalapp.Variaveis.IMAGENS;
 import static com.example.royalapp.activity.TransferenciaFavoritasActivity.atualizarDensidade;
 import static com.example.royalapp.activity.TransferenciaFavoritasActivity.label;
 import static com.example.royalapp.activity.TransferenciaFavoritasActivity.texto;
@@ -54,6 +55,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ExtratoUsuarioActivity extends AppCompatActivity {
+
+
     private List<TransferenciaExtrato> extratosBackup;
     RecyclerView recyclerView;
 
@@ -253,81 +256,90 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
 
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
-                private final Map<Integer, Bitmap> imagem = new HashMap<>();
+
 
                 private LinearLayout layoutPai;
                 private Transferencia transferencia;
+                private AlertDialog alertDialog;
 
                 private void rodar(){
-                    Transferencia transferencia1 = transferencia;
+                    if(alertDialog == null) {
 
-                    if(layoutPai == null){
-                        layoutPai = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_transferencia, null);
-                        LinearLayout layout = layoutPai.findViewById(R.id.dialog_transferencia_layout_itens);
+                        alertDialog = new AlertDialog.Builder(ExtratoUsuarioActivity.this)
+                                .create();
 
-                        if (transferencia1.anexo != null) {
-                            ImageView imageView =  layout.findViewById(R.id.dialog_transferencia_imagem);
+                        if (layoutPai == null) {
+                            layoutPai = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_transferencia, null);
+                            LinearLayout layout = layoutPai.findViewById(R.id.dialog_transferencia_layout_itens);
+                            ((TextView) layoutPai.findViewById(R.id.dialog_transferencia_titulo))
+                                    .setText((transferencia.isDespesa() ? "Despesa" : "Receita"));
+                            layoutPai.findViewById(R.id.dialog_transferencia_botao_sair).setOnClickListener(v2 -> {
+                                alertDialog.dismiss();
+                            });
 
-                            final Bitmap[] bitmap = {imagem.get(transferencia1.id)};
-
-                            if(bitmap[0] == null) { // tem o backup?, NAO?, backup poderia ser do linear layout tmb
-                                API.get().imagem(transferencia1.anexo, DashboardActivity.token).enqueue(new Callback<ResponseBody>() {
-                                    @Override
-                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                        bitmap[0] = BitmapFactory
-                                                .decodeStream(response.body().byteStream()); // so pega a img uma vez;
+                            if (transferencia.anexo != null) {
+                                ImageView imageView = layout.findViewById(R.id.dialog_transferencia_imagem);
 
 
-                                        imagem.put(transferencia1.id, bitmap[0]);
-                                    }
 
-                                    @Override
-                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                        throw new RuntimeException(t);
-                                    }
-                                });
-                            } else { // TEM SIM
-                                imageView.setImageBitmap(bitmap[0]);
+
+                                if (IMAGENS.containsKey(transferencia.id)) { // tem o backup?, sim?, backup poderia ser do linear layout tmb
+                                    imageView.setImageBitmap(IMAGENS.get(transferencia.id));
+                                } else { // pega o novo
+                                    API.get().imagem(transferencia.anexo, DashboardActivity.token).enqueue(new Callback<ResponseBody>() {
+                                        @Override
+                                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                            final Bitmap bitmap = BitmapFactory
+                                                    .decodeStream(response.body().byteStream()); // so pega a img uma vez;
+
+
+                                            IMAGENS.put(transferencia.id, bitmap);
+                                            imageView.setImageBitmap(bitmap);
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                            throw new RuntimeException(t);
+                                        }
+                                    });
+                                }
                             }
+
+                            layout.addView(label("Valor", ExtratoUsuarioActivity.this));
+                            layout.addView(texto(FORMATADOR_MOEDA.format(transferenciaExtrato.valor), ExtratoUsuarioActivity.this));
+
+                            layout.addView(label("Descricao", ExtratoUsuarioActivity.this));
+                            layout.addView(texto(transferencia.descricao, ExtratoUsuarioActivity.this));
+
+                            layout.addView(label("Data", ExtratoUsuarioActivity.this));
+                            layout.addView(texto(Utilidades.FORMATADOR_DIA_LONGO.format(java.sql.Date.valueOf(transferenciaExtrato.data)), ExtratoUsuarioActivity.this));
+
+                            if (transferencia.observacao != null) {
+                                layout.addView(label("Observação", ExtratoUsuarioActivity.this));
+                                layout.addView(texto(transferencia.observacao, ExtratoUsuarioActivity.this));
+                            }
+
+
+                            if (transferenciaExtrato.indice != null) {
+                                layout.addView(label("Parcelada", ExtratoUsuarioActivity.this));
+                                layout.addView(texto("Sim", ExtratoUsuarioActivity.this));
+
+                                layout.addView(label("Parcela", ExtratoUsuarioActivity.this));
+                                layout.addView(texto((transferenciaExtrato.indice + 1) + " de " + transferencia.parcelas + " parcelas", ExtratoUsuarioActivity.this));
+
+                                layout.addView(label("Frequencia", ExtratoUsuarioActivity.this));
+                                layout.addView(texto(transferencia.nomeFrequencia.toString(), ExtratoUsuarioActivity.this));
+                            } else {
+                                layout.addView(label("Parcelada", ExtratoUsuarioActivity.this));
+                                layout.addView(texto("Não", ExtratoUsuarioActivity.this));
+                            }
+
+                            alertDialog.setView(layoutPai);
                         }
 
-                        layout.addView(label("Valor", ExtratoUsuarioActivity.this));
-                        layout.addView(texto(FORMATADOR_MOEDA.format(transferenciaExtrato.valor), ExtratoUsuarioActivity.this));
 
-                        layout.addView(label("Descricao", ExtratoUsuarioActivity.this));
-                        layout.addView(texto(transferencia1.descricao, ExtratoUsuarioActivity.this));
-
-                        layout.addView(label("Data", ExtratoUsuarioActivity.this));
-                        layout.addView(texto(Utilidades.FORMATADOR_DIA_LONGO.format(java.sql.Date.valueOf(transferenciaExtrato.data)), ExtratoUsuarioActivity.this));
-
-                        if (transferencia1.observacao != null) {
-                            layout.addView(label("Observação", ExtratoUsuarioActivity.this));
-                            layout.addView(texto(transferencia1.observacao, ExtratoUsuarioActivity.this));
-                        }
-
-
-                        if (transferenciaExtrato.indice != null) {
-                            layout.addView(label("Parcelada", ExtratoUsuarioActivity.this));
-                            layout.addView(texto("Sim", ExtratoUsuarioActivity.this));
-
-                            layout.addView(label("Parcela", ExtratoUsuarioActivity.this));
-                            layout.addView(texto((transferenciaExtrato.indice + 1) + " de " + transferencia1.parcelas + " parcelas", ExtratoUsuarioActivity.this));
-
-                            layout.addView(label("Frequencia", ExtratoUsuarioActivity.this));
-                            layout.addView(texto(transferencia1.nomeFrequencia.toString(), ExtratoUsuarioActivity.this));
-                        } else {
-                            layout.addView(label("Parcelada", ExtratoUsuarioActivity.this));
-                            layout.addView(texto("Não", ExtratoUsuarioActivity.this));
-                        }
-                    } else {
-                        ((ViewGroup)layoutPai.getParent()).removeView(layoutPai);
                     }
-
-                    runOnUiThread(() -> {
-                        new AlertDialog.Builder(ExtratoUsuarioActivity.this)
-                                .setView(layoutPai)
-                                .create().show();
-                    });
+                    alertDialog.show();
                 }
 
                 @Override

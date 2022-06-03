@@ -28,4 +28,12 @@ public class Transferencia {
         SEMESTRES,
         ANOS;
     }
+
+    public boolean isDespesa() {
+        return valor.compareTo(BigDecimal.ZERO) < 0;
+    }
+
+    public boolean isReceita() {
+        return valor.compareTo(BigDecimal.ZERO) > 0;
+    }
 }
