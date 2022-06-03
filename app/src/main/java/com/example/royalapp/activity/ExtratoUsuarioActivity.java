@@ -72,7 +72,6 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
-        atualizarDensidade(this); //famosa gambi
 
         menuBaixo = this.findViewById(R.id.extratos_menu_baixo);
         menuBaixo.setSelectedItemId(R.id.menu_baixo_extratos);
@@ -86,6 +85,12 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
                     Intent intent = new Intent(ExtratoUsuarioActivity.this, DashboardActivity.class);
                     startActivity(intent);
                     finish();
+                    break;
+                }
+                case R.id.menu_baixo_graficos: {
+                    Intent intent = new Intent(this, GraficoActivity.class);
+                    startActivity(intent);
+                    this.finish();
                     break;
                 }
                 case R.id.menu_baixo_perfil: {
@@ -170,7 +175,6 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
         List<TransferenciaExtrato> nova;
 
         if(categoriasAtivas.isEmpty()){
-
             nova = Collections.unmodifiableList(extratosBackup);
         } else {
             //faz backups dos ids
@@ -219,7 +223,13 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
         }
 
         atualizarDoBackupPorCategorias();
-        seletorCategoria.setText(categoriasAtivas.stream().map(c -> c.nome).collect(Collectors.joining(", ")));
+
+        if(categoriasAtivas.isEmpty()){
+            seletorCategoria.setText(this.getString(R.string.categoria_selecionador_vazio));
+        } else {
+            seletorCategoria.setText(categoriasAtivas.stream().map(c -> c.nome).collect(Collectors.joining(", ")));
+        }
+
     }
 
     private class ExtratoAdapter extends RecyclerView.Adapter<ExtratoAdapter.ExtratoViewHolder> {
@@ -276,6 +286,8 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
                             layoutPai.findViewById(R.id.dialog_transferencia_botao_sair).setOnClickListener(v2 -> {
                                 alertDialog.dismiss();
                             });
+                            View viewCarregando = layoutPai.findViewById(R.id.dialog_transferencia_carregando);
+
 
                             if (transferencia.anexo != null) {
                                 ImageView imageView = layout.findViewById(R.id.dialog_transferencia_imagem);
@@ -295,6 +307,9 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
 
                                             IMAGENS.put(transferencia.id, bitmap);
                                             imageView.setImageBitmap(bitmap);
+
+
+                                            viewCarregando.setVisibility(View.GONE);
                                         }
 
                                         @Override
@@ -303,6 +318,8 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
                                         }
                                     });
                                 }
+                            } else {
+                                viewCarregando.setVisibility(View.GONE);
                             }
 
                             layout.addView(label("Valor", ExtratoUsuarioActivity.this));

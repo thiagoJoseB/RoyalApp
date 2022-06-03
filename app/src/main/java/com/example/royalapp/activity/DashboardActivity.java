@@ -3,6 +3,7 @@ package com.example.royalapp.activity;
 import static com.example.royalapp.Utilidades.CALENDARIO;
 import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
 import static com.example.royalapp.Utilidades.GSON;
+import static com.example.royalapp.activity.TransferenciaFavoritasActivity.atualizarDensidade;
 import static com.example.royalapp.remote.API.OK_HTTP_CLIENT;
 
 import android.app.ActivityOptions;
@@ -260,6 +261,8 @@ public class DashboardActivity extends AppCompatActivity {
 
 //        getSupportActionBar().setCustomView(R.layout.toolbar_circle);
 
+        atualizarDensidade(this); //famosa gambi
+
 
         getSupportActionBar().hide();
         viewTextSaldoGeral = this.findViewById(R.id.dashboard_saldo_principal_texto);
@@ -302,6 +305,12 @@ public class DashboardActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.menu_baixo_geral:
                     break;
+                case R.id.menu_baixo_graficos: {
+                    Intent intent = new Intent(this, GraficoActivity.class);
+                    startActivity(intent);
+                    this.finish();
+                    break;
+                }
                 case R.id.menu_baixo_extratos: {
                     Intent intent = new Intent(DashboardActivity.this, ExtratoUsuarioActivity.class);
                     startActivity(intent);

@@ -36,7 +36,7 @@
                         android:id="@+id/fotoPerfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/sem_foto"
+                        android:background="@drawable/sem_foto_perfil"
                         android:scaleType="centerCrop" />
 
                 </androidx.cardview.widget.CardView>

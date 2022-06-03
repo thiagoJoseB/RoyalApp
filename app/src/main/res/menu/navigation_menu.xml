@@ -1,58 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_baixo_extratos"
+        android:icon="@drawable/icon_receipt_long_24"
+        android:title="Extratos"
+        />
+    <item
+        android:id="@+id/menu_baixo_geral"
+        android:icon="@drawable/icon_home_24"
+        android:title="Visão Geral"
+        />
+    <item
+        android:id="@+id/menu_baixo_graficos"
+        android:icon="@drawable/bar_chart"
+        android:title="Grafícos"
+        />
 
+    <item
+        android:id="@+id/menu_baixo_perfil"
+        android:enabled="true"
+        android:icon="@drawable/ic_person_24"
+        android:title="Perfil"
 
-
-
-   <item
-       android:id="@+id/contas"
-       android:icon="@drawable/icon_receipt_24"
-       android:title="Contas"
-      android:enabled="false"
-
-
-
-       />
-
-   <item
-       android:id="@+id/menu_baixo_extratos"
-       android:icon="@drawable/icon_receipt_long_24"
-       android:title="Extratos"
-
-
-
-       />
-
-   <item
-       android:id="@+id/menu_baixo_geral"
-       android:icon="@drawable/icon_home_24"
-       android:title="Visão Geral"
-
-
-
-
-       />
-
-
-
-   <item
-       android:id="@+id/metas"
-       android:icon="@drawable/icon_bar_chart_24"
-       android:title="Metas"
-       android:enabled="false"
-
-
-       />
-
-   <item
-       android:id="@+id/menu_baixo_perfil"
-       android:icon="@drawable/ic_person_24"
-       android:title="Perfil"
-       android:enabled="true"
-
-       />
-
+        />
 
 
 </menu>

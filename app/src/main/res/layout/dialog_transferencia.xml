@@ -48,15 +48,47 @@
             android:paddingBottom="16dp"
             android:orientation="vertical"
             android:id="@+id/dialog_transferencia_layout_itens">
-            <ImageView
-                android:id="@+id/dialog_transferencia_imagem"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:src="@color/black"
-                android:adjustViewBounds="true" />
+                >
+                <ImageView
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:id="@+id/dialog_transferencia_imagem"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:src="@drawable/sem_foto"
+                    android:adjustViewBounds="true"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:id="@+id/dialog_transferencia_carregando"
+                    android:background="@color/corExplosiva"
+                    android:orientation="vertical"
+                    android:gravity="center"
+
+                    app:layout_constraintTop_toTopOf="@+id/dialog_transferencia_imagem"
+                    app:layout_constraintBottom_toBottomOf="@+id/dialog_transferencia_imagem"
+
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/TextAppearance.MaterialComponents.Headline5"
+                        android:text="Aguarde, carregando imagem..."/>
+                    <ProgressBar
+                        android:layout_width="88dp"
+                        android:layout_height="88dp"
+                        android:indeterminateTint="@color/black"/>
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
     </ScrollView>

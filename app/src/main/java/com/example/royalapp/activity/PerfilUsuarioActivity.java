@@ -53,6 +53,12 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                     this.finish();
                     break;
                 }
+                case R.id.menu_baixo_graficos: {
+                    Intent intent = new Intent(this, GraficoActivity.class);
+                    startActivity(intent);
+                    this.finish();
+                    break;
+                }
                 case R.id.menu_baixo_extratos: {
                     Intent intent = new Intent(PerfilUsuarioActivity.this, ExtratoUsuarioActivity.class);
                     startActivity(intent);

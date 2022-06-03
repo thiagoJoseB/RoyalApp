@@ -54,7 +54,6 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        atualizarDensidade(this); //famosa gambi
 
         recyclerView = findViewById(R.id.favoritas_recycler_view);
 
@@ -126,6 +125,7 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
                         layoutPai.findViewById(R.id.dialog_transferencia_botao_sair).setOnClickListener(v2 -> {
                             alertDialog.dismiss();
                         });
+                        View viewCarregando = layoutPai.findViewById(R.id.dialog_transferencia_carregando);
 
                         if (itemFavorito.anexo != null) {
                             ImageView imageView = layout.findViewById(R.id.dialog_transferencia_imagem);
@@ -143,6 +143,9 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
 
                                         IMAGENS.put(itemFavorito.id, bitmap);
                                         imageView.setImageBitmap(bitmap);
+
+
+                                        viewCarregando.setVisibility(View.GONE);
                                     }
 
                                     @Override
@@ -151,6 +154,9 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
                                     }
                                 });
                             }
+                        } else {
+
+                            viewCarregando.setVisibility(View.GONE);
                         }
 
                         layout.addView(label("Valor", TransferenciaFavoritasActivity.this));
