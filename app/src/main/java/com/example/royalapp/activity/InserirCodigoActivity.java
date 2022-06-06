@@ -148,12 +148,12 @@ public class InserirCodigoActivity extends AppCompatActivity {
 
                     }
                     else{
-                        Toast.makeText(InserirCodigoActivity.this, "ERRO AO INSERIR CODIGO ",Toast.LENGTH_LONG).show();
+                        Toast.makeText(InserirCodigoActivity.this, "ERRO AO ENVIAR CODIGO ",Toast.LENGTH_LONG).show();
 
                     }
 
                 } else {
-                    Toast.makeText(InserirCodigoActivity.this, "ERRO AO INSERIR CODIGO", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(InserirCodigoActivity.this, "ERRO AO ENVIAR CODIGO", Toast.LENGTH_SHORT).show();
                 }
 
 
