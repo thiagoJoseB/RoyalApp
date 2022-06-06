@@ -107,7 +107,7 @@ public class InsercaoEmailActivity extends AppCompatActivity {
                             finish();
 
                     }else{
-                        Toast.makeText(InsercaoEmailActivity.this, "ERRO",Toast.LENGTH_LONG).show();
+                        Toast.makeText(InsercaoEmailActivity.this, "ERRO AO INSERIR EMAIL",Toast.LENGTH_LONG).show();
 
                     }
 //                    //Log.d("REPOSNSE-", String.valueOf(response.raw()));

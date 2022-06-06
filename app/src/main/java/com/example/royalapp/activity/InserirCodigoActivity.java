@@ -163,7 +163,8 @@ public class InserirCodigoActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Resultado> call, Throwable t) {
 
-                Log.e("API-ERRO",t.getMessage(), t);
+//                Log.e("API-ERRO",t.getMessage(), t);
+                Toast.makeText(InserirCodigoActivity.this, "ERRO AO ENVIAR CODIGO", Toast.LENGTH_SHORT).show();
 
             }
         });

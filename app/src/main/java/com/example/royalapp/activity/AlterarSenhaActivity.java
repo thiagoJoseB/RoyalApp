@@ -102,12 +102,12 @@ public class AlterarSenhaActivity extends AppCompatActivity {
                 Log.d("teste", Integer.toString(response.code()));
 
                 if(response.isSuccessful()){
-                    Toast.makeText(AlterarSenhaActivity.this, "BOA", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(AlterarSenhaActivity.this, "BOA", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(AlterarSenhaActivity.this, LoginUsuarioActivity.class);
                     startActivity(intent);
 
                 } else {
-                    Toast.makeText(AlterarSenhaActivity.this, "ERRO", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AlterarSenhaActivity.this, "ERRO AO CONFIRMAR NOVA SENHA", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -116,7 +116,9 @@ public class AlterarSenhaActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Resultado> call, Throwable t) {
-                Log.d("API-ERRO",t.getMessage());
+//                Log.d("API-ERRO",t.getMessage());
+                Toast.makeText(AlterarSenhaActivity.this, "ERRO", Toast.LENGTH_SHORT).show();
+
 
             }
         });

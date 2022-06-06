@@ -138,7 +138,8 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Resultado> call, Throwable t) {
 
-                Log.d("API-ERRO",t.getMessage());
+//                Log.d("API-ERRO",t.getMessage());
+                Toast.makeText(CadastroUsuarioActivity.this, "ERRO AO CADASTRAR",Toast.LENGTH_LONG).show();
 
             }
         });
