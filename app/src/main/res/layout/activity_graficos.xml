@@ -194,7 +194,7 @@
                     android:text="@string/categoria_selecionador_vazio"
                     android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:background="@drawable/borda_input_transferencia" />
 
             </LinearLayout>
@@ -219,7 +219,7 @@
                     android:id="@+id/grafico_seletor_periodo"
                     android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:background="@drawable/borda_input_transferencia"
                     android:orientation="horizontal"
                     >
@@ -227,7 +227,7 @@
 
                     <RadioButton
                         android:layout_width="wrap_content"
-                        android:layout_height="20dp"
+                        android:layout_height="30dp"
                         android:checked="true"
                         android:text="Anual"
                         android:textColor="@color/graydark"
@@ -237,7 +237,7 @@
                     <RadioButton
                         android:layout_marginLeft="16dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="20dp"
+                        android:layout_height="30dp"
                         android:text="Mensal"
                         android:textColor="@color/graydark"
                         android:id="@+id/grafico_seletor_periodo_checkbox_mensal"
@@ -296,7 +296,7 @@
                 <EditText
                     android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:background="@drawable/borda_input_transferencia" />
 
             </LinearLayout>
@@ -320,7 +320,7 @@
                 <LinearLayout
                 android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:background="@drawable/borda_input_transferencia"
                     android:orientation="horizontal"
                     >
@@ -328,7 +328,7 @@
 
                     <CheckBox
                         android:layout_width="wrap_content"
-                        android:layout_height="20dp"
+                        android:layout_height="30dp"
                         android:checked="true"
                         android:text="Despesa"
                         android:textColor="@color/graydark"
@@ -337,7 +337,7 @@
                     <CheckBox
                         android:layout_marginLeft="16dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="20dp"
+                        android:layout_height="30dp"
                         android:checked="false"
                         android:text="Receita"
                         android:textColor="@color/graydark"/>

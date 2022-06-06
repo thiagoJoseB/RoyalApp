@@ -160,7 +160,7 @@ public class DashboardActivity extends AppCompatActivity {
             API.get().getSaldo(token, Variaveis.anoAlvo, Variaveis.mesAlvoInicio0 + 1).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    Log.d("teste", response.body());
+//                    Log.d("teste", response.body());
                     JsonArray array = JsonParser.parseString(response.body()).getAsJsonArray();
                     JsonObject valores = array.get(0).getAsJsonObject();
 

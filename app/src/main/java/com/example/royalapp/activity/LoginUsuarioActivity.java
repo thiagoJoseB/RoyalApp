@@ -70,7 +70,7 @@ public class LoginUsuarioActivity extends AppCompatActivity {
 
             if (!validate()) {
 
-                Toast.makeText(this, "TODOS OS CAMPOS DEVEM SER PREENCHIDOS!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Todos os campos devem ser preenchidos!", Toast.LENGTH_LONG).show();
                 return;
 
             } else {
@@ -133,16 +133,16 @@ public class LoginUsuarioActivity extends AppCompatActivity {
 
                             LoginUsuarioActivity.this.finish();
                         } else {
-                            Toast.makeText(LoginUsuarioActivity.this, "SENHA OU LOGIN INVALIDO", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginUsuarioActivity.this, "Senha ou login inválido", Toast.LENGTH_LONG).show();
 
                         }
 
                     } else {
-                        Toast.makeText(LoginUsuarioActivity.this, "ERRO AO FAZER LOGIN", Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginUsuarioActivity.this, "Erro ao fazer login", Toast.LENGTH_LONG).show();
 
                     }
                 } else {
-                    Toast.makeText(LoginUsuarioActivity.this, "erro" + response.code(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginUsuarioActivity.this, "Erro" + response.code(), Toast.LENGTH_LONG).show();
                 }
             }
 

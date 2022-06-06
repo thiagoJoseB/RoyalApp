@@ -55,7 +55,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Periodo"
+                    android:text="Mês"
                     style="@style/TextAppearance.Material3.LabelLarge"/>
 
                 <TextView
@@ -64,7 +64,7 @@
                     android:gravity="center"
                     android:text="@string/mes_ano_seletor"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:background="@drawable/borda_input_transferencia" />
 
             </LinearLayout>
@@ -92,7 +92,7 @@
                     android:text="@string/categoria_selecionador_vazio"
                     android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:background="@drawable/borda_input_transferencia" />
 
             </LinearLayout>

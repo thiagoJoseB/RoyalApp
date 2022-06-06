@@ -42,7 +42,7 @@ public class AlterarSenhaActivity extends AppCompatActivity {
             /// FUNCAO DE VALIDACAO DE CAMPOS PREENCHIDOS
             if (!validate()){
 
-                Toast.makeText(this, "Os Campos Devem Ser Preenchidos", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Os campos devem ser preenchidos", Toast.LENGTH_LONG).show();
                 return;
 
             }else{
@@ -107,7 +107,7 @@ public class AlterarSenhaActivity extends AppCompatActivity {
                     startActivity(intent);
 
                 } else {
-                    Toast.makeText(AlterarSenhaActivity.this, "ERRO AO CONFIRMAR NOVA SENHA", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AlterarSenhaActivity.this, "Erro ao confirmar nova senha", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -117,7 +117,7 @@ public class AlterarSenhaActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Resultado> call, Throwable t) {
 //                Log.d("API-ERRO",t.getMessage());
-                Toast.makeText(AlterarSenhaActivity.this, "ERRO", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AlterarSenhaActivity.this, "Erro", Toast.LENGTH_SHORT).show();
 
 
             }

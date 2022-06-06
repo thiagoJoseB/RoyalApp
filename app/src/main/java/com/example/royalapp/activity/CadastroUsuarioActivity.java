@@ -3,6 +3,7 @@ package com.example.royalapp.activity;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -61,12 +62,12 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
             /// FUNCAO DE VALIDACAO DE CAMPOS PREENCHIDOS
             if (!validate()){
 
-                Toast.makeText(this, "Os Campos Devem Ser Preenchidos", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Os campos devem ser preenchidos", Toast.LENGTH_LONG).show();
                 return;
 
             }
             else if(! Pattern.matches("\\w+@\\w+\\.\\w+", txtEmail.getText().toString())){
-                Toast.makeText (this, "PREENCHA OS CAMPOS CORRETAMENTE", Toast.LENGTH_LONG).show();
+                Toast.makeText (this, "Preencha os campos corretamente", Toast.LENGTH_LONG).show();
                 return;
             } else {
 
@@ -119,15 +120,18 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
                     if(status == Status.OK.codigo){
 //                        Toast.makeText(CadastroUsuarioActivity.this, "BOA CUTRIM",Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(CadastroUsuarioActivity.this, LoginUsuarioActivity.class);
+                        startActivity(intent);
+
 
 
                     } else if(status == Status.EMAIL_REPETIDO.codigo){
-                        Toast.makeText(CadastroUsuarioActivity.this, " EMAIL INSERIDO JA EXISTE",Toast.LENGTH_LONG).show();
+                        Toast.makeText(CadastroUsuarioActivity.this, " Email inserido já existe",Toast.LENGTH_LONG).show();
 
 
 
                     } else {
-                        Toast.makeText(CadastroUsuarioActivity.this, "ERRO AO CADASTRAR",Toast.LENGTH_LONG).show();
+                        Toast.makeText(CadastroUsuarioActivity.this, "Erro ao cadastrar",Toast.LENGTH_LONG).show();
 
                     }
                 }
@@ -139,7 +143,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
             public void onFailure(Call<Resultado> call, Throwable t) {
 
 //                Log.d("API-ERRO",t.getMessage());
-                Toast.makeText(CadastroUsuarioActivity.this, "ERRO AO CADASTRAR",Toast.LENGTH_LONG).show();
+                Toast.makeText(CadastroUsuarioActivity.this, "Erro ao cadastrar",Toast.LENGTH_LONG).show();
 
             }
         });

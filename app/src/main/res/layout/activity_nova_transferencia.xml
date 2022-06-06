@@ -51,7 +51,7 @@
                     android:id="@+id/nova_transferencia_descricao"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:background="@drawable/borda_input_transferencia"
                     android:paddingStart="8dp"/>
             </LinearLayout>
@@ -72,7 +72,7 @@
                     android:id="@+id/nova_transferencia_valor"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:background="@drawable/borda_input_transferencia"
 
                     android:paddingStart="8dp"
@@ -95,7 +95,7 @@
                 <TextView
                     android:id="@+id/nova_transferencia_data"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:background="@drawable/borda_input_transferencia"
                     android:gravity="center"
                     android:onClick="mostrarData"
@@ -117,7 +117,7 @@
                 <Spinner
                     android:id="@+id/nova_transferencia_spinner_categorias"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:background="@drawable/borda_input_transferencia" />
 
             </LinearLayout>

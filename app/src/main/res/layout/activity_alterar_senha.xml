@@ -37,8 +37,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:textColor="#C5C5C5"
                 android:text="Por favor digite nova senha"
+                android:textColor="#C5C5C5"
                 android:textSize="14dp" />
 
 
@@ -88,10 +88,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-
-
-
-
             <Button
                 android:id="@+id/btnConfirmarSenha"
                 android:layout_width="match_parent"
@@ -101,26 +97,18 @@
                 android:text="Confirmar" />
 
 
-
-
-
             <TextView
+                android:id="@+id/btnCancelarNovaSenha"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="180dp"
-                android:layout_marginRight="140dp"
-                android:textColor="#C5C5C5"
+               android:layout_marginTop="20dp"
                 android:text="Cancelar"
+                android:textColor="@color/corPrincipalEscura"
                 android:textSize="14dp" />
 
 
         </LinearLayout>
-
-
-
-
-
 
 
     </ScrollView>

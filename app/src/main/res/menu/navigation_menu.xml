@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/menu_baixo_extratos"
-        android:icon="@drawable/icon_receipt_long_24"
-        android:title="Extratos"
-        />
+
     <item
         android:id="@+id/menu_baixo_geral"
         android:icon="@drawable/icon_home_24"
         android:title="Visão Geral"
         />
     <item
+        android:id="@+id/menu_baixo_extratos"
+        android:icon="@drawable/icon_receipt_long_24"
+        android:title="Extratos"
+        />
+
+    <item
         android:id="@+id/menu_baixo_graficos"
         android:icon="@drawable/bar_chart"
         android:title="Grafícos"
         />
+
+
 
     <item
         android:id="@+id/menu_baixo_perfil"

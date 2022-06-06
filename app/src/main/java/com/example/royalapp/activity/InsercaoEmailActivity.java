@@ -46,12 +46,12 @@ public class InsercaoEmailActivity extends AppCompatActivity {
 
             if (!validate()){
 
-                Toast.makeText (this, "TODOS OS CAMPOS DEVEM SER PREENCHIDOS!", Toast.LENGTH_LONG).show();
+                Toast.makeText (this, "Todos os campos devem ser preenchidos!!", Toast.LENGTH_LONG).show();
                 return;
 
 
             }else if(! Pattern.matches("\\w+@\\w+\\.\\w+", txtInsercaoEmail.getText().toString())){
-                Toast.makeText (this, "PREENCHA OS CAMPOS CORRETAMENTE", Toast.LENGTH_LONG).show();
+                Toast.makeText (this, "Preencha os campos corretamente ", Toast.LENGTH_LONG).show();
                 return;
             } else {
 
@@ -107,7 +107,7 @@ public class InsercaoEmailActivity extends AppCompatActivity {
                             finish();
 
                     }else{
-                        Toast.makeText(InsercaoEmailActivity.this, "ERRO AO INSERIR EMAIL",Toast.LENGTH_LONG).show();
+                        Toast.makeText(InsercaoEmailActivity.this, "Erro ao inserir email",Toast.LENGTH_LONG).show();
 
                     }
 //                    //Log.d("REPOSNSE-", String.valueOf(response.raw()));

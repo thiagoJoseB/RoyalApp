@@ -71,7 +71,7 @@ public class InserirCodigoActivity extends AppCompatActivity {
 
 
             if(!validate()){
-                Toast.makeText (this, "TODOS OS CAMPOS DEVEM SER PREENCHIDOS!", Toast.LENGTH_LONG).show();
+                Toast.makeText (this, "Todos os campos devem ser preenchidos!", Toast.LENGTH_LONG).show();
                 return;
 
             }else{
@@ -142,18 +142,18 @@ public class InserirCodigoActivity extends AppCompatActivity {
                             finish();
                         } else {
 
-                            Toast.makeText(InserirCodigoActivity.this, "NAO EXISTE ESSE EMAIL PARA RESETAR", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(InserirCodigoActivity.this, "Nao existe esse email para resetar", Toast.LENGTH_SHORT).show();
                         }
 
 
                     }
                     else{
-                        Toast.makeText(InserirCodigoActivity.this, "ERRO AO ENVIAR CODIGO ",Toast.LENGTH_LONG).show();
+                        Toast.makeText(InserirCodigoActivity.this, "Erro ao enviar codigo",Toast.LENGTH_LONG).show();
 
                     }
 
                 } else {
-                    Toast.makeText(InserirCodigoActivity.this, "ERRO AO ENVIAR CODIGO", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(InserirCodigoActivity.this, "Erro ao enviar codigo", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -163,8 +163,7 @@ public class InserirCodigoActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Resultado> call, Throwable t) {
 
-//                Log.e("API-ERRO",t.getMessage(), t);
-                Toast.makeText(InserirCodigoActivity.this, "ERRO AO ENVIAR CODIGO", Toast.LENGTH_SHORT).show();
+                Log.e("API-ERRO",t.getMessage(), t);
 
             }
         });

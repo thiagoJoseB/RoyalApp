@@ -44,7 +44,7 @@ public class AlterarSenhaPerfil extends AppCompatActivity {
 
             if(!validade()){
 
-                Toast.makeText(this, "Os Campos Devem Ser Preenchidos", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Os campos devem ser preenchidos", Toast.LENGTH_LONG).show();
                 return;
 
             }else{
@@ -59,7 +59,7 @@ public class AlterarSenhaPerfil extends AppCompatActivity {
 
                 }else{
                     Toast.makeText(AlterarSenhaPerfil.this,
-                            "Senha Incorreta",Toast.LENGTH_LONG).show();
+                            "Senha incorreta",Toast.LENGTH_LONG).show();
 
                 }
 
@@ -84,7 +84,7 @@ public class AlterarSenhaPerfil extends AppCompatActivity {
                 if (response.isSuccessful()){
 
                     Toast.makeText(AlterarSenhaPerfil.this,
-                            "Senha alterada",Toast.LENGTH_LONG).show();
+                            "Senha alterarda com sucesso",Toast.LENGTH_LONG).show();
                 }
 
 
