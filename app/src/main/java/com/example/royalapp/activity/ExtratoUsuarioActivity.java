@@ -3,7 +3,6 @@ package com.example.royalapp.activity;
 import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
 import static com.example.royalapp.Utilidades.GSON;
 import static com.example.royalapp.Variaveis.IMAGENS;
-import static com.example.royalapp.activity.TransferenciaFavoritasActivity.atualizarDensidade;
 import static com.example.royalapp.activity.TransferenciaFavoritasActivity.label;
 import static com.example.royalapp.activity.TransferenciaFavoritasActivity.texto;
 
@@ -37,16 +36,11 @@ import com.example.royalapp.remote.API;
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.lang.ref.Reference;
-import java.lang.ref.SoftReference;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import okhttp3.ResponseBody;
@@ -88,7 +82,7 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.menu_baixo_graficos: {
-                    Intent intent = new Intent(this, GraficoActivity.class);
+                    Intent intent = new Intent(this, GraficosActivity.class);
                     startActivity(intent);
                     this.finish();
                     break;

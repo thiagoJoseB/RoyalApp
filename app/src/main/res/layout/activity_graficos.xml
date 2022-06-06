@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Graficos">
+    tools:context=".activity.GraficosActivity">
 
 
     <ScrollView
@@ -50,12 +50,13 @@
                     android:layout_height="match_parent"
                     android:padding="4dp">
                     <LinearLayout
-                        android:id="@+id/dashboard_nova_despesa"
+                        android:id="@+id/grafico_botao_barra"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:orientation="vertical"
                         android:gravity="center"
-
+                        android:onClick="mudarStatus"
+                        android:tag="BARRA"
                         android:background="@drawable/botao_dashboard">
 
                         <TextView
@@ -75,11 +76,14 @@
 
 
                     <LinearLayout
+                        android:onClick="mudarStatus"
+                        android:id="@+id/grafico_botao_pizza"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:layout_marginLeft="16dp"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:tag="PIZZA"
                         android:background="@drawable/botao_dashboard">
 
 
@@ -101,11 +105,15 @@
 
 
                     <LinearLayout
+
+                        android:onClick="mudarStatus"
+                        android:id="@+id/grafico_botao_linha"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:layout_marginLeft="16dp"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:tag="LINHA"
                         android:background="@drawable/botao_dashboard">
 
 
@@ -127,11 +135,14 @@
 
 
                     <LinearLayout
+                        android:id="@+id/grafico_botao_lista"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:layout_marginLeft="16dp"
                         android:orientation="vertical"
                         android:gravity="center"
+                        android:onClick="mudarStatus"
+                        android:tag="LISTA"
 
                         android:background="@drawable/botao_dashboard">
 
@@ -201,14 +212,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tipo da transferência"
+                    android:text="Período"
                     style="@style/TextAppearance.Material3.LabelLarge"/>
 
                 <RadioGroup
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:background="@drawable/borda_input_transferencia"
+                    android:id="@+id/grafico_seletor_periodo"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="@drawable/borda_input_transferencia"
                     android:orientation="horizontal"
                     >
 
@@ -217,11 +229,112 @@
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
                         android:checked="true"
+                        android:text="Anual"
+                        android:textColor="@color/graydark"
+                        android:id="@+id/grafico_seletor_periodo_checkbox_anual"
+                        />
+
+                    <RadioButton
+                        android:layout_marginLeft="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:text="Mensal"
+                        android:textColor="@color/graydark"
+                        android:id="@+id/grafico_seletor_periodo_checkbox_mensal"
+                        />
+
+                </RadioGroup>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/linearLayout7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mês"
+                    style="@style/TextAppearance.Material3.LabelLarge"/>
+
+                <TextView
+                    android:id="@+id/grafico_seletor_mes"
+
+                    android:gravity="center"
+                    android:text="@string/mes_ano_seletor"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="@drawable/borda_input_transferencia" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/grafico_seletor_ano"
+
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ano"
+                    style="@style/TextAppearance.Material3.LabelLarge"/>
+
+                <EditText
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="@drawable/borda_input_transferencia" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tipo da transferência"
+                    style="@style/TextAppearance.Material3.LabelLarge"/>
+
+                <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@drawable/borda_input_transferencia"
+                    android:orientation="horizontal"
+                    >
+
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:checked="true"
                         android:text="Despesa"
                         android:textColor="@color/graydark"
                         />
 
-                    <RadioButton
+                    <CheckBox
                         android:layout_marginLeft="16dp"
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
@@ -229,7 +342,7 @@
                         android:text="Receita"
                         android:textColor="@color/graydark"/>
 
-                </RadioGroup>
+                </LinearLayout>
 
             </LinearLayout>
 

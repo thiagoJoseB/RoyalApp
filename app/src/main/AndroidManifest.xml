@@ -14,14 +14,14 @@
         android:theme="@style/Theme.RoyalApp"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activity.GraficoActivity"
+            android:name=".activity.GraficoResultadoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.GraficosActivity"
             android:exported="false" />
         <activity
             android:name=".activity.LoginUsuarioActivity"
             android:launchMode="singleInstance" />
-        <activity
-            android:name=".Graficos"
-            android:exported="false" />
         <activity
             android:name=".activity.PerfilUsuarioActivity"
             android:launchMode="singleInstance" />
