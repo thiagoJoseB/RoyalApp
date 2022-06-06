@@ -134,7 +134,7 @@ public class InserirCodigoActivity extends AppCompatActivity {
                     if(status == Status.OK.codigo) {
 
                         if(response.body().reset) {
-                            Toast.makeText(InserirCodigoActivity.this, "BOA CUTRIM", Toast.LENGTH_LONG).show();
+//                            Toast.makeText(InserirCodigoActivity.this, "BOA CUTRIM", Toast.LENGTH_LONG).show();
 
                             Intent intent = new Intent(InserirCodigoActivity.this, AlterarSenhaActivity.class);
                             intent.putExtra("email", email);
@@ -142,18 +142,18 @@ public class InserirCodigoActivity extends AppCompatActivity {
                             finish();
                         } else {
 
-                            Toast.makeText(InserirCodigoActivity.this, "n existe esse email pra resetar", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(InserirCodigoActivity.this, "NAO EXISTE ESSE EMAIL PARA RESETAR", Toast.LENGTH_SHORT).show();
                         }
 
 
                     }
                     else{
-                        Toast.makeText(InserirCodigoActivity.this, "ERRO DO CUTRIM",Toast.LENGTH_LONG).show();
+                        Toast.makeText(InserirCodigoActivity.this, "ERRO AO INSERIR CODIGO ",Toast.LENGTH_LONG).show();
 
                     }
 
                 } else {
-                    Toast.makeText(InserirCodigoActivity.this, "foi mas , nao foi", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(InserirCodigoActivity.this, "ERRO AO INSERIR CODIGO", Toast.LENGTH_SHORT).show();
                 }
 
 
