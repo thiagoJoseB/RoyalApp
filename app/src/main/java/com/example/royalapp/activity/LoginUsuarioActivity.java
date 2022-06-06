@@ -117,7 +117,7 @@ public class LoginUsuarioActivity extends AppCompatActivity {
 
                     if (json.get("status").getAsInt() == Status.OK.codigo) {
                         if (json.get("found").getAsBoolean()) {
-                            Toast.makeText(LoginUsuarioActivity.this, "FOI PRA DASH", Toast.LENGTH_LONG).show();
+//                            Toast.makeText(LoginUsuarioActivity.this, "FOI PRA DASH", Toast.LENGTH_LONG).show();
 
                             String token = json.get("token").getAsString();
 
@@ -138,7 +138,7 @@ public class LoginUsuarioActivity extends AppCompatActivity {
                         }
 
                     } else {
-                        Toast.makeText(LoginUsuarioActivity.this, "ERRO DO CUTRIM", Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginUsuarioActivity.this, "ERRO AO FAZER LOGIN", Toast.LENGTH_LONG).show();
 
                     }
                 } else {

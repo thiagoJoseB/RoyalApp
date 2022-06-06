@@ -118,16 +118,16 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                     int status = response.body().status;
 
                     if(status == Status.OK.codigo){
-                        Toast.makeText(CadastroUsuarioActivity.this, "BOA CUTRIM",Toast.LENGTH_LONG).show();
+//                        Toast.makeText(CadastroUsuarioActivity.this, "BOA CUTRIM",Toast.LENGTH_LONG).show();
 
 
                     } else if(status == Status.EMAIL_REPETIDO.codigo){
-                        Toast.makeText(CadastroUsuarioActivity.this, " EMAIL REPETIDO CUTRIM",Toast.LENGTH_LONG).show();
+                        Toast.makeText(CadastroUsuarioActivity.this, " EMAIL INSERIDO JA EXISTE",Toast.LENGTH_LONG).show();
 
 
 
                     } else {
-                        Toast.makeText(CadastroUsuarioActivity.this, "ERRO DO CUTRIM",Toast.LENGTH_LONG).show();
+                        Toast.makeText(CadastroUsuarioActivity.this, "ERRO AO CADASTRAR",Toast.LENGTH_LONG).show();
 
                     }
                 }
