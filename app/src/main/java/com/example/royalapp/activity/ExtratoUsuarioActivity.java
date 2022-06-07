@@ -142,7 +142,6 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
 
 
 
-
         seletorPeriodo.setOnClickListener(view -> {
             assert dialogFragment.getArguments() != null;
             dialogFragment.getArguments().putInt("month", Variaveis.mesAlvoInicio0); //gambi

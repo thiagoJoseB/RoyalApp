@@ -190,7 +190,7 @@
                     style="@style/TextAppearance.Material3.LabelLarge"/>
 
                 <TextView
-                    android:id="@+id/extratos_seletor_categoria"
+                    android:id="@+id/grafico_seletor_categoria"
                     android:text="@string/categoria_selecionador_vazio"
                     android:gravity="center"
                     android:layout_width="match_parent"
@@ -231,7 +231,7 @@
                         android:checked="true"
                         android:text="Anual"
                         android:textColor="@color/graydark"
-                        android:id="@+id/grafico_seletor_periodo_checkbox_anual"
+                        android:id="@+id/grafico_seletor_periodo_radio_anual"
                         />
 
                     <RadioButton
@@ -240,7 +240,7 @@
                         android:layout_height="30dp"
                         android:text="Mensal"
                         android:textColor="@color/graydark"
-                        android:id="@+id/grafico_seletor_periodo_checkbox_mensal"
+                        android:id="@+id/grafico_seletor_periodo_radio_mensal"
                         />
 
                 </RadioGroup>
@@ -250,8 +250,9 @@
             </LinearLayout>
 
             <LinearLayout
+
                 android:visibility="gone"
-                android:id="@+id/linearLayout7"
+                android:id="@+id/grafico_seletor_mes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -267,12 +268,12 @@
                     style="@style/TextAppearance.Material3.LabelLarge"/>
 
                 <TextView
-                    android:id="@+id/grafico_seletor_mes"
+                    android:id="@+id/grafico_seletor_mes_text"
 
                     android:gravity="center"
-                    android:text="@string/mes_ano_seletor"
+                    android:text=""
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:background="@drawable/borda_input_transferencia" />
 
             </LinearLayout>
@@ -294,9 +295,11 @@
                     style="@style/TextAppearance.Material3.LabelLarge"/>
 
                 <EditText
+                    android:inputType="number"
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:id="@+id/grafico_seletor_ano_text"
                     android:background="@drawable/borda_input_transferencia" />
 
             </LinearLayout>
@@ -331,8 +334,8 @@
                         android:layout_height="30dp"
                         android:checked="true"
                         android:text="Despesa"
-                        android:textColor="@color/graydark"
-                        />
+                        android:id="@+id/grafico_transferencia_checkbox_despesa"
+                        android:textColor="@color/graydark" />
 
                     <CheckBox
                         android:layout_marginLeft="16dp"
@@ -340,6 +343,7 @@
                         android:layout_height="30dp"
                         android:checked="false"
                         android:text="Receita"
+                        android:id="@+id/grafico_transferencia_checkbox_receita"
                         android:textColor="@color/graydark"/>
 
                 </LinearLayout>
@@ -347,7 +351,8 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:id="@+id/grafico_"
+                android:onClick="enviar"
+                android:id="@+id/grafico_botao_enviar"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
@@ -362,11 +367,12 @@
                     android:src="@drawable/botoes_tranferencia_verificado"
 
                     />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/vector"
-                    android:layout_centerInParent="true"/>
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/vector" />
             </RelativeLayout>
 
 
