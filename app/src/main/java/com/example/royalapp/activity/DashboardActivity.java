@@ -414,7 +414,7 @@ public class DashboardActivity extends AppCompatActivity {
 
                 Log.d("teste", viewTextSaldoGeral.getParent().getClass().getName());
 
-                Toast.makeText(DashboardActivity.this, "carregou", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(DashboardActivity.this, "carregou", Toast.LENGTH_SHORT).show();
 
 
                 webSocket = OK_HTTP_CLIENT.newWebSocket(

@@ -24,7 +24,8 @@
             android:launchMode="singleInstance" />
         <activity
             android:name=".activity.PerfilUsuarioActivity"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleInstance"
+            />
         <activity
             android:name=".activity.TransferenciaFavoritasActivity"
             android:exported="true"
@@ -32,6 +33,12 @@
         <activity
             android:name=".activity.ExtratoUsuarioActivity"
             android:launchMode="singleInstance" />
+
+        <activity
+            android:name=".activity.AlterarSenhaPerfil"
+            android:launchMode="singleInstance"
+            android:parentActivityName=".activity.PerfilUsuarioActivity"
+            />
         <activity
             android:name=".activity.NovaTransferenciaActivity"
             android:exported="true"
