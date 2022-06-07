@@ -30,17 +30,19 @@ public class AlterarSenhaPerfil extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mudar_senha_perfil);
 
-        txtSenhaAtual = findViewById(R.id.txtSenhaAtual);
-        txtNovaSenha = findViewById(R.id.txtNovaSenha);
-        txtConfirmarSenha = findViewById(R.id.txtConfirmarNovaSenha);
-        btnConfirmar = findViewById(R.id.btnConfirmarSenhaPerfil);
+
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+       txtSenhaAtual = findViewById(R.id.txtSenhaAtual);
+        txtNovaSenha = findViewById(R.id.txtNovaSenhaPerfil);
+        txtConfirmarSenha = findViewById(R.id.txtConfirmarNovaSenhaPerfil);
+       btnConfirmar = findViewById(R.id.btnConfirmarSenhaPerfil);
 
 
-        this.btnConfirmar.setOnClickListener(view -> {
+
+        btnConfirmar.setOnClickListener(view -> {
 
             if(!validade()){
 
@@ -49,13 +51,21 @@ public class AlterarSenhaPerfil extends AppCompatActivity {
 
             }else{
 
+
                 NovaSenhaPerfil novaSenhaPerfil = new NovaSenhaPerfil();
+                System.out.println("testtetste");
+
                 if(txtConfirmarSenha.getText().toString().equals(txtNovaSenha.getText().toString())){
+                    System.out.println("cutrim");
 
                     novaSenhaPerfil.setNova(txtNovaSenha.getText().toString());
                     novaSenhaPerfil.setAntiga(txtSenhaAtual.getText().toString());
 
+                    System.out.println("aquiii");
+
                     novaSenha(novaSenhaPerfil);
+
+                    System.out.println("longe");
 
                 }else{
                     Toast.makeText(AlterarSenhaPerfil.this,
@@ -81,10 +91,16 @@ public class AlterarSenhaPerfil extends AppCompatActivity {
         call.enqueue(new Callback<Resultado>() {
             @Override
             public void onResponse(Call<Resultado> call, Response<Resultado> response) {
+                    Log.d("codigo", "" + response.code());
+
                 if (response.isSuccessful()){
+                    System.out.println("testtetste");
 
                     Toast.makeText(AlterarSenhaPerfil.this,
                             "Senha alterarda com sucesso",Toast.LENGTH_LONG).show();
+
+                } else {
+                    Toast.makeText(AlterarSenhaPerfil.this, "Login ou senha incorretos", Toast.LENGTH_LONG).show();
                 }
 
 
@@ -107,7 +123,7 @@ public class AlterarSenhaPerfil extends AppCompatActivity {
         return(
                 !txtNovaSenha.getText().toString().isEmpty() &&
                 !txtSenhaAtual.getText().toString().isEmpty()
-                );
+        );
     }
 
 

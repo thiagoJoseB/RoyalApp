@@ -126,8 +126,9 @@ public class AlterarSenhaActivity extends AppCompatActivity {
 
     /// FUNCAO DE VALIDADE
     public boolean validate(){
+
         return (
-                !txtNovaSenha.getText().toString().isEmpty() &&
+                        !txtNovaSenha.getText().toString().isEmpty() &&
                         !txtConfirmarNovaSenha.getText().toString().isEmpty()
         );
 

@@ -37,7 +37,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_perfil_usuario);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         txtNomeCompleto = findViewById(R.id.txtNomeCompleto);
         txtEmailPerfil = findViewById(R.id.txtEmailPerfil);
@@ -48,9 +48,23 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         menuBaixo.setSelectedItemId(R.id.menu_baixo_perfil);
 
 
+
+
+
+
+
+
+
+
         btnAlterarSenha.setOnClickListener(view -> {
+            Intent intent = new Intent(PerfilUsuarioActivity.this,AlterarSenhaPerfil.class);
+            startActivity(intent);
+
+
 
         });
+
+
 
         menuBaixo.setOnItemSelectedListener(item -> {
 
