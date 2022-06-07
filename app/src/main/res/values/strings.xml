@@ -8,6 +8,7 @@
     <string name="parcelada">Parcelada</string>
     <string name="grafico_mes_sem_dados">Nenhuma transferencia para %s/%s</string>
     <string name="categoria_selecionador_vazio">Selecione uma ou mais categorias…</string>
+    <string name="selecione_uma_imagem">Selecione uma imagem</string>
 
     <string-array name="meses">
         <item>Janeiro</item>

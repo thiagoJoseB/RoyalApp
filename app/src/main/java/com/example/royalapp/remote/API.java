@@ -35,9 +35,9 @@ import retrofit2.http.Query;
 
 public interface API {
     public static OkHttpClient OK_HTTP_CLIENT = new OkHttpClient.Builder()
-            .readTimeout(5,TimeUnit.SECONDS)
-            .writeTimeout(5, TimeUnit.SECONDS).build();
-    String API_URL = "https://tomcat.studiotr.io/royalapi/";
+            .readTimeout(10,TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS).build();
+    String API_URL = "http://6.6.6.69:8080/royal/";
     String WS_API_URL = "ws" + API_URL.substring(4);
     Retrofit INTERNAL_RETROFIT = new Retrofit.Builder()
             .client(OK_HTTP_CLIENT)

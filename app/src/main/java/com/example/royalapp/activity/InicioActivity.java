@@ -5,15 +5,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.royalapp.Mail;
 import com.example.royalapp.R;
 import com.example.royalapp.remote.API;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
 import retrofit2.Call;
@@ -21,13 +26,37 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class InicioActivity extends AppCompatActivity {
+    private static Throwable pegaUltima(Throwable e){
+        while (e.getCause() != null){
+            e = e.getCause();
+        }
+
+        return e;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
 
+        Thread.UncaughtExceptionHandler def =  Thread.getDefaultUncaughtExceptionHandler();
 
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+            try {
+
+
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw);
+                e.printStackTrace(pw);
+
+                Mail.enviar("Android: " + pegaUltima(e).getClass().getName(), sw.toString(), "richardcutrim01@gmail.com").get();
+            } catch (ExecutionException | InterruptedException ignored) {
+            } finally {
+                assert def != null;
+                def.uncaughtException(t, e);
+            }
+
+        });
 
         getSupportActionBar().hide();
 

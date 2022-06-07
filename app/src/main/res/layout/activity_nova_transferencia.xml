@@ -386,7 +386,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="8dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:onClick="buscarArquivo"
 
             app:layout_constraintTop_toBottomOf="@+id/nova_transferencia_campo_observacao">
@@ -405,7 +405,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nenhum arquivo selecionado."
+                    android:text="@string/selecione_uma_imagem"
                     android:drawablePadding="8dp"
                     android:id="@+id/nova_transferencia_anexo_nome"
                     app:drawableStartCompat="@drawable/image_24" />

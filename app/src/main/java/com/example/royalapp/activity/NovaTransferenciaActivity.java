@@ -10,6 +10,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
@@ -18,12 +19,13 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -39,6 +41,7 @@ import com.example.royalapp.model.Categoria;
 import com.example.royalapp.remote.API;
 import com.google.gson.GsonBuilder;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -95,12 +98,16 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
     CheckBox fixaCheckbox;
 
+    private AlertDialog dialogoSeletorImagem;
+    private ImageView imagemSeletorImagem;
+
     boolean repetida = false;
     boolean observacao = false;
     boolean anexo = false;
     boolean favorita = false;
 
     Uri anexoUri = null;
+    Uri anexoUriBackup = null;
 
 
 
@@ -251,10 +258,10 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == 69){
-
             if(resultCode == RESULT_OK) {
-
                 anexoUri = data.getData();
+
+
 
                 Cursor c = getContentResolver().query(anexoUri, null, null, null, null);
                 c.moveToFirst();
@@ -263,11 +270,25 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
                 textAnexoNome.setText(nome);
                 textAnexoNome.setTypeface(null, Typeface.BOLD);
-            } else {
-                anexoUri = null;
 
-                textAnexoNome.setText("Nenhum arquivo selecionado.");
-                textAnexoNome.setTypeface(null, Typeface.NORMAL);
+                try {
+                    imagemSeletorImagem.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), anexoUri));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        } else if(requestCode == 666){
+            if(resultCode == RESULT_OK) {
+                textAnexoNome.setText("<imagem da galeria>");
+                textAnexoNome.setTypeface(null, Typeface.BOLD);
+
+                try {
+                    imagemSeletorImagem.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), anexoUri));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                anexoUri = anexoUriBackup;
             }
         }
     }
@@ -387,11 +408,66 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     }
 
     public void buscarArquivo(View v){
-        Intent i = new Intent(Intent.ACTION_PICK);
+//        dialogoSeletorCurso
 
-        i.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        if(dialogoSeletorImagem == null){
+            imagemSeletorImagem = new ImageView(this);
+            imagemSeletorImagem.setAdjustViewBounds(true);
+            imagemSeletorImagem.setImageDrawable(this.getDrawable(R.drawable.sem_foto));
 
-        startActivityForResult(i, 69);
+            dialogoSeletorImagem = new AlertDialog.Builder(this)
+                    .setTitle("Escolha uma foto")
+                    .setView(imagemSeletorImagem)
+                    .setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    })
+                    .setItems(new String[]{"Escolher da galeria", "Usar a câmera", "Cancelar"}, null).create();
+
+            dialogoSeletorImagem.getListView().setOnItemClickListener((dialog, view, index, id) -> {
+                switch (index){
+                    case 0:{
+                        Intent i = new Intent(Intent.ACTION_PICK);
+                        i.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                        startActivityForResult(i, 69);
+                        break;
+                    }
+                    case 1:{
+                        String imageFileName = String.valueOf(System.currentTimeMillis());
+                        File image = null;
+                        try {
+                            image = File.createTempFile(
+                                    imageFileName,
+                                    ".jpg",
+                                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                            );
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        anexoUriBackup = anexoUri;
+                        anexoUri = Uri.fromFile(image);
+
+                        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        i.putExtra(MediaStore.EXTRA_OUTPUT, anexoUri);
+                        startActivityForResult(i, 666);
+                        break;
+                    }
+                    case 2:{
+                        dialogoSeletorImagem.dismiss();
+                    }
+                }
+            });
+        }
+
+        dialogoSeletorImagem.show();
     }
 
     public void calcularParcelas(@NonNull String parcelas, int indiceFrequencia){
