@@ -20,11 +20,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.royalapp.Constantes;
+import com.example.royalapp.Mail;
 import com.example.royalapp.R;
 import com.example.royalapp.Utilidades;
 import com.example.royalapp.Variaveis;
 import com.example.royalapp.model.Categoria;
 import com.example.royalapp.remote.API;
+import com.example.royalapp.view.CustomPieChartRenderer;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment;
 import com.github.mikephil.charting.charts.PieChart;
@@ -417,10 +419,7 @@ public class DashboardActivity extends AppCompatActivity {
 //                Toast.makeText(DashboardActivity.this, "carregou", Toast.LENGTH_SHORT).show();
 
 
-                webSocket = OK_HTTP_CLIENT.newWebSocket(
-                        new Request.Builder().url(API.WS_API_URL + "dashboard/" + token).build(),
-                        new DashboardWebSocket()
-                );
+                novoWebsocket();
 
 
             }
@@ -452,6 +451,8 @@ public class DashboardActivity extends AppCompatActivity {
         chart.setNoDataText("Carregando as informações...");
         chart.setNoDataTextColor(0xff000000);
 
+//        chart.setRenderer(new CustomPieChartRenderer(chart, 10f));
+
 
 
         Legend legend = chart.getLegend();
@@ -463,6 +464,14 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
+    private void novoWebsocket(){
+        webSocket = OK_HTTP_CLIENT.newWebSocket(
+                new Request.Builder().url(API.WS_API_URL + "dashboard/" + token).build(),
+                new DashboardWebSocket()
+        );
+
+    }
+
     private class DashboardWebSocket extends WebSocketListener {
         @Override
         public void onOpen(@NonNull WebSocket webSocket, @NonNull okhttp3.Response response) {
@@ -470,12 +479,13 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
         @Override
+        public void onClosed(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
+            novoWebsocket();
+        }
+
+        @Override
         public void onMessage(@NonNull WebSocket webSocket, @NonNull String text) {
-
-
                 JsonObject json = JsonParser.parseString(text).getAsJsonObject();
-
-                Log.d("teste", json.toString());
 
                 switch (json.get("metodo").getAsString()) {
                     case "despesa": {
@@ -510,7 +520,8 @@ public class DashboardActivity extends AppCompatActivity {
 
         @Override
         public void onFailure(@NonNull WebSocket webSocket, @NonNull Throwable t, @Nullable okhttp3.Response response) {
-            throw new RuntimeException(t);
+            //tenta reconectar
+            this.onClosed(webSocket, 48230947, "");
         }
     }
 

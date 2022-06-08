@@ -111,6 +111,7 @@ public class GraficoResultadoActivity extends AppCompatActivity {
                         chart.setData(lineData);
 
                         chart.getXAxis().setGranularity(1);
+                        chart.getXAxis().setAxisMinimum(0);
 
                         if(!"tudo".equals(tipo)){
                             chart.getAxis(YAxis.AxisDependency.LEFT).setAxisMinimum(0f);
@@ -141,7 +142,9 @@ public class GraficoResultadoActivity extends AppCompatActivity {
 
                         chart.setData(lineData);
 
+
                         chart.getXAxis().setGranularity(1);
+                        chart.getXAxis().setAxisMinimum(0);
 
                         if(!"tudo".equals(tipo)){
                             chart.getAxis(YAxis.AxisDependency.LEFT).setAxisMinimum(0f);
@@ -163,7 +166,7 @@ public class GraficoResultadoActivity extends AppCompatActivity {
                         PieDataSet dataSet = new PieDataSet(new ArrayList<>(), "");
                         PieData lineData = new PieData(dataSet);
 
-                        dataSet.setValueFormatter(FORMATADOR_PADRAO);
+
 
                         chart.setLayoutParams(layoutParams);
 
@@ -194,7 +197,18 @@ public class GraficoResultadoActivity extends AppCompatActivity {
                             }
                         }
 
+                        dataSet.setValueFormatter(new ValueFormatter() {
+                            @Override
+                            public String getPieLabel(float value, PieEntry pieEntry) {
+                                if(value <= 0f){
 
+                                    dataSet.removeEntry(pieEntry);
+                                    return "";
+                                }
+
+                                return Utilidades.FORMATADOR_MOEDA.format(value);
+                            }
+                        });
 
                         view = chart;
                         break;
@@ -234,7 +248,7 @@ public class GraficoResultadoActivity extends AppCompatActivity {
     private static final ValueFormatter FORMATADOR_PADRAO = new ValueFormatter() {
         @Override
         public String getFormattedValue(float value) {
-            return Utilidades.FORMATADOR_MOEDA.format(value);
+            return Utilidades.FORMATADOR_MOEDA.format(new BigDecimal(Float.toString(value)));
         }
     };
 }
