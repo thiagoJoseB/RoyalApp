@@ -77,8 +77,9 @@ public class InicioActivity extends AppCompatActivity {
 
                     Log.d("teste", String.valueOf(response.code()));
 
-                    dormir(demora < 1500 ? 1500 - demora : 0);
-
+                    if(demora < 1500) {
+                        dormir(1500 - demora);
+                    }
                     if (response.code() == 200) {
                         DashboardActivity.token = token;
 

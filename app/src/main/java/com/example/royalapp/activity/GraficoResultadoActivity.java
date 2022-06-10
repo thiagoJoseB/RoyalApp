@@ -189,26 +189,19 @@ public class GraficoResultadoActivity extends AppCompatActivity {
                         if(mes == null){
 
                             for(int i = 0; i < decimals.size(); i++){
-                                lineData.addEntry(new PieEntry(decimals.get(i).floatValue(), Constantes.MESES[i]), 0);
+                                if(decimals.get(0).compareTo(BigDecimal.ZERO) != 0) {
+                                    lineData.addEntry(new PieEntry(decimals.get(i).floatValue(), Constantes.MESES[i]), 0);
+                                }
                             }
                         } else {
                             for(int i = 0; i < decimals.size(); i++){
-                                lineData.addEntry(new PieEntry(decimals.get(i).floatValue(), "Dia " + i), 0);
+                                if(decimals.get(0).compareTo(BigDecimal.ZERO) != 0) {
+                                    lineData.addEntry(new PieEntry(decimals.get(i).floatValue(), "Dia " + i), 0);
+                                }
                             }
                         }
 
-                        dataSet.setValueFormatter(new ValueFormatter() {
-                            @Override
-                            public String getPieLabel(float value, PieEntry pieEntry) {
-                                if(value <= 0f){
-
-                                    dataSet.removeEntry(pieEntry);
-                                    return "";
-                                }
-
-                                return Utilidades.FORMATADOR_MOEDA.format(value);
-                            }
-                        });
+                        dataSet.setValueFormatter(FORMATADOR_PADRAO);
 
                         view = chart;
                         break;

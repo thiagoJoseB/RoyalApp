@@ -22,7 +22,6 @@
             android:paddingStart="24dp"
             android:paddingEnd="24dp">
 
-
             <TextView
 
                 android:layout_width="wrap_content"

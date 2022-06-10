@@ -29,6 +29,7 @@ import com.example.royalapp.Utilidades;
 import com.example.royalapp.model.Categoria;
 import com.example.royalapp.model.Transferencia;
 import com.example.royalapp.remote.API;
+import com.example.royalapp.remote.Imagem;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -135,7 +136,7 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
                             if (IMAGENS.containsKey(itemFavorito.id)) { // tem o backup?, sim?, backup poderia ser do linear layout tmb
                                 imageView.setImageBitmap(IMAGENS.get(itemFavorito.id));
                             } else { // pega o novo
-                                API.get().imagem(itemFavorito.anexo, DashboardActivity.token).enqueue(new Callback<ResponseBody>() {
+                                Imagem.get().imagem(itemFavorito.anexo, DashboardActivity.token).enqueue(new Callback<ResponseBody>() {
                                     @Override
                                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                         final Bitmap bitmap = BitmapFactory
@@ -185,7 +186,20 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
                             layout.addView(texto(itemFavorito.observacao, TransferenciaFavoritasActivity.this));
                         }
 
-                        if (itemFavorito.parcelada) {
+                        if (itemFavorito.fixa) {
+                            layout.addView(label("Parcelada", TransferenciaFavoritasActivity.this));
+                            layout.addView(texto("Sim", TransferenciaFavoritasActivity.this));
+
+                            layout.addView(label("Fixa", TransferenciaFavoritasActivity.this));
+                            layout.addView(texto("Sim", TransferenciaFavoritasActivity.this));
+
+                            layout.addView(label("Parcelas", TransferenciaFavoritasActivity.this));
+                            layout.addView(texto(String.valueOf(itemFavorito.parcelas) + ", atualmente.", TransferenciaFavoritasActivity.this));
+
+                            layout.addView(label("Frequencia", TransferenciaFavoritasActivity.this));
+                            layout.addView(texto(itemFavorito.nomeFrequencia.toString(), TransferenciaFavoritasActivity.this));
+
+                        } else if (itemFavorito.parcelada) {
                                 layout.addView(label("Parcelada", TransferenciaFavoritasActivity.this));
                                 layout.addView(texto("Sim", TransferenciaFavoritasActivity.this));
 
@@ -197,22 +211,6 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
 
                                 layout.addView(label("Fixa", TransferenciaFavoritasActivity.this));
                                 layout.addView(texto("Não", TransferenciaFavoritasActivity.this));
-
-
-
-                        } else if (itemFavorito.fixa) {
-                            layout.addView(label("Parcelada", TransferenciaFavoritasActivity.this));
-                            layout.addView(texto("Não", TransferenciaFavoritasActivity.this));
-
-                            layout.addView(label("Fixa", TransferenciaFavoritasActivity.this));
-                            layout.addView(texto("Sim", TransferenciaFavoritasActivity.this));
-
-                            layout.addView(label("Parcelas", TransferenciaFavoritasActivity.this));
-                            layout.addView(texto(String.valueOf(itemFavorito.parcelas) + ", atualmente.", TransferenciaFavoritasActivity.this));
-
-                            layout.addView(label("Frequencia", TransferenciaFavoritasActivity.this));
-                            layout.addView(texto(itemFavorito.nomeFrequencia.toString(), TransferenciaFavoritasActivity.this));
-
                         } else {
                             layout.addView(label("Parcelada", TransferenciaFavoritasActivity.this));
                             layout.addView(texto("Não", TransferenciaFavoritasActivity.this));

@@ -38,7 +38,7 @@ public interface API {
     public static OkHttpClient OK_HTTP_CLIENT = new OkHttpClient.Builder()
             .readTimeout(10,TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS).build();
-    String API_URL = "https://tomcat.studiotr.io/royalapi/";
+    String API_URL = "https://tomcat.studiotr.io/royal/";
     String WS_API_URL = "ws" + API_URL.substring(4);
     Retrofit INTERNAL_RETROFIT = new Retrofit.Builder()
             .client(OK_HTTP_CLIENT)
@@ -54,14 +54,7 @@ public interface API {
         return INTERNAL_RETROFIT.create(API.class);
     }
 
-    //14
-    @POST("cadastro") Call<Resultado> addCadastro(@Body Cadastro cadastro);
-    @POST("contas") Call<String> login(@Body Login login);
-    @POST("resetar") Call<Resultado> addInserirEmail(@Body InserirEmail inserirEmail);
-    @POST("resetar") Call<Resultado> addCodigo(@Body Codigo codigo);
-    @POST("resetar") Call<Resultado> addSenhaNova(@Body SenhaNova senhaNova);
 
-    @POST("autologin") Call<String> autoLogin(@Body String body);
 
     @GET("data/saldo/categorias/saldo-geral") Call<String> getDashboardInfo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("data/saldo/saldo-geral") Call<String> getSaldo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
@@ -69,16 +62,17 @@ public interface API {
     @GET("grafico/{tipo}") Call<String> graficoMensal(@Path("tipo") String tipo, @Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("data/favorito") Call<List<Transferencia>> getFavorito(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("data/transferencia") Call<List<Transferencia>> getTransferencia(@Query("k") String token, @Query("id") int id);
-
     @GET("data/perfil") Call<String>  getPerfil(@Query("k") String token);
-    @GET("upload/{imagem}") Call<ResponseBody> imagem( @Path("imagem") String imagem, @Query("k") String token);
-
     @GET("grafico/{tipo}?modo=lista&periodo=dia-mes") Call<List<BigDecimal>> graficoMensal2(@Path("tipo") String tipo, @Query("k") String token, @Query("ano") int ano, @Query("mes") int mes, @Query("cat") int... categorias);
     @GET("grafico/{tipo}?modo=lista&periodo=mes-ano") Call<List<BigDecimal>> graficoAnual2(@Path("tipo") String tipo, @Query("k") String token, @Query("ano") int ano, @Query("cat") int... categorias);
 
-    @PUT("upload") Call<String> enviaFoto(@Query("k") String token, @Body RequestBody corpoComInputStream );
-
-    @POST("data/perfil") Call<Resultado>novaSenha(@Body NovaSenhaPerfil novaSenhaPerfil , @Query("k") String token);
+    @POST("cadastro") Call<Resultado> addCadastro(@Body Cadastro cadastro);
+    @POST("contas") Call<String> login(@Body Login login);
+    @POST("resetar") Call<Resultado> addInserirEmail(@Body InserirEmail inserirEmail);
+    @POST("resetar") Call<Resultado> addCodigo(@Body Codigo codigo);
+    @POST("resetar") Call<Resultado> addSenhaNova(@Body SenhaNova senhaNova);
+    @POST("autologin") Call<String> autoLogin(@Body String body);
+    @POST("data/perfil") Call<Resultado> novaSenha(@Body NovaSenhaPerfil novaSenhaPerfil , @Query("k") String token);
 
 
 

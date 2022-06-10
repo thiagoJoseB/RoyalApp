@@ -351,13 +351,14 @@
                                     android:layout_height="match_parent"
                                     android:background="@color/graywait"
                                     android:layout_margin="8dp"
+                                    android:visibility="gone"
                                     android:id="@+id/dashboard_grafico_mes_efeito"/>
+
                                 <com.github.mikephil.charting.charts.PieChart
-                                    android:visibility="invisible"
                                     android:id="@+id/dashboard_grafico_mes"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    />
+                                    android:visibility="invisible" />
                                 <TextView
                                     android:visibility="gone"
                                     android:text="@string/grafico_mes_sem_dados"

@@ -3,6 +3,7 @@ package com.example.royalapp.activity;
 import static com.example.royalapp.Utilidades.FORMATADOR_DIA;
 import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
 import static com.example.royalapp.Utilidades.PATTERN_DINHEIRO_BR;
+import static com.example.royalapp.activity.InicioActivity.dormir;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +14,7 @@ import androidx.fragment.app.DialogFragment;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
@@ -20,6 +22,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.text.Editable;
@@ -33,12 +36,15 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.royalapp.Extra;
 import com.example.royalapp.R;
 import com.example.royalapp.model.Categoria;
 import com.example.royalapp.remote.API;
+import com.example.royalapp.remote.Imagem;
 import com.google.gson.GsonBuilder;
 
 import java.io.File;
@@ -54,6 +60,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NovaTransferenciaActivity extends AppCompatActivity {
     private static final String[] TIPO_TRANSFERENCIAS = new String[]{ "DIAS", "SEMANAS", "QUINZENAS", "MESES", "BIMESTRES", "TRIMESTRES", "SEMESTRES", "ANOS"};
@@ -210,21 +219,30 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         String valorSpinner = spinnerCategorias.getSelectedItem().toString();
         boolean fixa = fixaCheckbox.isChecked();
 
-        new Thread(() -> {
+        Extra.rodar(() -> {
             Map<String, Object> json = new HashMap<>();
 
             final String anexo;
 
             if(anexoUri != null){
-                try {
                     InputStream inputStream = this.getContentResolver().openInputStream(anexoUri);
 
                     byte[] buf = new byte[inputStream.available()];
                     while (inputStream.read(buf) != -1);
 
-                    anexo = API.get().enviaFoto(DashboardActivity.token, RequestBody.create(buf)).execute().body();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                runOnUiThread(() -> new AlertDialog.Builder(this)
+                    .setView(new ProgressBar(this))
+                        .setMessage("Aguarde enquanto enviamos a imagem...")
+                        .setTitle("Enviar mensagem").create().show());
+
+                long inicio = System.currentTimeMillis();
+
+                anexo = Imagem.get().enviaFoto(DashboardActivity.token, RequestBody.create(buf)).execute().body();
+
+                int demora = (int) (System.currentTimeMillis() - inicio);
+
+                if(demora < 1500) {
+                    dormir(1500 - demora);
                 }
             } else {
                 anexo = null;
@@ -241,16 +259,18 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
             json.put("totalParcelas", repetida ^ fixa ? Integer.parseInt(inputParcelas.getText().toString()) : null);
             json.put("frequencia", repetida ? TIPO_TRANSFERENCIAS[spinnerFrequenciaRepeticao.getSelectedItemPosition()] : null);
             json.put("observacao", observacao ? inputObservacao.getText().toString() : null);
-            json.put("parcelada", repetida ^ fixa);
+            json.put("parcelada", repetida);
             json.put("idCategoria", categorias.stream().filter(categoria -> valorSpinner.equals(categoria.nome)).findAny().get().idCategoria);
 
             DashboardActivity.webSocket.send(new GsonBuilder().serializeNulls().create().toJson(json));
-        }).start();
+
+            this.finish();
+        });
 
 
 
 
-        this.finish();
+
     }
 
     @Override

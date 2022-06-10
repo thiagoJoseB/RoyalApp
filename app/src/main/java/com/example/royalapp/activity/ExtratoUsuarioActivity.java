@@ -33,6 +33,7 @@ import com.example.royalapp.model.Categoria;
 import com.example.royalapp.model.Transferencia;
 import com.example.royalapp.model.TransferenciaExtrato;
 import com.example.royalapp.remote.API;
+import com.example.royalapp.remote.Imagem;
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -293,7 +294,7 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
 
                                     viewCarregando.setVisibility(View.GONE);
                                 } else { // pega o novo
-                                    API.get().imagem(transferencia.anexo, DashboardActivity.token).enqueue(new Callback<ResponseBody>() {
+                                    Imagem.get().imagem(transferencia.anexo, DashboardActivity.token).enqueue(new Callback<ResponseBody>() {
                                         @Override
                                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                             final Bitmap bitmap = BitmapFactory
