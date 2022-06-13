@@ -73,7 +73,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
     public void enviarAlteracoes(View e){
         if(foiMudadoAlgo){
-            try {
+
                 android.app.AlertDialog a = new android.app.AlertDialog.Builder(this)
                         .setView(new ProgressBar(this))
                         .setMessage("Aguarde enquanto atualizamos perfil")
@@ -102,14 +102,14 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                     if(demora < 1500) {
                         dormir(1500 - demora);
                     }
-                }).get();
+
+                    a.dismiss();
+                });
 
 
 
-                a.dismiss();
-            } catch (ExecutionException | InterruptedException ex){
-                throw new RuntimeException(ex);
-            }
+
+
 
             foiMudadoAlgo = false;
             bloquearAlteracoes();
@@ -212,7 +212,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
         if(email == null){
             //primeira vez
-            try {
                 Extra.rodar(() -> {
                     String jsonString = API.get().getPerfil(DashboardActivity.token).execute().body();
 
@@ -222,6 +221,11 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                     email = json.get("email").getAsString();
                     nome = json.get("nome").getAsString();
 
+                    runOnUiThread(() -> {
+                        txtNomeCompleto.setText(nome);
+                        txtEmailPerfil.setText(email);
+                    });
+
                     if(!json.get("foto").isJsonNull()){
                         arquivo = json.get("foto").getAsString();
 
@@ -229,15 +233,44 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                                 Imagem.get().imagem(arquivo, DashboardActivity.token).execute()
                                         .body().byteStream()
                         );
+
+                        runOnUiThread(() -> {
+
+                        imagePerfil.setImageBitmap(imagem);
+                        });
                     }
 
-                }).get();
-            } catch (ExecutionException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+                    runOnUiThread(() -> {
+                        progressPerfil.setVisibility(View.GONE);
+
+                        imagePerfil.setForeground(null);
+
+                        txtNomeCompleto.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                                foiMudadoAlgo = true;
+                                liberarAlteracoes();
+                                txtNomeCompleto.removeTextChangedListener(this);
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+                            }
+                        });
+                    });
+
+
+                });
+        } else {
+
+            botaInfos();
         }
 
-        botaInfos();
     }
 
     public void deslogar(View a) {

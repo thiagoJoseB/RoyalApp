@@ -580,6 +580,23 @@ public class DashboardActivity extends AppCompatActivity {
                 if(!websocketFuncionante){
                     this.atualizarValoresPrincipais();
                 }
+            } else if(resultCode == NovaTransferenciaActivity.RESULTADO_TEVE_FIXA){
+                Extra.rodar(() -> {
+                    List<Transferencia> transferencias = API.get().fixa(DashboardActivity.token).execute().body();
+
+                    runOnUiThread(() -> {
+                        assert transferencias != null;
+                        recyclerViewListaFixa.setAdapter(
+                                new FixaAdapter(transferencias)
+                        );
+                    });
+                });
+
+
+
+                if(!websocketFuncionante){
+                    this.atualizarValoresPrincipais();
+                }
             }
         }
     }

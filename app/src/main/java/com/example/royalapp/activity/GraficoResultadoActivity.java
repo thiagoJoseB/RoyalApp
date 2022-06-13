@@ -189,13 +189,13 @@ public class GraficoResultadoActivity extends AppCompatActivity {
                         if(mes == null){
 
                             for(int i = 0; i < decimals.size(); i++){
-                                if(decimals.get(0).compareTo(BigDecimal.ZERO) != 0) {
+                                if(decimals.get(i).compareTo(BigDecimal.ZERO) != 0) {
                                     lineData.addEntry(new PieEntry(decimals.get(i).floatValue(), Constantes.MESES[i]), 0);
                                 }
                             }
                         } else {
                             for(int i = 0; i < decimals.size(); i++){
-                                if(decimals.get(0).compareTo(BigDecimal.ZERO) != 0) {
+                                if(decimals.get(i).compareTo(BigDecimal.ZERO) != 0) {
                                     lineData.addEntry(new PieEntry(decimals.get(i).floatValue(), "Dia " + i), 0);
                                 }
                             }

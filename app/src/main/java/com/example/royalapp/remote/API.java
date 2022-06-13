@@ -62,6 +62,7 @@ public interface API {
     @GET("data/extrato-mes") Call<List<TransferenciaExtrato>> getExtratos(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("grafico/{tipo}") Call<String> graficoMensal(@Path("tipo") String tipo, @Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("data/favorito") Call<List<Transferencia>> getFavorito(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
+    @GET("data/fixa") Call<List<Transferencia>> fixa(@Query("k") String token);
     @GET("data/transferencia") Call<List<Transferencia>> getTransferencia(@Query("k") String token, @Query("id") int id);
     @GET("data/perfil") Call<String>  getPerfil(@Query("k") String token);
     @GET("grafico/{tipo}?modo=lista&periodo=dia-mes") Call<List<BigDecimal>> graficoMensal2(@Path("tipo") String tipo, @Query("k") String token, @Query("ano") int ano, @Query("mes") int mes, @Query("cat") int... categorias);

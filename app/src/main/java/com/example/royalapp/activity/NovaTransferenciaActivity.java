@@ -69,6 +69,7 @@ import retrofit2.Response;
 public class NovaTransferenciaActivity extends AppCompatActivity {
     private static final String[] TIPO_TRANSFERENCIAS = new String[]{ "DIAS", "SEMANAS", "QUINZENAS", "MESES", "BIMESTRES", "TRIMESTRES", "SEMESTRES", "ANOS"};
 
+    public static final int RESULTADO_TEVE_FIXA = 3183;
 
     private final Calendar calendario = Calendar.getInstance();
     private List<Categoria> categorias;
@@ -267,7 +268,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
             API.get().transferencia(new GsonBuilder().serializeNulls().create().toJson(json), DashboardActivity.token).execute();
 
-            this.setResult(RESULT_OK);
+            this.setResult(fixa ? RESULTADO_TEVE_FIXA : RESULT_OK);
             this.finish();
         });
 
