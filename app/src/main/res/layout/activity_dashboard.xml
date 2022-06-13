@@ -13,7 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/dashboard_menu_baixo"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+
+        android:background="@color/whitesmoke">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -24,7 +26,6 @@
 
 
             <View
-                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:background="@drawable/toolbar_redonda"
@@ -33,7 +34,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:titleTextColor="@android:color/white"></View>
+                app:titleTextColor="@android:color/white" />
 
             <TextView
                 android:id="@+id/dashboard_seletor_mes_ano"
@@ -68,8 +69,7 @@
                     android:background="@drawable/borda_saldo"
                     android:backgroundTint="@color/white"
                     android:elevation="16dp"
-                    android:orientation="vertical"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+                    android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -110,7 +110,7 @@
                             android:layout_height="0dp"
                             android:layout_gravity="center"
                             android:background="@color/graywait"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintBottom_toBottomOf="@+id/dashboard_receita_principa_efeito"
                             app:layout_constraintEnd_toEndOf="@+id/dashboard_despesa_principal_texto"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="@+id/dashboard_despesa_principal_texto"
@@ -204,6 +204,22 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView3"
                             />
+
+                        <TextView
+                            android:id="@+id/dashboard_websockets_caiu"
+                            android:visibility="gone"
+                            android:gravity="center"
+                            android:layout_marginTop="16dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableTint="@color/vermelhoNegativo"
+                            android:textColor="@color/vermelhoNegativo"
+                            android:text="As informações podem não estar atualizadas!"
+
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/dashboard_receita_principa_efeito"
+                            app:drawableLeftCompat="@drawable/warning_24" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -377,7 +393,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/constraintLayout3"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="84dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/borda_graficos"
@@ -386,22 +402,109 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.506"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
-                    tools:ignore="MissingConstraints">
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="15dp"
+                            android:paddingTop="5dp"
+                            android:text="Projeção do Saldo Mês"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <TextView
+                            android:id="@+id/dashboard_projecao_despesa"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/projecao_despesa"
+                            app:layout_constraintBottom_toTopOf="@+id/textView4"
+                            app:layout_constraintEnd_toEndOf="@+id/textView4"
+                            app:layout_constraintStart_toStartOf="@+id/textView4" />
+
+                        <TextView
+                            android:id="@+id/dashboard_projecao_receita"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/projecao_receita"
+                            app:layout_constraintBottom_toTopOf="@+id/textView7"
+                            app:layout_constraintEnd_toEndOf="@+id/textView7"
+                            app:layout_constraintStart_toStartOf="@+id/textView7" />
+
+                        <TextView
+                            android:textColor="@color/vermelhoNegativo"
+                            android:id="@+id/textView4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:textStyle="bold"
+                            android:text="Despesa"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.25"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginBottom="16dp"
+                            android:text="Receita"
+                            android:textColor="@color/verdePositivo"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.75"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="120dp"
+                    android:background="@drawable/borda_saldo"
+                    android:backgroundTint="@color/white"
+                    android:elevation="16dp"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="15dp"
-                        android:paddingTop="5dp"
-                        android:text="Projeção do Saldo Mês"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="15dp"
+                            android:paddingTop="5dp"
+                            android:text="Transferências fixas ativas"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"/>
+                        <RelativeLayout
+                            android:padding="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                        />
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/dashboard_lista_fixas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
 
-
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                        </RelativeLayout>
+                    </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
 
@@ -422,6 +525,7 @@
         app:menu="@menu/navigation_menu"
         app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/dashboard_menu_baixo">
+
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 

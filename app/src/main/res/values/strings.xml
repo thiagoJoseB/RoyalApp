@@ -9,6 +9,8 @@
     <string name="grafico_mes_sem_dados">Nenhuma transferencia para %s/%s</string>
     <string name="categoria_selecionador_vazio">Selecione uma ou mais categorias…</string>
     <string name="selecione_uma_imagem">Selecione uma imagem</string>
+    <string name="projecao_despesa">%s de %s gasto</string>
+    <string name="projecao_receita">%s de %s recebido</string>
 
     <string-array name="meses">
         <item>Janeiro</item>

@@ -1,32 +1,36 @@
 package com.example.royalapp.activity;
 
+import static com.example.royalapp.Utilidades.BRASIL;
 import static com.example.royalapp.Utilidades.CALENDARIO;
 import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
 import static com.example.royalapp.Utilidades.GSON;
 import static com.example.royalapp.activity.TransferenciaFavoritasActivity.atualizarDensidade;
 import static com.example.royalapp.remote.API.OK_HTTP_CLIENT;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.royalapp.Constantes;
-import com.example.royalapp.Mail;
+import com.example.royalapp.Extra;
 import com.example.royalapp.R;
 import com.example.royalapp.Utilidades;
 import com.example.royalapp.Variaveis;
 import com.example.royalapp.model.Categoria;
+import com.example.royalapp.model.Transferencia;
 import com.example.royalapp.remote.API;
-import com.example.royalapp.view.CustomPieChartRenderer;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment;
 import com.github.mikephil.charting.charts.PieChart;
@@ -46,6 +50,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import okhttp3.Request;
 import okhttp3.WebSocket;
@@ -55,11 +60,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DashboardActivity extends AppCompatActivity {
+    private static final int CODIGO_TRANSFERENCIA = 17;
 
 
 
-
-
+    public static volatile boolean websocketFuncionante = false;
     public static WebSocket webSocket;
 
     static String token = null;
@@ -70,6 +75,10 @@ public class DashboardActivity extends AppCompatActivity {
     private TextView viewTextDespesaGeral;
     private TextView viewTextReceitaGeral;
     private TextView viewSeletorMesAno;
+
+    private TextView viewProjetadoDespesa;
+    private TextView viewProjetadoReceita;
+
     private View buttonNovaDespesa;
     private View buttonNovaReceita;
     private View buttonFavoritos;
@@ -81,6 +90,8 @@ public class DashboardActivity extends AppCompatActivity {
     private ShimmerFrameLayout viewEfeitoDespesa;
 
 
+    private RecyclerView recyclerViewListaFixa;
+
     private TextView viewGraficoTextoVazio;
 
     private ShimmerFrameLayout viewEfeitoGrafico;
@@ -89,6 +100,10 @@ public class DashboardActivity extends AppCompatActivity {
 
     private BigDecimal despesaMensal;
     private BigDecimal receitaMensal;
+
+    private BigDecimal despesaMensalBruto;
+    private BigDecimal receitaMensalBruto;
+
     private BigDecimal saldoGeral;
     private String tipoGrafico = "despesa";
 
@@ -117,6 +132,20 @@ public class DashboardActivity extends AppCompatActivity {
     private void finalizarEsperaTextoBotandoValor(){
         viewTextReceitaGeral.setText(FORMATADOR_MOEDA.format(receitaMensal));
         viewTextDespesaGeral.setText(FORMATADOR_MOEDA.format(despesaMensal));
+
+        viewProjetadoReceita.setText(
+                String.format(
+                        getString(R.string.projecao_receita),
+                        FORMATADOR_MOEDA.format(receitaMensal),
+                        FORMATADOR_MOEDA.format(receitaMensalBruto)
+                )
+        );
+        viewProjetadoDespesa.setText(String.format(
+                getString(R.string.projecao_despesa),
+                FORMATADOR_MOEDA.format(despesaMensal),
+                FORMATADOR_MOEDA.format(despesaMensalBruto)
+        ));
+
         viewTextSaldoGeral.setText(FORMATADOR_MOEDA.format(saldoGeral));
 
         viewTextSaldoGeral.setVisibility(View.VISIBLE);
@@ -165,13 +194,15 @@ public class DashboardActivity extends AppCompatActivity {
 //                    Log.d("teste", response.body());
                     JsonArray array = JsonParser.parseString(response.body()).getAsJsonArray();
                     JsonObject valores = array.get(0).getAsJsonObject();
-
+                    JsonObject bruto = array.get(2).getAsJsonObject();
 
                     saldoGeral = array.get(1).getAsBigDecimal();
 
                     receitaMensal = valores.get("receita").getAsBigDecimal();
-
                     despesaMensal = valores.get("despesa").getAsBigDecimal();
+
+                    receitaMensalBruto = bruto.get("receita").getAsBigDecimal();
+                    despesaMensalBruto = bruto.get("despesa").getAsBigDecimal();
 
                     finalizarEsperaTextoBotandoValor();
                 }
@@ -273,6 +304,10 @@ public class DashboardActivity extends AppCompatActivity {
         viewEfeitoDespesa = findViewById(R.id.dashboard_despesa_principal_efeito);
         viewEfeitoGrafico = findViewById(R.id.dashboard_grafico_mes_efeito);
 
+        recyclerViewListaFixa = findViewById(R.id.dashboard_lista_fixas);
+
+        viewProjetadoDespesa = findViewById(R.id.dashboard_projecao_despesa);
+        viewProjetadoReceita = findViewById(R.id.dashboard_projecao_receita);
 
         viewGraficoTextoVazio = findViewById(R.id.dashboard_grafico_mes_vazio);
 
@@ -368,10 +403,9 @@ public class DashboardActivity extends AppCompatActivity {
         buttonNovaDespesa.setOnClickListener(view -> {
             Intent intent = new Intent(DashboardActivity.this, NovaTransferenciaActivity.class);
 
-
             intent.putExtra("modo", "despesa");
 
-            startActivity(intent);
+            startActivityForResult(intent, CODIGO_TRANSFERENCIA);
         });
 
         buttonNovaReceita.setOnClickListener(view -> {
@@ -379,18 +413,15 @@ public class DashboardActivity extends AppCompatActivity {
 
             intent.putExtra("modo", "receita");
 
-            startActivity(intent);
-
+            startActivityForResult(intent, CODIGO_TRANSFERENCIA);
         });
 
         buttonFavoritos.setOnClickListener(view ->
                 startActivity(new Intent(DashboardActivity.this, TransferenciaFavoritasActivity.class))
         );
 
-        Type tipoArrayCategorias = new TypeToken<List<Categoria>>() {
-        }.getType();
-
-
+        Type tipoArrayCategorias = new TypeToken<List<Categoria>>() {}.getType();
+        Type tipoArrayTransferencia = new TypeToken<List<Transferencia>>() {}.getType();
 
         API.get().getDashboardInfo(token, CALENDARIO.get(Calendar.YEAR), CALENDARIO.get(Calendar.MONTH) + 1).enqueue(new Callback<String>() {
             @Override
@@ -399,6 +430,9 @@ public class DashboardActivity extends AppCompatActivity {
                 JsonArray json = JsonParser.parseString(response.body()).getAsJsonArray();
                 JsonObject valores = json.get(0).getAsJsonObject();
                 JsonObject categorias = json.get(1).getAsJsonObject();
+                JsonObject bruto = json.get(3).getAsJsonObject();
+
+
 
                 Categoria.DESPESAS = (GSON.fromJson(categorias.get("despesas"), tipoArrayCategorias));
                 Categoria.RECEITAS = (GSON.fromJson(categorias.get("receitas"), tipoArrayCategorias));
@@ -409,24 +443,25 @@ public class DashboardActivity extends AppCompatActivity {
                 saldoGeral = json.get(2).getAsBigDecimal();
                 receitaMensal = valores.get("receita").getAsBigDecimal();
                 despesaMensal = valores.get("despesa").getAsBigDecimal();
+                receitaMensalBruto = bruto.get("receita").getAsBigDecimal();
+                despesaMensalBruto = bruto.get("despesa").getAsBigDecimal();
 
                 finalizarEsperaTextoBotandoValor();
 
                 DashboardActivity.this.atualizarGrafico();
 
-                Log.d("teste", viewTextSaldoGeral.getParent().getClass().getName());
-
-//                Toast.makeText(DashboardActivity.this, "carregou", Toast.LENGTH_SHORT).show();
-
 
                 novoWebsocket();
+
+                runOnUiThread(() -> {
+                    recyclerViewListaFixa.setAdapter(new FixaAdapter(GSON.fromJson(json.get(4), tipoArrayTransferencia)));
+                });
 
 
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
                 throw new RuntimeException(t);
             }
 
@@ -465,6 +500,11 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void novoWebsocket(){
+        if(webSocket != null && websocketFuncionante){
+            webSocket.close(1000, null);
+            return;
+        }
+
         webSocket = OK_HTTP_CLIENT.newWebSocket(
                 new Request.Builder().url(API.WS_API_URL + "dashboard/" + token).build(),
                 new DashboardWebSocket()
@@ -476,11 +516,13 @@ public class DashboardActivity extends AppCompatActivity {
         @Override
         public void onOpen(@NonNull WebSocket webSocket, @NonNull okhttp3.Response response) {
             Log.d("teste", "abriu");
+            websocketFuncionante = true;
         }
 
         @Override
         public void onClosed(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
-            novoWebsocket();
+            websocketFuncionante = false;
+            findViewById(R.id.dashboard_websockets_caiu).setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -520,10 +562,115 @@ public class DashboardActivity extends AppCompatActivity {
 
         @Override
         public void onFailure(@NonNull WebSocket webSocket, @NonNull Throwable t, @Nullable okhttp3.Response response) {
-            //tenta reconectar
-            this.onClosed(webSocket, 48230947, "");
+            //tenta reconectar, na verdade nao
+            DashboardWebSocket.this.onClosed(
+                    webSocket,
+                    48230947,
+                    ""
+            );
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == CODIGO_TRANSFERENCIA){
+            if(resultCode == RESULT_OK){
+                if(!websocketFuncionante){
+                    this.atualizarValoresPrincipais();
+                }
+            }
         }
     }
 
 
+
+    private class FixaAdapter extends RecyclerView.Adapter<FixaAdapter.FixaViewHolder>{
+        List<Transferencia> fixas;
+
+        public FixaAdapter(List<Transferencia> fixas) {
+            super();
+            Log.d("teste", fixas.toString());
+            this.fixas = fixas;
+        }
+
+        @NonNull
+        @Override
+        public FixaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            Log.d("teste", "log");
+
+            return new FixaViewHolder(
+                    LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.item_container_graficos, parent, false)
+            );
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull FixaViewHolder holder, int position) {
+            Transferencia transferencia = fixas.get(position);
+
+            Log.d("teste", transferencia.toString());
+
+            holder.textViewIcone.setText(Categoria.para(transferencia.valor).stream().filter(c -> c.idCategoria == transferencia.categoria).findAny().get().icone);
+            holder.textViewValor.setText(
+                    String.format(BRASIL, "%s x %d = %s",
+                            FORMATADOR_MOEDA.format(transferencia.valor),
+                            transferencia.parcelas,
+                            FORMATADOR_MOEDA.format(transferencia.valor.multiply(new BigDecimal(transferencia.parcelas)))
+                    )
+            );
+
+            holder.textViewDescricao.setText(transferencia.descricao);
+            holder.viewCancelar.setOnClickListener(v -> {
+                new AlertDialog.Builder(DashboardActivity.this)
+                        .setMessage("Você tem certeza que deseja desfixar?")
+                        .setTitle("Desfixar")
+                        .setPositiveButton("Sim", (dialog, which) -> {
+                            try {
+
+                                Extra.rodar(() -> {
+                                    Log.d("teste",
+                                            API.get().desfixar(
+                                                    "{\"id\": " + transferencia.id + "}",
+                                                    DashboardActivity.token
+                                            ).execute().body()
+                                    );
+                                }).get();
+                            } catch (ExecutionException | InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                            fixas.remove(position);
+
+                            notifyItemRemoved(position);
+                            notifyItemRangeChanged(position, fixas.size());
+                        })
+                        .setNegativeButton("Não", (dialog, which) -> {
+                            dialog.dismiss();
+                        }).create().show();
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return fixas.size();
+        }
+
+        private class FixaViewHolder extends RecyclerView.ViewHolder{
+            public TextView textViewIcone;
+            public TextView textViewValor;
+            public TextView textViewDescricao;
+            public View viewCancelar;
+
+            public FixaViewHolder(@NonNull View itemView) {
+                super(itemView);
+
+                textViewIcone = itemView.findViewById(R.id.item_fixa_icone);
+                textViewValor = itemView.findViewById(R.id.item_fixa_valor);
+                textViewDescricao = itemView.findViewById(R.id.item_fixa_descricao);
+                viewCancelar = itemView.findViewById(R.id.item_fixa_cancelar);
+            }
+        }
+    }
 }

@@ -4,6 +4,7 @@ package com.example.royalapp.remote;
 
 ///13  requisicao , como vai ser feita , onde os dados vao estar
 
+import com.example.royalapp.activity.PerfilUsuarioActivity;
 import com.example.royalapp.model.Transferencia;
 import com.example.royalapp.model.TransferenciaExtrato;
 import com.example.royalapp.remote.request.Cadastro;
@@ -38,7 +39,7 @@ public interface API {
     public static OkHttpClient OK_HTTP_CLIENT = new OkHttpClient.Builder()
             .readTimeout(10,TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS).build();
-    String API_URL = "https://tomcat.studiotr.io/royal/";
+    String API_URL = "https://tomcat.studiotr.io/royalapi/";
     String WS_API_URL = "ws" + API_URL.substring(4);
     Retrofit INTERNAL_RETROFIT = new Retrofit.Builder()
             .client(OK_HTTP_CLIENT)
@@ -56,8 +57,8 @@ public interface API {
 
 
 
-    @GET("data/saldo/categorias/saldo-geral") Call<String> getDashboardInfo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
-    @GET("data/saldo/saldo-geral") Call<String> getSaldo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
+    @GET("data/saldo/categorias/saldo-geral/bruto/fixa") Call<String> getDashboardInfo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
+    @GET("data/saldo/saldo-geral/bruto") Call<String> getSaldo(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("data/extrato-mes") Call<List<TransferenciaExtrato>> getExtratos(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("grafico/{tipo}") Call<String> graficoMensal(@Path("tipo") String tipo, @Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
     @GET("data/favorito") Call<List<Transferencia>> getFavorito(@Query("k") String token, @Query("ano") int ano, @Query("mes") int mes);
@@ -72,9 +73,9 @@ public interface API {
     @POST("resetar") Call<Resultado> addCodigo(@Body Codigo codigo);
     @POST("resetar") Call<Resultado> addSenhaNova(@Body SenhaNova senhaNova);
     @POST("autologin") Call<String> autoLogin(@Body String body);
-    @POST("data/perfil") Call<Resultado> novaSenha(@Body NovaSenhaPerfil novaSenhaPerfil , @Query("k") String token);
+    @POST("data/desfixar") Call<String> desfixar(@Body String body, @Query("k") String token);
 
-
-
-
+    @POST("data/perfil") Call<Resultado> setPerfil(@Body PerfilUsuarioActivity.NomeDuasEtapasFoto perfil , @Query("k") String token);
+    @POST("data/senha") Call<Resultado> novaSenha(@Body NovaSenhaPerfil novaSenhaPerfil , @Query("k") String token);
+    @POST("transferencia") Call<Resultado> transferencia(@Body String transf , @Query("k") String token);
 }

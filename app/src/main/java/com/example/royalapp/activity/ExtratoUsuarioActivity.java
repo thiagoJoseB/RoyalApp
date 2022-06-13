@@ -235,7 +235,6 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
 
         }
 
-        ////15
         @NonNull
         @Override
         public ExtratoAdapter.ExtratoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

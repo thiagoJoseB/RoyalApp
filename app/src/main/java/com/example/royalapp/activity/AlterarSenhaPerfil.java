@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.royalapp.R;
 import com.example.royalapp.remote.API;
+import com.example.royalapp.remote.Status;
 import com.example.royalapp.remote.request.NovaSenhaPerfil;
 import com.example.royalapp.remote.response.Resultado;
 
@@ -91,26 +92,17 @@ public class AlterarSenhaPerfil extends AppCompatActivity {
         call.enqueue(new Callback<Resultado>() {
             @Override
             public void onResponse(Call<Resultado> call, Response<Resultado> response) {
-                    Log.d("codigo", "" + response.code());
-
-                if (response.isSuccessful()){
-                    System.out.println("testtetste");
-
-                    Toast.makeText(AlterarSenhaPerfil.this,
-                            "Senha alterarda com sucesso",Toast.LENGTH_LONG).show();
-
-                } else {
-                    Toast.makeText(AlterarSenhaPerfil.this, "Login ou senha incorretos", Toast.LENGTH_LONG).show();
-                }
-
-
+                    if(response.body().status == Status.OK.codigo){
+                        Toast.makeText(AlterarSenhaPerfil.this,
+                                "Senha alterarda com sucesso",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(AlterarSenhaPerfil.this, "Login ou senha incorretos", Toast.LENGTH_LONG).show();
+                    }
             }
 
             @Override
             public void onFailure(Call<Resultado> call, Throwable t) {
-
-                Log.d("API-ERRO",t.getMessage());
-
+                throw new RuntimeException(t);
             }
         });
     }

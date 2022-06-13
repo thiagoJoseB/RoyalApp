@@ -50,6 +50,6 @@ public interface Imagem {
         return INTERNAL_RETROFIT.create(Imagem.class);
     }
 
-    @GET("upload/{imagem}") Call<ResponseBody> imagem(@Query("k") String token, @Path("imagem") String imagem);
+    @GET("upload/{imagem}") Call<ResponseBody> imagem(@Path("imagem") String imagem, @Query("k") String token);
     @PUT("upload") Call<String> enviaFoto(@Query("k") String token, @Body RequestBody corpoComInputStream );
 }

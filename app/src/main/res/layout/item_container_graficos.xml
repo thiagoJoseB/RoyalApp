@@ -3,17 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="8dp">
 
 
     <TextView
 
-        android:id="@+id/imgCategoria"
+        android:id="@+id/item_fixa_icone"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:background="@drawable/ic_person_24"
+        android:gravity="center"
+        android:fontFamily="@font/material_icons"
+        android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,23 +24,33 @@
 
     <TextView
 
-        android:id="@+id/txtnomeCategoria"
+        android:id="@+id/item_fixa_descricao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Categoria"
+        android:text="a"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imgCategoria"
+        app:layout_constraintStart_toEndOf="@+id/item_fixa_icone"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="8dp"/>
 
     <TextView
 
-        android:id="@+id/textPreco"
+        android:layout_marginRight="16dp"
+        android:id="@+id/item_fixa_valor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="R$123,00"
         android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/item_fixa_cancelar"
+        app:layout_constraintEnd_toStartOf="@+id/item_fixa_cancelar"
+        app:layout_constraintTop_toTopOf="@+id/item_fixa_cancelar" />
+
+    <ImageView
+        android:id="@+id/item_fixa_cancelar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/apagar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

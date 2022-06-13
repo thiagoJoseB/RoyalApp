@@ -2,6 +2,7 @@ package com.example.royalapp.activity;
 
 import static com.example.royalapp.Utilidades.FORMATADOR_DIA;
 import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
+import static com.example.royalapp.Utilidades.GSON;
 import static com.example.royalapp.Utilidades.PATTERN_DINHEIRO_BR;
 import static com.example.royalapp.activity.InicioActivity.dormir;
 
@@ -42,6 +43,7 @@ import android.widget.TextView;
 
 import com.example.royalapp.Extra;
 import com.example.royalapp.R;
+import com.example.royalapp.Utilidades;
 import com.example.royalapp.model.Categoria;
 import com.example.royalapp.remote.API;
 import com.example.royalapp.remote.Imagem;
@@ -77,7 +79,6 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     private TextView textTitulo;
     private TextView textData;
     private Spinner spinnerCategorias;
-    private View buttonGravar;
 
 
     private EditText inputObservacao;
@@ -124,6 +125,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nova_transferencia);
+        this.setResult(RESULT_CANCELED);
 
         instanciadores();
 
@@ -262,8 +264,10 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
             json.put("parcelada", repetida);
             json.put("idCategoria", categorias.stream().filter(categoria -> valorSpinner.equals(categoria.nome)).findAny().get().idCategoria);
 
-            DashboardActivity.webSocket.send(new GsonBuilder().serializeNulls().create().toJson(json));
 
+            API.get().transferencia(new GsonBuilder().serializeNulls().create().toJson(json), DashboardActivity.token).execute();
+
+            this.setResult(RESULT_OK);
             this.finish();
         });
 
@@ -422,8 +426,6 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
         spinnerCategorias = findViewById(R.id.nova_transferencia_spinner_categorias);
 
-        buttonGravar = findViewById(R.id.nova_transferencia_gravar);
-
         fixaCheckbox = findViewById(R.id.nova_transferencia_check_transferencia);
     }
 
@@ -449,7 +451,7 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
                         }
                     })
-                    .setItems(new String[]{"Escolher da galeria", "Usar a câmera", "Cancelar"}, null).create();
+                    .setItems(new String[]{"Escolher da galeria", "Usar a câmera", "Voltar"}, null).create();
 
             dialogoSeletorImagem.getListView().setOnItemClickListener((dialog, view, index, id) -> {
                 switch (index){

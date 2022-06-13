@@ -265,8 +265,8 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
                 } else {
                     txtPreco.setText(FORMATADOR_MOEDA.format(itemFavorito.valor));
                 }
-                txtData.setText(itemFavorito.data);
 
+                txtData.setText(itemFavorito.data);
                 Categoria categoria = null;
 
 
