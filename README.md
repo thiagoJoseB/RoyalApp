@@ -36,8 +36,8 @@ Algumas funcionalidades disponíveis no sistema:
 
 # Projetos relacionados 
 
- + <h1 href="https://github.com/Thiago9x/Projeto-Financias-TCC">Front end</h1>
- + <h1 href="https://github.com/1chard/royal">Back end</h1>
+ + back end 
+ + Front end 
 
 # Uso 
 
@@ -45,9 +45,8 @@ Para a construção do projeto, é necessário o uso do Retrofit, que é uma bib
 
 # Linguagens e bibliotecas
 
-+ #java: linguagem de programação usada para desenvolver o mobile
-+ #Retrofit: Para fazer os Http Requests
-+ #MPAndroidChart: Contruir gráficos 
++ java: linguagem de programação usada para desenvolver o mobile
++ MPAndroidChart: Construir gráficos 
 
 # Licença 
 
