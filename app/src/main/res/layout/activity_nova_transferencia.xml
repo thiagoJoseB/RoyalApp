@@ -7,9 +7,11 @@
     android:layout_height="wrap_content"
     tools:context=".activity.NovaTransferenciaActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:padding="16dp">
 
         <TextView
@@ -18,13 +20,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:text="Nova  Receita"
+            android:text=""
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="vertical"
@@ -126,7 +128,7 @@
 
         <LinearLayout
             android:id="@+id/linearLayout4"
-            android:layout_width="284dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
 
@@ -142,7 +144,6 @@
                 android:id="@+id/btnRepeticao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
                 android:background="@drawable/botoes_transferencia2"
                 android:padding="7dp"
                 app:layout_constraintStart_toStartOf="parent">
@@ -223,7 +224,7 @@
 
 
         <LinearLayout
-            android:id="@+id/Repeticao"
+            android:id="@+id/nova_transferencia_campo_repeticao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="17dp"
@@ -231,7 +232,7 @@
             android:orientation="vertical"
             android:padding="8dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/Observacao"
+            app:layout_constraintBottom_toTopOf="@+id/nova_transferencia_campo_observacao"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
@@ -307,14 +308,19 @@
             </LinearLayout>
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
+
+
+
+
+            <CheckBox
+                android:id="@+id/nova_transferencia_check_transferencia"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="17dp"
-                android:orientation="vertical"/>
-
-
-
+                android:text="É uma transferência fixa"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:layout_marginBottom="8dp"
+                />
 
                 <TextView
 
@@ -324,7 +330,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="Serão lançadas 3 parcelas de " />
+                    android:text="" />
 
 
 
@@ -335,7 +341,7 @@
 
         <LinearLayout
 
-            android:id="@+id/Observacao"
+            android:id="@+id/nova_transferencia_campo_observacao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="17dp"
@@ -344,7 +350,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Repeticao">
+            app:layout_constraintTop_toBottomOf="@+id/nova_transferencia_campo_repeticao">
 
             <TextView
                 style="@style/TextAppearance.MaterialComponents.Headline6"
@@ -374,9 +380,8 @@
 
         </LinearLayout>
 
-
         <LinearLayout
-            android:id="@+id/Anexo"
+            android:id="@+id/nova_transferencia_campo_anexo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -384,7 +389,7 @@
             android:visibility="gone"
             android:onClick="buscarArquivo"
 
-            app:layout_constraintTop_toBottomOf="@+id/Observacao">
+            app:layout_constraintTop_toBottomOf="@+id/nova_transferencia_campo_observacao">
 
                 <TextView
                     style="@style/TextAppearance.MaterialComponents.Headline6"
@@ -409,40 +414,34 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayout3"
+        <RelativeLayout
+            android:id="@+id/nova_transferencia_gravar"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Anexo">
+            android:onClick="gravar"
+            app:layout_constraintTop_toBottomOf="@+id/nova_transferencia_campo_anexo">
 
 
-            <View
-                android:id="@+id/nova_transferencia_gravar"
+            <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-
-                android:background="@drawable/botoes_tranferencia_verificado"
                 android:gravity="center"
-                android:textSize="12dp"
+                android:src="@drawable/botoes_tranferencia_verificado"
 
                 />
 
-
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/vector"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayout3"
-            app:layout_constraintStart_toStartOf="@+id/linearLayout3"
-            app:layout_constraintTop_toTopOf="@+id/linearLayout3" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/vector" />
+        </RelativeLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 </ScrollView>

@@ -297,6 +297,8 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
 
                                 if (IMAGENS.containsKey(transferencia.id)) { // tem o backup?, sim?, backup poderia ser do linear layout tmb
                                     imageView.setImageBitmap(IMAGENS.get(transferencia.id));
+
+                                    viewCarregando.setVisibility(View.GONE);
                                 } else { // pega o novo
                                     API.get().imagem(transferencia.anexo, DashboardActivity.token).enqueue(new Callback<ResponseBody>() {
                                         @Override
@@ -331,23 +333,45 @@ public class ExtratoUsuarioActivity extends AppCompatActivity {
                             layout.addView(label("Data", ExtratoUsuarioActivity.this));
                             layout.addView(texto(Utilidades.FORMATADOR_DIA_LONGO.format(java.sql.Date.valueOf(transferenciaExtrato.data)), ExtratoUsuarioActivity.this));
 
-                            if (transferencia.observacao != null) {
+                            if (transferencia.observacao != null && !transferencia.observacao.isEmpty()) {
                                 layout.addView(label("Observação", ExtratoUsuarioActivity.this));
                                 layout.addView(texto(transferencia.observacao, ExtratoUsuarioActivity.this));
                             }
 
 
                             if (transferenciaExtrato.indice != null) {
-                                layout.addView(label("Parcelada", ExtratoUsuarioActivity.this));
-                                layout.addView(texto("Sim", ExtratoUsuarioActivity.this));
+                                if(transferencia.fixa){
+                                    layout.addView(label("Parcelada", ExtratoUsuarioActivity.this));
+                                    layout.addView(texto("Não", ExtratoUsuarioActivity.this));
 
-                                layout.addView(label("Parcela", ExtratoUsuarioActivity.this));
-                                layout.addView(texto((transferenciaExtrato.indice + 1) + " de " + transferencia.parcelas + " parcelas", ExtratoUsuarioActivity.this));
+                                    layout.addView(label("Fixa", ExtratoUsuarioActivity.this));
+                                    layout.addView(texto("Sim", ExtratoUsuarioActivity.this));
 
-                                layout.addView(label("Frequencia", ExtratoUsuarioActivity.this));
-                                layout.addView(texto(transferencia.nomeFrequencia.toString(), ExtratoUsuarioActivity.this));
+                                    layout.addView(label("Parcela", ExtratoUsuarioActivity.this));
+                                    layout.addView(texto((transferenciaExtrato.indice + 1) + " de " + transferencia.parcelas + " parcelas", ExtratoUsuarioActivity.this));
+
+                                    layout.addView(label("Frequencia", ExtratoUsuarioActivity.this));
+                                    layout.addView(texto(transferencia.nomeFrequencia.toString(), ExtratoUsuarioActivity.this));
+
+                                } else {
+
+                                    layout.addView(label("Parcelada", ExtratoUsuarioActivity.this));
+                                    layout.addView(texto("Sim", ExtratoUsuarioActivity.this));
+
+                                    layout.addView(label("Parcela", ExtratoUsuarioActivity.this));
+                                    layout.addView(texto((transferenciaExtrato.indice + 1) + " de " + transferencia.parcelas + " parcelas", ExtratoUsuarioActivity.this));
+
+                                    layout.addView(label("Frequencia", ExtratoUsuarioActivity.this));
+                                    layout.addView(texto(transferencia.nomeFrequencia.toString(), ExtratoUsuarioActivity.this));
+
+                                    layout.addView(label("Fixa", ExtratoUsuarioActivity.this));
+                                    layout.addView(texto("Não", ExtratoUsuarioActivity.this));
+                                }
                             } else {
                                 layout.addView(label("Parcelada", ExtratoUsuarioActivity.this));
+                                layout.addView(texto("Não", ExtratoUsuarioActivity.this));
+
+                                layout.addView(label("Fixa", ExtratoUsuarioActivity.this));
                                 layout.addView(texto("Não", ExtratoUsuarioActivity.this));
                             }
 

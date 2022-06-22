@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,7 +39,6 @@ import com.example.royalapp.model.Categoria;
 import com.example.royalapp.remote.API;
 import com.google.gson.GsonBuilder;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -74,10 +74,6 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
     private TextView textInfoParcelas;
 
-    ViewGroup repeticao;
-    TextView repeticao1;
-
-
     LinearLayout btnRepeticao;
     LinearLayout btnObservacao;
     LinearLayout btnAnexo;
@@ -97,6 +93,8 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
     Drawable drawableBotaoPrivilegiado;
     Drawable drawableBotaoNegao;
 
+    CheckBox fixaCheckbox;
+
     boolean repetida = false;
     boolean observacao = false;
     boolean anexo = false;
@@ -104,10 +102,180 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
     Uri anexoUri = null;
 
-    public void mostrarData(View v) {
 
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_nova_transferencia);
+
+        instanciadores();
+
+        btnRepeticao.setOnClickListener(view -> alteraRepeticao());
+        btnObservacao.setOnClickListener(view -> alteraObservacao());
+        btnAnexo.setOnClickListener(view -> alteraAnexo());
+        btnFavorito.setOnClickListener(view -> alteraFavorito());
+
+        inputParcelas.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                if(charSequence.length() > 0 && charSequence.charAt(0) == '0'){
+                inputParcelas.setText("");
+                }else {
+                    calcularParcelas(charSequence.toString(), spinnerFrequenciaRepeticao.getSelectedItemPosition());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
+        spinnerFrequenciaRepeticao.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                calcularParcelas(inputParcelas.getText().toString(),i);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+        //Centralizar texto da toolbar
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        modo = this.getIntent().getStringExtra("modo");
+        categorias = modo.equals("despesa") ? Categoria.DESPESAS : Categoria.RECEITAS;
+
+        fixaCheckbox.setOnClickListener(v -> {
+            inputParcelas.setEnabled(!fixaCheckbox.isChecked());
+
+            calcularParcelas(inputParcelas.getText().toString(), spinnerFrequenciaRepeticao.getSelectedItemPosition());
+        });
+
+        inputValor.addTextChangedListener(new TextWatcher() {
+            int cursor = 0;
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                cursor = inputValor.getSelectionEnd();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                inputValor.removeTextChangedListener(this);
+
+                String formatted = FORMATADOR_MOEDA.format(parsearCaixaDeTexto(PATTERN_DINHEIRO_BR.matcher(charSequence).replaceAll("")));
+
+                inputValor.setText(formatted);
+                inputValor.setSelection(Math.min(cursor, formatted.length()));
+                inputValor.addTextChangedListener(this);
+
+                calcularParcelas(inputParcelas.getText().toString(), spinnerFrequenciaRepeticao.getSelectedItemPosition());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
+
+        textTitulo.setText("Nova " + modo);
+
+        textData = findViewById(R.id.nova_transferencia_data);
+        textData.setText(FORMATADOR_DIA.format(calendario.getTime()));
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, categorias.stream().map(c -> c.nome).collect(Collectors.toList()));
+        spinnerCategorias.setAdapter(adapter);
+    }
+
+    public void gravar(View v){
+        String valorSpinner = spinnerCategorias.getSelectedItem().toString();
+        boolean fixa = fixaCheckbox.isChecked();
+
+        new Thread(() -> {
+            Map<String, Object> json = new HashMap<>();
+
+            final String anexo;
+
+            if(anexoUri != null){
+                try {
+                    InputStream inputStream = this.getContentResolver().openInputStream(anexoUri);
+
+                    byte[] buf = new byte[inputStream.available()];
+                    while (inputStream.read(buf) != -1);
+
+                    anexo = API.get().enviaFoto(DashboardActivity.token, RequestBody.create(buf)).execute().body();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                anexo = null;
+            }
+
+            json.put("metodo", modo);
+            json.put("arg", "inserir");
+            json.put("valor", parsearCaixaDeTexto(inputValor.getText().toString()));
+            json.put("data", new java.sql.Date(calendario.getTime().getTime()).toString());
+            json.put("descricao", inputDescricao.getText().toString());
+            json.put("favorito", favorita);
+            json.put("fixa", fixa);
+            json.put("anexo", anexo);
+            json.put("totalParcelas", repetida ^ fixa ? Integer.parseInt(inputParcelas.getText().toString()) : null);
+            json.put("frequencia", repetida ? TIPO_TRANSFERENCIAS[spinnerFrequenciaRepeticao.getSelectedItemPosition()] : null);
+            json.put("observacao", observacao ? inputObservacao.getText().toString() : null);
+            json.put("parcelada", repetida ^ fixa);
+            json.put("idCategoria", categorias.stream().filter(categoria -> valorSpinner.equals(categoria.nome)).findAny().get().idCategoria);
+
+            DashboardActivity.webSocket.send(new GsonBuilder().serializeNulls().create().toJson(json));
+        }).start();
+
+
+
+
+        this.finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 69){
+
+            if(resultCode == RESULT_OK) {
+
+                anexoUri = data.getData();
+
+                Cursor c = getContentResolver().query(anexoUri, null, null, null, null);
+                c.moveToFirst();
+                String nome = c.getString(c.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME));
+                c.close();
+
+                textAnexoNome.setText(nome);
+                textAnexoNome.setTypeface(null, Typeface.BOLD);
+            } else {
+                anexoUri = null;
+
+                textAnexoNome.setText("Nenhum arquivo selecionado.");
+                textAnexoNome.setTypeface(null, Typeface.NORMAL);
+            }
+        }
+    }
+
+    public void mostrarData(View v) {
         DialogFragment newFragment = new DatePickerFragment(calendario, () -> {
             textData.setText(FORMATADOR_DIA.format(calendario.getTime()));
+            calcularParcelas(inputParcelas.getText().toString(), spinnerFrequenciaRepeticao.getSelectedItemPosition());
         });
 
         newFragment.show(getSupportFragmentManager(), "datePicker");
@@ -178,31 +346,18 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
 
     }
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nova_transferencia);
-
-//                 btnRepeticao = (TextView) findViewById(R.id.btnRepeticao);
-
-
-        this.findViewById(R.id.Repeticao);
-        this.findViewById(R.id.Observacao);
-        this.findViewById(R.id.Anexo);
+    private void instanciadores(){
 
         btnRepeticao = this.findViewById(R.id.btnRepeticao);
         btnObservacao = this.findViewById(R.id.btnObservacao);
         btnAnexo = this.findViewById(R.id.btnAnexo);
         btnFavorito = this.findViewById(R.id.btnFavorito);
 
-        viewRepeticao = NovaTransferenciaActivity.this.findViewById(R.id.Repeticao);
-        viewObservacao = NovaTransferenciaActivity.this.findViewById(R.id.Observacao);
-        viewAnexo = NovaTransferenciaActivity.this.findViewById(R.id.Anexo);
+        viewRepeticao = this.findViewById(R.id.nova_transferencia_campo_repeticao);
+        viewObservacao = this.findViewById(R.id.nova_transferencia_campo_observacao);
+        viewAnexo = this.findViewById(R.id.nova_transferencia_campo_anexo);
 
-
-        textAnexoNome = NovaTransferenciaActivity.this.findViewById(R.id.nova_transferencia_anexo_nome);
-
+        textAnexoNome = this.findViewById(R.id.nova_transferencia_anexo_nome);
 
         imageBotaoRepeticao = this.findViewById(R.id.nova_transferencia_image_repeticao);
         imageBotaoObservacao = this.findViewById(R.id.nova_transferencia_image_observacao);
@@ -212,185 +367,23 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         drawableBotaoPrivilegiado = this.getDrawable(R.drawable.botoes_transferencia2);
         drawableBotaoNegao = this.getDrawable(R.drawable.botoes_transferencia);
 
-
-        btnRepeticao.setOnClickListener(view -> alteraRepeticao());
-
-        btnObservacao.setOnClickListener(view -> alteraObservacao());
-        btnAnexo.setOnClickListener(view -> alteraAnexo());
-        btnFavorito.setOnClickListener(view -> alteraFavorito());
-
-
         inputObservacao = findViewById(R.id.nova_transferencia_observacao);
 
         spinnerFrequenciaRepeticao = findViewById(R.id.nova_transferencia_spinner_frequencia_repeticao);
         inputParcelas = findViewById(R.id.nova_transferencia_parcelas);
         textInfoParcelas = findViewById(R.id.nova_transferencia_texto_informacao);
 
-
-
-        inputParcelas.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                if(charSequence.length() > 0 && charSequence.charAt(0) == '0'){
-                inputParcelas.setText("");
-                }else {
-                    calcularParcelas(charSequence.toString(), spinnerFrequenciaRepeticao.getSelectedItemPosition());
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-
-        spinnerFrequenciaRepeticao.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                calcularParcelas(inputParcelas.getText().toString(),i);
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-
-        //Centralizar texto da toolbar
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        modo = this.getIntent().getStringExtra("modo");
-        categorias = modo.equals("despesa") ? Categoria.DESPESAS : Categoria.RECEITAS;
-
-
-        Log.d("teste", categorias.toString());
-
         inputValor = findViewById(R.id.nova_transferencia_valor);
-
-        inputValor.addTextChangedListener(new TextWatcher() {
-            int cursor = 0;
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                cursor = inputValor.getSelectionEnd();
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                inputValor.removeTextChangedListener(this);
-
-                String formatted = FORMATADOR_MOEDA.format(parsearCaixaDeTexto(PATTERN_DINHEIRO_BR.matcher(charSequence).replaceAll("")));
-
-                inputValor.setText(formatted);
-                inputValor.setSelection(Math.min(cursor, formatted.length()));
-                inputValor.addTextChangedListener(this);
-
-                calcularParcelas(inputParcelas.getText().toString(), spinnerFrequenciaRepeticao.getSelectedItemPosition());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
 
         inputDescricao = findViewById(R.id.nova_transferencia_descricao);
 
         textTitulo = findViewById(R.id.nova_transferencia_titulo);
-        textTitulo.setText("Nova " + modo);
-
-        textData = findViewById(R.id.nova_transferencia_data);
-        textData.setText(FORMATADOR_DIA.format(calendario.getTime()));
 
         spinnerCategorias = findViewById(R.id.nova_transferencia_spinner_categorias);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, categorias.stream().map(c -> c.nome).collect(Collectors.toList()));
-        spinnerCategorias.setAdapter(adapter);
-
         buttonGravar = findViewById(R.id.nova_transferencia_gravar);
-        buttonGravar.setOnClickListener(view -> {
-            String valorSpinner = spinnerCategorias.getSelectedItem().toString();
 
-//            metodo: transferencia, arg: 'inserir', valor: valor, data: data, descricao: descricao, favorito: favoritado, fixa: parcelaFixa,
-//                    inicioRepeticao: dataInicio.value !== '' ? dataInicio.value : null, totalParcelas: (repetido && duracao.value ? parseInt(duracao.value) : null),
-//                    frequencia: dataFR.value !== '' ? dataFR.value : null, observacao: observacao, idCategoria: idCategoria, parcelada: repetido
-
-            new Thread(() -> {
-                Map<String, Object> json = new HashMap<>();
-
-                final String anexo;
-
-                if(anexoUri != null){
-                    try {
-                        InputStream inputStream = this.getContentResolver().openInputStream(anexoUri);
-
-                        byte[] buf = new byte[inputStream.available()];
-                        while (inputStream.read(buf) != -1);
-
-                        anexo = API.get().enviaFoto(DashboardActivity.token, RequestBody.create(buf)).execute().body();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                } else {
-                    anexo = null;
-                }
-
-                json.put("metodo", modo);
-                json.put("arg", "inserir");
-                json.put("valor", parsearCaixaDeTexto(inputValor.getText().toString()).doubleValue());
-                json.put("data", new java.sql.Date(calendario.getTime().getTime()).toString());
-                json.put("descricao", inputDescricao.getText().toString());
-                json.put("favorito", favorita);
-                json.put("fixa", false);
-                json.put("anexo", anexo);
-                json.put("totalParcelas", repetida ? Integer.parseInt(inputParcelas.getText().toString()) : null);
-                json.put("frequencia", repetida ? TIPO_TRANSFERENCIAS[spinnerFrequenciaRepeticao.getSelectedItemPosition()] : null);
-                json.put("observacao", observacao ? inputObservacao.getText().toString() : null);
-                json.put("parcelada", repetida);
-                json.put("idCategoria", categorias.stream().filter(categoria -> valorSpinner.equals(categoria.nome)).findAny().get().idCategoria);
-
-                DashboardActivity.webSocket.send(new GsonBuilder().serializeNulls().create().toJson(json));
-            }).start();
-
-
-
-
-            this.finish();
-        });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == 69){
-
-            if(resultCode == RESULT_OK) {
-
-                anexoUri = data.getData();
-
-
-//            MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri).ge
-
-                Cursor c = getContentResolver().query(anexoUri, null, null, null, null);
-                c.moveToFirst();
-                String nome = c.getString(c.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME));
-                c.close();
-
-                textAnexoNome.setText(nome);
-                textAnexoNome.setTypeface(null, Typeface.BOLD);
-            } else {
-                anexoUri = null;
-
-                textAnexoNome.setText("Nenhum arquivo selecionado.");
-                textAnexoNome.setTypeface(null, Typeface.NORMAL);
-            }
-        }
+        fixaCheckbox = findViewById(R.id.nova_transferencia_check_transferencia);
     }
 
     public void buscarArquivo(View v){
@@ -401,61 +394,66 @@ public class NovaTransferenciaActivity extends AppCompatActivity {
         startActivityForResult(i, 69);
     }
 
-    public void calcularParcelas(String parcelas, int indiceFrequencia){
-        if(parcelas.isEmpty()) {
-            textInfoParcelas.setText("Insira o valor da parcela");
+    public void calcularParcelas(@NonNull String parcelas, int indiceFrequencia){
+        if(fixaCheckbox.isChecked()){
+            textInfoParcelas.setText("Serão criadas várias parcelas a partir do dia " + FORMATADOR_DIA.format(calendario.getTime()));
         } else {
-            String frequencia = TIPO_TRANSFERENCIAS[indiceFrequencia];
-            int parsa = Integer.parseInt(parcelas);
-            Calendar calendar = Calendar.getInstance();
 
-            switch (frequencia){
-                case "DIAS":
-                calendar.add(Calendar.DAY_OF_MONTH, parsa - 1);
-                break;
-
-                case "SEMANAS":
-                    calendar.add(Calendar.WEEK_OF_YEAR, parsa);
-                    break;
-                case "QUINZENAS":
-                    calendar.add(Calendar.DAY_OF_MONTH, (parsa - 1) * 15);
-                    break;
-                    case "MESES":
-                    calendar.add(Calendar.MONTH, (parsa - 1));
-                    break;
-                case "BIMESTRES":
-                    calendar.add(Calendar.MONTH, (parsa - 1) * 2);
-                    break;
-                case "TRIMESTRES":
-                    calendar.add(Calendar.MONTH, (parsa - 1) * 3);
-                    break;
-                case "SEMESTRES":
-                    calendar.add(Calendar.MONTH, (parsa - 1) * 6);
-                    break;
-                case "ANOS":
-                    calendar.add(Calendar.YEAR, (parsa - 1));
-                    break;
-
-            }
-
-            BigDecimal[] resuntado =
-                    parsearCaixaDeTexto(inputValor.getText().toString()).multiply(CEM).divideAndRemainder(new BigDecimal(parsa));
-
-            resuntado[1] = resuntado[1].setScale(0);
-            resuntado[0] = resuntado[0].divide(CEM, 2, RoundingMode.DOWN);
-
-            String mensagem;
-
-            Log.d("teste", Arrays.toString(resuntado));
-
-            if(resuntado[1].equals(BigDecimal.ZERO)){
-                mensagem = parcelas + " parcelas de " + FORMATADOR_MOEDA.format(resuntado[0]) + " cada";
+            if (parcelas.isEmpty()) {
+                textInfoParcelas.setText("Insira o valor da parcela");
             } else {
-                mensagem = resuntado[1] + " parcelas de " + FORMATADOR_MOEDA.format(resuntado[0].add(new BigDecimal("0.01"))) + " e " + new BigDecimal(parsa).subtract(resuntado[1]) + " parcelas de " + FORMATADOR_MOEDA.format(resuntado[0]);
+                String frequencia = TIPO_TRANSFERENCIAS[indiceFrequencia];
+                int parsa = Integer.parseInt(parcelas);
+                Calendar calendar = (Calendar) calendario.clone();
+
+                switch (frequencia) {
+                    case "DIAS":
+                        calendar.add(Calendar.DAY_OF_MONTH, parsa - 1);
+                        break;
+
+                    case "SEMANAS":
+                        calendar.add(Calendar.WEEK_OF_YEAR, parsa - 1);
+                        break;
+                    case "QUINZENAS":
+                        calendar.add(Calendar.DAY_OF_MONTH, (parsa - 1) * 15);
+                        break;
+                    case "MESES":
+                        calendar.add(Calendar.MONTH, (parsa - 1));
+                        break;
+                    case "BIMESTRES":
+                        calendar.add(Calendar.MONTH, (parsa - 1) * 2);
+                        break;
+                    case "TRIMESTRES":
+                        calendar.add(Calendar.MONTH, (parsa - 1) * 3);
+                        break;
+                    case "SEMESTRES":
+                        calendar.add(Calendar.MONTH, (parsa - 1) * 6);
+                        break;
+                    case "ANOS":
+                        calendar.add(Calendar.YEAR, (parsa - 1));
+                        break;
+
+                }
+
+                BigDecimal[] resuntado =
+                        parsearCaixaDeTexto(inputValor.getText().toString()).multiply(CEM).divideAndRemainder(new BigDecimal(parsa));
+
+                resuntado[1] = resuntado[1].setScale(0, RoundingMode.UNNECESSARY);
+                resuntado[0] = resuntado[0].divide(CEM, 2, RoundingMode.DOWN);
+
+                String mensagem;
+
+                Log.d("teste", Arrays.toString(resuntado));
+
+                if (resuntado[1].equals(BigDecimal.ZERO)) {
+                    mensagem = parcelas + " parcelas de " + FORMATADOR_MOEDA.format(resuntado[0]) + " cada";
+                } else {
+                    mensagem = resuntado[1] + " parcelas de " + FORMATADOR_MOEDA.format(resuntado[0].add(new BigDecimal("0.01"))) + " e " + new BigDecimal(parsa).subtract(resuntado[1]) + " parcelas de " + FORMATADOR_MOEDA.format(resuntado[0]);
+                }
+
+
+                textInfoParcelas.setText("Serão " + mensagem + " com final em " + FORMATADOR_DIA.format(calendar.getTime()));
             }
-
-
-            textInfoParcelas.setText("Serão " + mensagem + " com final em " + FORMATADOR_DIA.format(calendar.getTime()));
         }
     }
 

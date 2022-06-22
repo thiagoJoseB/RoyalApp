@@ -46,20 +46,18 @@
         <entry key="app/src/main/res/drawable/toolbar_redonda.xml" value="0.258" />
         <entry key="app/src/main/res/drawable/unchecked.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_alterar_senha.xml" value="0.375" />
-        <entry key="app/src/main/res/layout/activity_alterar_senha_perfil.xml" value="0.5911458333333334" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_extrato_usuario.xml" value="0.34312796208530805" />
         <entry key="app/src/main/res/layout/activity_feed_extratos.xml" value="0.35052083333333334" />
-        <entry key="app/src/main/res/layout/activity_grafico_categorias.xml" value="0.5820512820512821" />
-        <entry key="app/src/main/res/layout/activity_graficos.xml" value="0.42718446601941745" />
+        <entry key="app/src/main/res/layout/activity_grafico_categorias.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_graficos.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_inicio.xml" value="0.36770833333333336" />
         <entry key="app/src/main/res/layout/activity_insercao_email.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_inserir_codigo.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.15625" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.55" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5770833333333333" />
         <entry key="app/src/main/res/layout/activity_menu.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_mudar_senha_perfil.xml" value="0.24962178517397882" />
-        <entry key="app/src/main/res/layout/activity_nova_transferencia.xml" value="0.4446564885496183" />
+        <entry key="app/src/main/res/layout/activity_nova_transferencia.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_perfil_usuario.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_senha_confirmada.xml" value="0.11" />
         <entry key="app/src/main/res/layout/activity_telagraficos.xml" value="0.5820512820512821" />
@@ -75,6 +73,7 @@
         <entry key="app/src/main/res/layout/item_option_categoria.xml" value="0.5911458333333334" />
         <entry key="app/src/main/res/layout/layout_header.xml" value="0.5820512820512821" />
         <entry key="app/src/main/res/layout/layout_perfil_menu.xml" value="0.5820512820512821" />
+        <entry key="app/src/main/res/layout/lista_grafico.xml" value="0.18854166666666666" />
         <entry key="app/src/main/res/layout/style.xml" value="0.1" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.1" />
         <entry key="app/src/main/res/layout/toolbarApp.xml" value="0.4486711829077645" />

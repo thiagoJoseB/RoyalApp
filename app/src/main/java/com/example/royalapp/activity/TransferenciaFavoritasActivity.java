@@ -1,5 +1,6 @@
 package com.example.royalapp.activity;
 
+import static com.example.royalapp.Utilidades.BRASIL;
 import static com.example.royalapp.Utilidades.FORMATADOR_MOEDA;
 import static com.example.royalapp.Variaveis.IMAGENS;
 import static android.widget.LinearLayout.LayoutParams;
@@ -159,8 +160,19 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
                             viewCarregando.setVisibility(View.GONE);
                         }
 
+
                         layout.addView(label("Valor", TransferenciaFavoritasActivity.this));
-                        layout.addView(texto(FORMATADOR_MOEDA.format(itemFavorito.valor), TransferenciaFavoritasActivity.this));
+
+                        if(itemFavorito.fixa){
+                            layout.addView(texto(String.format(BRASIL, "%s x %d = %s",
+                                    FORMATADOR_MOEDA.format(itemFavorito.valor),
+                                    itemFavorito.parcelas,
+                                    FORMATADOR_MOEDA.format(itemFavorito.valor.multiply(new BigDecimal(itemFavorito.parcelas)))
+                            ), TransferenciaFavoritasActivity.this));
+                        } else {
+                            layout.addView(texto(FORMATADOR_MOEDA.format(itemFavorito.valor), TransferenciaFavoritasActivity.this));
+                        }
+
 
                         layout.addView(label("Descricao", TransferenciaFavoritasActivity.this));
                         layout.addView(texto(itemFavorito.descricao, TransferenciaFavoritasActivity.this));
@@ -174,16 +186,38 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
                         }
 
                         if (itemFavorito.parcelada) {
+                                layout.addView(label("Parcelada", TransferenciaFavoritasActivity.this));
+                                layout.addView(texto("Sim", TransferenciaFavoritasActivity.this));
+
+                                layout.addView(label("Parcelas", TransferenciaFavoritasActivity.this));
+                                layout.addView(texto(String.valueOf(itemFavorito.parcelas), TransferenciaFavoritasActivity.this));
+
+                                layout.addView(label("Frequencia", TransferenciaFavoritasActivity.this));
+                                layout.addView(texto(String.valueOf(itemFavorito.nomeFrequencia.toString()), TransferenciaFavoritasActivity.this));
+
+                                layout.addView(label("Fixa", TransferenciaFavoritasActivity.this));
+                                layout.addView(texto("Não", TransferenciaFavoritasActivity.this));
+
+
+
+                        } else if (itemFavorito.fixa) {
                             layout.addView(label("Parcelada", TransferenciaFavoritasActivity.this));
+                            layout.addView(texto("Não", TransferenciaFavoritasActivity.this));
+
+                            layout.addView(label("Fixa", TransferenciaFavoritasActivity.this));
                             layout.addView(texto("Sim", TransferenciaFavoritasActivity.this));
 
                             layout.addView(label("Parcelas", TransferenciaFavoritasActivity.this));
-                            layout.addView(texto(String.valueOf(itemFavorito.parcelas), TransferenciaFavoritasActivity.this));
+                            layout.addView(texto(String.valueOf(itemFavorito.parcelas) + ", atualmente.", TransferenciaFavoritasActivity.this));
 
                             layout.addView(label("Frequencia", TransferenciaFavoritasActivity.this));
-                            layout.addView(texto(String.valueOf(itemFavorito.nomeFrequencia.toString()), TransferenciaFavoritasActivity.this));
+                            layout.addView(texto(itemFavorito.nomeFrequencia.toString(), TransferenciaFavoritasActivity.this));
+
                         } else {
                             layout.addView(label("Parcelada", TransferenciaFavoritasActivity.this));
+                            layout.addView(texto("Não", TransferenciaFavoritasActivity.this));
+
+                            layout.addView(label("Fixa", TransferenciaFavoritasActivity.this));
                             layout.addView(texto("Não", TransferenciaFavoritasActivity.this));
                         }
 
@@ -223,7 +257,16 @@ public class TransferenciaFavoritasActivity extends AppCompatActivity {
 
             public void setTransferenciaFavorita(Transferencia itemFavorito) {
                 txtDescricao.setText(itemFavorito.descricao);
-                txtPreco.setText(FORMATADOR_MOEDA.format(itemFavorito.valor));
+
+                if(itemFavorito.fixa){
+                    txtPreco.setText(String.format(BRASIL, "%s x %d = %s",
+                            FORMATADOR_MOEDA.format(itemFavorito.valor),
+                            itemFavorito.parcelas,
+                            FORMATADOR_MOEDA.format(itemFavorito.valor.multiply(new BigDecimal(itemFavorito.parcelas)))
+                    ));
+                } else {
+                    txtPreco.setText(FORMATADOR_MOEDA.format(itemFavorito.valor));
+                }
                 txtData.setText(itemFavorito.data);
 
                 Categoria categoria = null;

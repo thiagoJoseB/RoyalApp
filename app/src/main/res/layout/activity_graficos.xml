@@ -204,7 +204,7 @@
                     android:text="Tipo da transferência"
                     style="@style/TextAppearance.Material3.LabelLarge"/>
 
-                <LinearLayout
+                <RadioGroup
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
@@ -213,137 +213,178 @@
                     >
 
 
-                    <CheckBox
-                        android:layout_width="20dp"
-                        android:layout_height="20dp" />
-                    <TextView
+                    <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
-                        android:layout_marginLeft="4dp"
-                        android:gravity="center"
-                        android:text="Despesa" />
+                        android:checked="true"
+                        android:text="Despesa"
+                        android:textColor="@color/graydark"
+                        />
 
-                </LinearLayout>
+                    <RadioButton
+                        android:layout_marginLeft="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:checked="false"
+                        android:text="Receita"
+                        android:textColor="@color/graydark"/>
+
+                </RadioGroup>
 
             </LinearLayout>
 
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal"
+            <RelativeLayout
+                android:id="@+id/grafico_"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp">
-
-
-            </androidx.cardview.widget.CardView>
-
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp">
+                app:layout_constraintTop_toBottomOf="@+id/nova_transferencia_campo_anexo">
 
-                <TextView
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:src="@drawable/botoes_tranferencia_verificado"
+
+                    />
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Valor Minimo"
-                    android:textColor="#2A356A" />
+                    android:src="@drawable/vector"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
 
 
-                <EditText
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="150dp"-->
+<!--                android:layout_gravity="center_horizontal"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:layout_marginBottom="10dp">-->
 
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="330dp"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="40dp"
-                    android:background="@drawable/borda_input_transferencia"
-                    android:paddingStart="8dp"
-                    android:paddingLeft="12dp"
-                    android:text="De" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="80dp"
-                    android:text="Valor Minimo"
-                    android:textColor="#2A356A" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:text="Valor Minimo"-->
+<!--                    android:textColor="#2A356A" />-->
 
 
-                <EditText
+<!--                <EditText-->
 
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="330dp"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="110dp"
-                    android:background="@drawable/borda_input_transferencia"
-                    android:paddingStart="8dp"
-                    android:paddingLeft="12dp"
-                    android:text="Para" />
-
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Mês"
-                    android:textColor="#2A356A" />
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                    android:layout_width="330dp"-->
+<!--                    android:layout_height="25dp"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:layout_marginTop="40dp"-->
+<!--                    android:background="@drawable/borda_input_transferencia"-->
+<!--                    android:paddingStart="8dp"-->
+<!--                    android:paddingLeft="12dp"-->
+<!--                    android:text="De" />-->
 
 
-                <EditText
-
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="330dp"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="40dp"
-                    android:background="@drawable/borda_input_transferencia"
-                    android:paddingStart="8dp"
-                    android:paddingLeft="12dp"
-                    android:text="Janeiro" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:layout_marginTop="80dp"-->
+<!--                    android:text="Valor Minimo"-->
+<!--                    android:textColor="#2A356A" />-->
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="80dp"
-                    android:text="Ano"
-                    android:textColor="#2A356A" />
+<!--                <EditText-->
+
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                    android:layout_width="330dp"-->
+<!--                    android:layout_height="25dp"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:layout_marginTop="110dp"-->
+<!--                    android:background="@drawable/borda_input_transferencia"-->
+<!--                    android:paddingStart="8dp"-->
+<!--                    android:paddingLeft="12dp"-->
+<!--                    android:text="Para" />-->
+
+<!--            <LinearLayout-->
+
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginBottom="17dp"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Data"-->
+<!--                    style="@style/TextAppearance.Material3.LabelLarge" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/nova_transferencia_data"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:background="@drawable/borda_input_transferencia"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="@string/mes_ano_seletor" />-->
+
+<!--            </LinearLayout>-->
+
+<!--            </androidx.cardview.widget.CardView>-->
+
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="150dp"-->
+<!--                android:layout_gravity="center_horizontal"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:layout_marginBottom="10dp">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:text="Mês"-->
+<!--                    android:textColor="#2A356A" />-->
 
 
-                <EditText
+<!--                <EditText-->
 
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="330dp"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="110dp"
-                    android:background="@drawable/borda_input_transferencia"
-                    android:paddingStart="8dp"
-                    android:paddingLeft="12dp"
-                    android:text="2022" />
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                    android:layout_width="330dp"-->
+<!--                    android:layout_height="25dp"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:layout_marginTop="40dp"-->
+<!--                    android:background="@drawable/borda_input_transferencia"-->
+<!--                    android:paddingStart="8dp"-->
+<!--                    android:paddingLeft="12dp"-->
+<!--                    android:text="Janeiro" />-->
 
 
-            </androidx.cardview.widget.CardView>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:layout_marginTop="80dp"-->
+<!--                    android:text="Ano"-->
+<!--                    android:textColor="#2A356A" />-->
+
+
+<!--                <EditText-->
+
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                    android:layout_width="330dp"-->
+<!--                    android:layout_height="25dp"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:layout_marginTop="110dp"-->
+<!--                    android:background="@drawable/borda_input_transferencia"-->
+<!--                    android:paddingStart="8dp"-->
+<!--                    android:paddingLeft="12dp"-->
+<!--                    android:text="2022" />-->
+
+
+<!--            </androidx.cardview.widget.CardView>-->
 
 
 

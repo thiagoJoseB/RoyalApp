@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="350dp"
+    android:orientation="vertical"
+    android:background="@drawable/borda_graficos_extrato"
+    android:layout_marginTop="60dp"
+    android:layout_gravity="center_horizontal">
+
+
+
+
+
+
+
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:orientation="vertical"
+        android:background="@drawable/borda_graficos_extrato"
+        android:layout_marginTop="310dp">
+
+
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

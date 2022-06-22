@@ -157,36 +157,37 @@ public class DashboardActivity extends AppCompatActivity {
 
 
     public void atualizarValoresPrincipais() {
+        runOnUiThread(() -> {
+            iniciarEsperaTexto();
+
+            API.get().getSaldo(token, Variaveis.anoAlvo, Variaveis.mesAlvoInicio0 + 1).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    Log.d("teste", response.body());
+                    JsonArray array = JsonParser.parseString(response.body()).getAsJsonArray();
+                    JsonObject valores = array.get(0).getAsJsonObject();
 
 
-        iniciarEsperaTexto();
+                    saldoGeral = array.get(1).getAsBigDecimal();
 
+                    receitaMensal = valores.get("receita").getAsBigDecimal();
 
+                    despesaMensal = valores.get("despesa").getAsBigDecimal();
 
-        API.get().getSaldo(token, Variaveis.anoAlvo, Variaveis.mesAlvoInicio0 + 1).enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                Log.d("teste", response.body());
-                JsonArray array = JsonParser.parseString(response.body()).getAsJsonArray();
-                JsonObject valores = array.get(0).getAsJsonObject();
+                    finalizarEsperaTextoBotandoValor();
+                }
 
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    throw new RuntimeException(t);
+                }
+            });
 
-                saldoGeral = array.get(1).getAsBigDecimal();
-
-                receitaMensal = valores.get("receita").getAsBigDecimal();
-
-                despesaMensal = valores.get("despesa").getAsBigDecimal();
-
-                finalizarEsperaTextoBotandoValor();
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                throw new RuntimeException(t);
-            }
+            atualizarGrafico();
         });
 
-        atualizarGrafico();
+
+
     }
 
     public void atualizarGrafico(){
@@ -195,6 +196,8 @@ public class DashboardActivity extends AppCompatActivity {
         API.get().graficoMensal(tipoGrafico, token, Variaveis.anoAlvo, Variaveis.mesAlvoInicio0 + 1).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
+                Log.d("teste", String.valueOf(response.code()));
+
                 ArrayList<Integer> colors = new ArrayList<>();
                 JsonObject object = JsonParser.parseString(response.body()).getAsJsonObject();
 
@@ -253,6 +256,30 @@ public class DashboardActivity extends AppCompatActivity {
         });
     }
 
+    private void instanciadores(){
+        viewTextSaldoGeral = this.findViewById(R.id.dashboard_saldo_principal_texto);
+        viewTextReceitaGeral = this.findViewById(R.id.dashboard_receita_principal_texto);
+        viewTextDespesaGeral = this.findViewById(R.id.dashboard_despesa_principal_texto);
+
+        viewSeletorMesAno = this.findViewById(R.id.dashboard_seletor_mes_ano);
+        menuBaixo = this.findViewById(R.id.dashboard_menu_baixo);
+
+        buttonNovaDespesa = this.findViewById(R.id.dashboard_nova_despesa);
+        buttonNovaReceita = this.findViewById(R.id.dashboard_nova_receita);
+        buttonFavoritos = this.findViewById(R.id.dashboard_favoritos);
+        radioGroupDespesaOuReceita = this.findViewById(R.id.dashboard_radio_group_tipo);
+
+        viewEfeitoGeral = findViewById(R.id.dashboard_saldo_principal_efeito);
+        viewEfeitoReceita = findViewById(R.id.dashboard_receita_principa_efeito);
+        viewEfeitoDespesa = findViewById(R.id.dashboard_despesa_principal_efeito);
+        viewEfeitoGrafico = findViewById(R.id.dashboard_grafico_mes_efeito);
+
+
+        viewGraficoTextoVazio = findViewById(R.id.dashboard_grafico_mes_vazio);
+
+        chart = findViewById(R.id.dashboard_grafico_mes);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -265,15 +292,11 @@ public class DashboardActivity extends AppCompatActivity {
 
 
         getSupportActionBar().hide();
-        viewTextSaldoGeral = this.findViewById(R.id.dashboard_saldo_principal_texto);
-        viewTextReceitaGeral = this.findViewById(R.id.dashboard_receita_principal_texto);
-        viewTextDespesaGeral = this.findViewById(R.id.dashboard_despesa_principal_texto);
 
-        viewSeletorMesAno = this.findViewById(R.id.dashboard_seletor_mes_ano);
+        instanciadores();
 
         MonthYearPickerDialogFragment dialogFragment = MonthYearPickerDialogFragment
                 .getInstance(Variaveis.mesAlvoInicio0, Variaveis.anoAlvo, "Data alvo", Utilidades.BRASIL);
-
 
 
         viewSeletorMesAno.setOnClickListener(view -> {
@@ -297,7 +320,6 @@ public class DashboardActivity extends AppCompatActivity {
         );
 
 
-        menuBaixo = this.findViewById(R.id.dashboard_menu_baixo);
         menuBaixo.setSelectedItemId(R.id.menu_baixo_geral);
 
         menuBaixo.setOnItemSelectedListener(item -> {
@@ -328,10 +350,7 @@ public class DashboardActivity extends AppCompatActivity {
             return false;
         });
 
-        buttonNovaDespesa = this.findViewById(R.id.dashboard_nova_despesa);
-        buttonNovaReceita = this.findViewById(R.id.dashboard_nova_receita);
-        buttonFavoritos = this.findViewById(R.id.dashboard_favoritos);
-        radioGroupDespesaOuReceita = this.findViewById(R.id.dashboard_radio_group_tipo);
+
 
         radioGroupDespesaOuReceita.setOnCheckedChangeListener( (group, checkedId) -> {
             switch (checkedId){
@@ -371,13 +390,7 @@ public class DashboardActivity extends AppCompatActivity {
         Type tipoArrayCategorias = new TypeToken<List<Categoria>>() {
         }.getType();
 
-                 viewEfeitoGeral = findViewById(R.id.dashboard_saldo_principal_efeito);
-                 viewEfeitoReceita = findViewById(R.id.dashboard_receita_principa_efeito);
-                 viewEfeitoDespesa = findViewById(R.id.dashboard_despesa_principal_efeito);
-                 viewEfeitoGrafico = findViewById(R.id.dashboard_grafico_mes_efeito);
 
-
-                 viewGraficoTextoVazio = findViewById(R.id.dashboard_grafico_mes_vazio);
 
         API.get().getDashboardInfo(token, CALENDARIO.get(Calendar.YEAR), CALENDARIO.get(Calendar.MONTH) + 1).enqueue(new Callback<String>() {
             @Override
@@ -424,7 +437,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
 
-        chart = findViewById(R.id.dashboard_grafico_mes);
+
         chart.setUsePercentValues(false);
         chart.getDescription().setEnabled(false);
 
@@ -461,7 +474,7 @@ public class DashboardActivity extends AppCompatActivity {
         @Override
         public void onMessage(@NonNull WebSocket webSocket, @NonNull String text) {
 
-            runOnUiThread(() -> {
+
                 JsonObject json = JsonParser.parseString(text).getAsJsonObject();
 
                 Log.d("teste", json.toString());
@@ -490,14 +503,16 @@ public class DashboardActivity extends AppCompatActivity {
 
 
                 Log.d("teste", "despesa=" + despesaMensal + "receita=" + receitaMensal);
-            });
+
 
 
         }
 
+
+
         @Override
         public void onFailure(@NonNull WebSocket webSocket, @NonNull Throwable t, @Nullable okhttp3.Response response) {
-            Log.e("teste", t.getClass().getName(), t);
+            throw new RuntimeException(t);
         }
     }
 
